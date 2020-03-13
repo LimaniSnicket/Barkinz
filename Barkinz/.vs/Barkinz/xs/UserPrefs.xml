@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ActivePlayer.cs">
+    <Files>
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="13" Column="35" />
+      <File FileName="Assets/Scripts/BarkinzManager.cs" Line="22" Column="45" />
+      <File FileName="Assets/Scripts/WorldTile.cs" Line="31" Column="62" />
+      <File FileName="Assets/Scripts/BarkinzInputManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="97" Column="36" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" Line="69" Column="6" />
+      <File FileName="Assets/Scripts/Bartender.cs" Line="52" Column="6" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="20" Column="42" />
+      <File FileName="Assets/Scripts/TriviaScript.cs" Line="55" Column="104" />
+      <File FileName="Assets/StreamingAssets/TriviaData.json" Line="40" Column="30" />
+      <File FileName="Assets/StreamingAssets/KeyOffsetData.json" Line="670" Column="31" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="f65df983-7312-4663-8b2e-98bbce0ae08c" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

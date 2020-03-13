@@ -1,0 +1,44 @@
+﻿{
+    "TriviaQuestions": [
+        {
+            "question": "The beaver is the emblem of which country?",
+            "answer": "Canada",
+            "pointWorth": 10
+        },
+        {
+            "question": "What is a baby kangaroo called?",
+            "answer": "Joey",
+            "pointWorth": 10
+        },
+        {
+            "question": "What is the fastest flying bird in the world?",
+            "answer": "Peregrine Falcon",
+            "pointWorth": 20
+        },
+        {
+            "question": "How many times does a hummingbird flap its wings per second?",
+            "answer": "80",
+            "pointWorth": 20
+        },
+        {
+            "question": "What animal has the highest blood pressure?",
+            "answer": "Giraffe",
+            "pointWorth": 30
+        },
+        {
+            "question": "What type of animal is a mandrill?",
+            "answer": "Monkey",
+            "pointWorth": 20
+        },
+        {
+            "question": "What animal has the longest lifespan?",
+            "answer": "Giant Tortoise",
+            "pointWorth": 20
+        },
+        {
+            "question": "Where is a shrimp's heart located?",
+            "answer": "Head",
+            "pointWorth": 20
+        }
+    ]
+}

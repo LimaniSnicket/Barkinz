@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f35b8256ea0343d7bc08953faefff6f, type: 3}
+  m_Name: JamesonJackrabbit
+  m_EditorClassIdentifier: 
+  BarkinzType: Jameson Jackrabbit
+  BarkinzCode: WHATSUPDOC
+  MainBarkinzSprite: {fileID: 21300000, guid: 19bf0912b074b42b7aed7d8752316b86, type: 3}
+  LoadSettingsFromInfo: 0
+  currencyOwned: 0
+  individualSettings:
+    TileLayoutSettings: []

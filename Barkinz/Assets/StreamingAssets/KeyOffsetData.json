@@ -1,0 +1,676 @@
+﻿{
+  "KeyOffsetMaps": [
+    {
+      "PrimaryKey": "A",
+      "OffsetPairs": [
+        {
+          "Key": "CapsLock",
+          "Offset": 1
+        },
+        {
+          "Key": "Q",
+          "Offset": 2
+        },
+        {
+          "Key": "S",
+          "Offset": 3
+        },
+        {
+          "Key": "Z",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "S",
+      "OffsetPairs": [
+        {
+          "Key": "A",
+          "Offset": 1
+        },
+        {
+          "Key": "W",
+          "Offset": 2
+        },
+        {
+          "Key": "D",
+          "Offset": 3
+        },
+        {
+          "Key": "X",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "D",
+      "OffsetPairs": [
+        {
+          "Key": "S",
+          "Offset": 1
+        },
+        {
+          "Key": "E",
+          "Offset": 2
+        },
+        {
+          "Key": "F",
+          "Offset": 3
+        },
+        {
+          "Key": "C",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "F",
+      "OffsetPairs": [
+        {
+          "Key": "D",
+          "Offset": 1
+        },
+        {
+          "Key": "R",
+          "Offset": 2
+        },
+        {
+          "Key": "G",
+          "Offset": 3
+        },
+        {
+          "Key": "V",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "G",
+      "OffsetPairs": [
+        {
+          "Key": "F",
+          "Offset": 1
+        },
+        {
+          "Key": "T",
+          "Offset": 2
+        },
+        {
+          "Key": "H",
+          "Offset": 3
+        },
+        {
+          "Key": "B",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "H",
+      "OffsetPairs": [
+        {
+          "Key": "G",
+          "Offset": 1
+        },
+        {
+          "Key": "Y",
+          "Offset": 2
+        },
+        {
+          "Key": "J",
+          "Offset": 3
+        },
+        {
+          "Key": "N",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "J",
+      "OffsetPairs": [
+        {
+          "Key": "H",
+          "Offset": 1
+        },
+        {
+          "Key": "U",
+          "Offset": 2
+        },
+        {
+          "Key": "K",
+          "Offset": 3
+        },
+        {
+          "Key": "M",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "K",
+      "OffsetPairs": [
+        {
+          "Key": "J",
+          "Offset": 1
+        },
+        {
+          "Key": "I",
+          "Offset": 2
+        },
+        {
+          "Key": "L",
+          "Offset": 3
+        },
+        {
+          "Key": "Comma",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "L",
+      "OffsetPairs": [
+        {
+          "Key": "K",
+          "Offset": 1
+        },
+        {
+          "Key": "O",
+          "Offset": 2
+        },
+        {
+          "Key": "Semicolon",
+          "Offset": 3
+        },
+        {
+          "Key": "Period",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Q",
+      "OffsetPairs": [
+        {
+          "Key": "Tab",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad1",
+          "Offset": 2
+        },
+        {
+          "Key": "W",
+          "Offset": 3
+        },
+        {
+          "Key": "A",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "W",
+      "OffsetPairs": [
+        {
+          "Key": "Q",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad2",
+          "Offset": 2
+        },
+        {
+          "Key": "E",
+          "Offset": 3
+        },
+        {
+          "Key": "S",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "E",
+      "OffsetPairs": [
+        {
+          "Key": "W",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad3",
+          "Offset": 2
+        },
+        {
+          "Key": "R",
+          "Offset": 3
+        },
+        {
+          "Key": "D",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "R",
+      "OffsetPairs": [
+        {
+          "Key": "E",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad4",
+          "Offset": 2
+        },
+        {
+          "Key": "T",
+          "Offset": 3
+        },
+        {
+          "Key": "F",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "T",
+      "OffsetPairs": [
+        {
+          "Key": "R",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad5",
+          "Offset": 2
+        },
+        {
+          "Key": "Y",
+          "Offset": 3
+        },
+        {
+          "Key": "G",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Y",
+      "OffsetPairs": [
+        {
+          "Key": "T",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad6",
+          "Offset": 2
+        },
+        {
+          "Key": "U",
+          "Offset": 3
+        },
+        {
+          "Key": "H",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "U",
+      "OffsetPairs": [
+        {
+          "Key": "Y",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad7",
+          "Offset": 2
+        },
+        {
+          "Key": "I",
+          "Offset": 3
+        },
+        {
+          "Key": "J",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "I",
+      "OffsetPairs": [
+        {
+          "Key": "U",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad8",
+          "Offset": 2
+        },
+        {
+          "Key": "O",
+          "Offset": 3
+        },
+        {
+          "Key": "K",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "O",
+      "OffsetPairs": [
+        {
+          "Key": "I",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad9",
+          "Offset": 2
+        },
+        {
+          "Key": "P",
+          "Offset": 3
+        },
+        {
+          "Key": "L",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "P",
+      "OffsetPairs": [
+        {
+          "Key": "O",
+          "Offset": 1
+        },
+        {
+          "Key": "Keypad0",
+          "Offset": 2
+        },
+        {
+          "Key": "LeftBracket",
+          "Offset": 3
+        },
+        {
+          "Key": "Semicolon",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Z",
+      "OffsetPairs": [
+        {
+          "Key": "LeftShift",
+          "Offset": 1
+        },
+        {
+          "Key": "A",
+          "Offset": 2
+        },
+        {
+          "Key": "X",
+          "Offset": 3
+        },
+        {
+          "Key": "LeftCommand",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "X",
+      "OffsetPairs": [
+        {
+          "Key": "Z",
+          "Offset": 1
+        },
+        {
+          "Key": "S",
+          "Offset": 2
+        },
+        {
+          "Key": "C",
+          "Offset": 3
+        },
+        {
+          "Key": "X",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "C",
+      "OffsetPairs": [
+        {
+          "Key": "X",
+          "Offset": 1
+        },
+        {
+          "Key": "D",
+          "Offset": 2
+        },
+        {
+          "Key": "V",
+          "Offset": 3
+        },
+        {
+          "Key": "C",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "V",
+      "OffsetPairs": [
+        {
+          "Key": "C",
+          "Offset": 1
+        },
+        {
+          "Key": "F",
+          "Offset": 2
+        },
+        {
+          "Key": "B",
+          "Offset": 3
+        },
+        {
+          "Key": "V",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "B",
+      "OffsetPairs": [
+        {
+          "Key": "V",
+          "Offset": 1
+        },
+        {
+          "Key": "G",
+          "Offset": 2
+        },
+        {
+          "Key": "N",
+          "Offset": 3
+        },
+        {
+          "Key": "B",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "N",
+      "OffsetPairs": [
+        {
+          "Key": "B",
+          "Offset": 1
+        },
+        {
+          "Key": "H",
+          "Offset": 2
+        },
+        {
+          "Key": "M",
+          "Offset": 3
+        },
+        {
+          "Key": "N",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "M",
+      "OffsetPairs": [
+        {
+          "Key": "N",
+          "Offset": 1
+        },
+        {
+          "Key": "J",
+          "Offset": 2
+        },
+        {
+          "Key": "Comma",
+          "Offset": 3
+        },
+        {
+          "Key": "M",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "CapsLock",
+      "OffsetPairs": [
+        {
+          "Key": "CapsLock",
+          "Offset": 1
+        },
+        {
+          "Key": "Tab",
+          "Offset": 2
+        },
+        {
+          "Key": "A",
+          "Offset": 3
+        },
+        {
+          "Key": "LeftShift",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Tab",
+      "OffsetPairs": [
+        {
+          "Key": "Tab",
+          "Offset": 1
+        },
+        {
+          "Key": "Tilde",
+          "Offset": 2
+        },
+        {
+          "Key": "Q",
+          "Offset": 3
+        },
+        {
+          "Key": "CapsLock",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "LeftShift",
+      "OffsetPairs": [
+        {
+          "Key": "LeftShift",
+          "Offset": 1
+        },
+        {
+          "Key": "CapsLock",
+          "Offset": 2
+        },
+        {
+          "Key": "Z",
+          "Offset": 3
+        },
+        {
+          "Key": "LeftControl",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Semicolon",
+      "OffsetPairs": [
+        {
+          "Key": "L",
+          "Offset": 1
+        },
+        {
+          "Key": "P",
+          "Offset": 2
+        },
+        {
+          "Key": "Quote",
+          "Offset": 3
+        },
+        {
+          "Key": "Period",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "LeftBracket",
+      "OffsetPairs": [
+        {
+          "Key": "P",
+          "Offset": 1
+        },
+        {
+          "Key": "Minus",
+          "Offset": 2
+        },
+        {
+          "Key": "RightBracket",
+          "Offset": 3
+        },
+        {
+          "Key": "Quote",
+          "Offset": 4
+        }
+      ]
+    },
+    {
+      "PrimaryKey": "Comma",
+      "OffsetPairs": [
+        {
+          "Key": "M",
+          "Offset": 1
+        },
+        {
+          "Key": "K",
+          "Offset": 2
+        },
+        {
+          "Key": "Period",
+          "Offset": 3
+        },
+        {
+          "Key": "RightCommand",
+          "Offset": 4
+        }
+      ]
+    }
+  ]
+}
