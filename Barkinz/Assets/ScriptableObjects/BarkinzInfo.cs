@@ -72,7 +72,7 @@ public class IntoxicationSettings
     {
         if (intoxicationLevel > 0)
         {
-            intoxicationLevel -= Time.deltaTime * Mathf.Max(1, Mathf.Ceil(intoxicationLevel) / maxIntoxication);
+            intoxicationLevel -= Time.deltaTime * Mathf.Ceil(intoxicationLevel) / maxIntoxication;
         }
     }
 
@@ -87,7 +87,7 @@ public class IntoxicationSettings
 
     public void Intoxicate(float chug, Drink current)
     {
-        intoxicationLevel += current.drinkStrength / 30 * chug;
+        intoxicationLevel += current.drinkStrength / 15 * chug;
     }
 
     public void DrinkTaken()

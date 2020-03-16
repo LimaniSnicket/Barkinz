@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class ActivePlayer : MonoBehaviour
+public class ActivePlayer : MonoBehaviour, IZoomOn
 {
     public Tile TargetTile;
     Queue<Tile> tileTargets;
@@ -12,6 +12,7 @@ public class ActivePlayer : MonoBehaviour
 
     public  IntoxicationSettings ActiveSessionIntoxication;
     public static event Action<string> EnteredTaggedArea;
+    public float CameraOrthoSize { get; set; }
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class ActivePlayer : MonoBehaviour
     private void Start()
     {
         OverworldSpriteDisplay = GetComponentInChildren<SpriteRenderer>();
+        CameraOrthoSize = 1;
     }
 
     public float chugSpeed = 0;
@@ -112,5 +114,12 @@ public class ActivePlayer : MonoBehaviour
     private void OnApplicationQuit()
     {
         SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
+    }
+
+    public Vector3 ZoomCamPosition()
+    {
+        Vector3 p = transform.position + new Vector3(0, 1, -1);
+        Debug.Log(p);
+        return p;
     }
 }
