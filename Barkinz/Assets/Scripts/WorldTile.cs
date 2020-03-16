@@ -15,6 +15,9 @@ public class WorldTile : MonoBehaviour
 
     public Tile PlayerPositionTile;
 
+    public GameObject PlaceableObjectPrefab;
+    public PlaceableObject TestPlacements;
+
     private void Awake()
     {
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
@@ -46,6 +49,15 @@ public class WorldTile : MonoBehaviour
             {
                 PlayerPositionTile = GetAdjacentTile(Vector2.up);
             }
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
+                p.InitializePlacedObject(new Vector2(0, 0));
+                Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
+                placedAt.SetPlacedObjectPosition(p);
+            }
+
         }
     }
 
@@ -70,6 +82,15 @@ public class WorldTile : MonoBehaviour
         }
     }
 
+    public Tile GetTileAtPosition(int row, int column)
+    {
+        try
+        {
+            return GridPositions[row, column];
+        }
+        catch (IndexOutOfRangeException) { return GridPositions[0, 0]; }
+    }
+
     public static event Action<Tile> TileSelected;
     public static event Action<Tile> QueueTile;
 
@@ -77,7 +98,7 @@ public class WorldTile : MonoBehaviour
     {
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit rh = new RaycastHit();
-        if (Physics.SphereCast(r, 1, out rh, Mathf.Infinity))
+        if (Physics.SphereCast(r, 1, out rh, Mathf.Infinity) && TileLookup.ContainsKey(rh.transform.gameObject))
         {
             if (!TileLookup[rh.transform.gameObject].occupied)
             {
@@ -185,6 +206,12 @@ public class Tile
     public GameObject GetGameObject()
     {
         return go;
+    }
+
+    public void SetPlacedObjectPosition(PlacedObject p)
+    {
+        p.transform.position = centerPosition;
+        occupied = true;
     }
 }
 
