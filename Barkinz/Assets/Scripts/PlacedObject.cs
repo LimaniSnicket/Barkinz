@@ -7,17 +7,17 @@ using UnityEngine;
 public class PlacedObject : MonoBehaviour
 {
     public PlaceableObject ObjectInformation;
-    public Vector2 GridPosition;
+    public Vector2Int GridPosition;
     protected Tile PlacedOn;
     Renderer objectRenderer { get => GetComponent<Renderer>(); }
     MeshFilter objectFilter { get => GetComponent<MeshFilter>(); }
 
     public void InitializePlacedObject()
     {
-        InitializePlacedObject(Vector2.zero);
+        InitializePlacedObject(Vector2Int.zero);
     }
 
-    public void InitializePlacedObject(Vector2 gridPosition)
+    public void InitializePlacedObject(Vector2Int gridPosition)
     {
         if (ObjectInformation != null)
         {
@@ -33,7 +33,7 @@ public class PlacedObject : MonoBehaviour
         GridPosition = gridPosition;
     }
 
-    public void InitializePlacedObject(Vector2 gridPosition, PlaceableObject obj)
+    public void InitializePlacedObject(Vector2Int gridPosition, PlaceableObject obj)
     {
         ObjectInformation = obj;
         InitializePlacedObject(gridPosition);

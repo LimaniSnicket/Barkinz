@@ -44,6 +44,7 @@ public class BarkinzInfo : ScriptableObject
     public void SetWorldTileFromSettings(WorldTile toSet)
     {
         individualSettings.GenerateTiles(toSet);
+        individualSettings.InitializeWorld(toSet);
     }
 
     public void UpdateWorldTileSettings(WorldTile world)
