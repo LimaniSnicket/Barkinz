@@ -950,6 +950,7 @@ MonoBehaviour:
   PlaceableObjectPrefab: {fileID: 6200209736255525532, guid: fb83bdfbe281541f8b1209c697d66a15,
     type: 3}
   TestPlacements: {fileID: 11400000, guid: 300223ce1904a4a3ea1148d53d2053b3, type: 2}
+  ObjectsInTile: []
 --- !u!1 &529771709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,8 +1119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d4ffbe9ad72d474da816dead1dcf831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HomePosition: {x: 0, y: 0, z: 0}
-  HomeOrthographicSize: 0
+  HomePosition: {x: 0, y: 4.95, z: -6.6}
+  HomeOrthographicSize: 4.5
 --- !u!1 &551957187
 GameObject:
   m_ObjectHideFlags: 0

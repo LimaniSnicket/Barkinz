@@ -7,6 +7,7 @@ public class CameraMovement : MonoBehaviour
 {
     public Vector3 HomePosition;
     public float HomeOrthographicSize;
+    public bool Zoomed { get; private set; }
 
     private void Start()
     {
@@ -18,31 +19,44 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
-            SetZoomTargetViaClick();
+            if (!Zoomed)
+            {
+                SetZoomTargetViaClick();
+            } else
+            {
+                ResetZoom();
+            }
         }
+
     }
 
     public void SetZoomTargetViaClick()
     {
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit rh = new RaycastHit();
-        if (Physics.SphereCast(r, 1, out rh, Mathf.Infinity))
+        if (Physics.SphereCast(r, .5F, out rh, Mathf.Infinity))
         {
             Debug.Log(rh.transform.name);
             if (rh.transform.GetComponent<MonoBehaviour>() is IZoomOn)
             {
                 IZoomOn zoomOn = (IZoomOn)rh.transform.GetComponent<MonoBehaviour>();
-                StartCoroutine(LerpCameraToZoomPosition(zoomOn.ZoomCamPosition(), .5f));
-                StartCoroutine(LerpCameraToZoomPosition(zoomOn.CameraOrthoSize, .3f));
-                //transform.position = zoomOn.ZoomCamPosition();
-                //Camera.main.orthographicSize = zoomOn.CameraOrthoSize;
+                StartCoroutine(LerpCameraToZoomPosition(zoomOn.ZoomCamPosition(), 10f));
+                StartCoroutine(LerpCameraToZoomPosition(zoomOn.CameraOrthoSize, 12f));
+                Zoomed = true;
             }
         }
     }
 
+    public void ResetZoom()
+    {
+        StartCoroutine(LerpCameraToZoomPosition(HomePosition, 10));
+        StartCoroutine(LerpCameraToZoomPosition(HomeOrthographicSize, 12f));
+        Zoomed = false;
+    }
+
     public IEnumerator LerpCameraToZoomPosition(Vector3 pos, float speed)
     {
-        while (Vector3.Distance(pos, transform.position) <= 0.001f)
+        while (!transform.position.SqueezeVectors(pos))
         {
             transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * speed);
             yield return null;
@@ -52,7 +66,7 @@ public class CameraMovement : MonoBehaviour
 
     public IEnumerator LerpCameraToZoomPosition(float ortho, float speed)
     {
-        while (Mathf.Abs(ortho - Camera.main.orthographicSize) <= 0.001)
+        while (!Camera.main.orthographicSize.SqueezeFloats(ortho))
         {
             Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, ortho, Time.deltaTime * speed);
             yield return null;
@@ -66,4 +80,17 @@ public interface IZoomOn
 {
     Vector3 ZoomCamPosition();
     float CameraOrthoSize { get; set; }
+}
+
+public static class Squeeze
+{
+    public static bool SqueezeVectors(this Vector3 v, Vector3 comp, float threshold = 0.01f)
+    {
+        return Mathf.Abs(Vector3.Distance(v, comp)) <= threshold;
+    }
+
+    public static bool SqueezeFloats(this float f, float comp, float threshold = 0.01f)
+    {
+        return Mathf.Abs(f - comp) <= threshold;
+    }
 }

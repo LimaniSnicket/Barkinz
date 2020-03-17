@@ -8,7 +8,7 @@ public class PlaceableObject : ScriptableObject
 {
     public string ObjectLookup;
     public Mesh ObjectMesh;
-    public Texture2D ObjectTexture;
+    public Texture ObjectTexture;
     public float Width, Length;
 }
 

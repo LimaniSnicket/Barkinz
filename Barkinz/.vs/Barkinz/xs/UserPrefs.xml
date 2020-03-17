@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlacedObject.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraMovement.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="75" Column="99" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="51" Column="51" />
       <File FileName="Assets/Scripts/BarkinzManager.cs" />
-      <File FileName="Assets/Scripts/WorldTile.cs" Line="153" Column="41" />
+      <File FileName="Assets/Scripts/WorldTile.cs" />
       <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
       <File FileName="Assets/Scripts/ActivePlayer.cs" />
       <File FileName="Assets/Scripts/MinigameManager.cs" />
@@ -12,16 +12,16 @@
       <File FileName="Assets/Scripts/TriviaScript.cs" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/StreamingAssets/KeyOffsetData.json" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" />
-      <File FileName="Assets/Scripts/Dart.cs" Line="30" Column="10" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" Line="77" Column="10" />
+      <File FileName="Assets/Scripts/Dart.cs" />
       <File FileName="Assets/Scripts/DartsManager.cs" />
-      <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" Line="12" Column="32" />
-      <File FileName="Assets/Scripts/PlacedObject.cs" Line="5" Column="20" />
+      <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
+      <File FileName="Assets/Scripts/PlacedObject.cs" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b7675fed-4088-42a4-a34e-2f41aff36023" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5bb0fb77-a916-4bc6-b463-3b68285abd37" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

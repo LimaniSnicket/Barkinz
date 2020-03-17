@@ -321,5 +321,6 @@
 "Assets/Scripts/DartsManager.cs"
 "Assets/Scripts/HUD.cs"
 "Assets/Scripts/MinigameManager.cs"
+"Assets/Scripts/PlacedObject.cs"
 "Assets/Scripts/TriviaScript.cs"
 "Assets/Scripts/WorldTile.cs"

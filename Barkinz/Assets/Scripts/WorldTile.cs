@@ -17,6 +17,7 @@ public class WorldTile : MonoBehaviour
 
     public GameObject PlaceableObjectPrefab;
     public PlaceableObject TestPlacements;
+    public List<PlacedObject> ObjectsInTile;
 
     private void Awake()
     {
@@ -35,29 +36,43 @@ public class WorldTile : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.right);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.right));
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.right * -1);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.right * -1));
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.up * -1);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.up * -1));
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.up);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
 
             if (Input.GetKeyDown(KeyCode.P))
             {
-                PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
-                p.InitializePlacedObject(new Vector2(0, 0));
-                Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
-                placedAt.SetPlacedObjectPosition(p);
+                InstantiatePlacedObject(TestPlacements, Vector2Int.zero);
             }
+        }
+    }
 
+    public void InstantiatePlacedObject(PlaceableObject po, Vector2Int grid)
+    {
+        PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
+        p.InitializePlacedObject(grid, po);
+        Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
+        placedAt.SetPlacedObjectPosition(p);
+        ObjectsInTile.Add(p);
+    }
+
+    public void InstantiatePlacedObjects(WorldTileSettings wts)
+    {
+        foreach (var e in wts.ObjectPlacementData)
+        {
+            PlaceableObject p = Resources.Load<PlaceableObject>(e.resourcesPath);
+            InstantiatePlacedObject(p, e.gridPosition);
         }
     }
 
@@ -91,6 +106,13 @@ public class WorldTile : MonoBehaviour
         catch (IndexOutOfRangeException) { return GridPositions[0, 0]; }
     }
 
+    void UpdatePlayerTile(Tile newTile)
+    {
+        PlayerPositionTile.occupied = false;
+        PlayerPositionTile = newTile;
+        PlayerPositionTile.occupied = true;
+    }
+
     public static event Action<Tile> TileSelected;
     public static event Action<Tile> QueueTile;
 
@@ -112,6 +134,7 @@ public class WorldTile : MonoBehaviour
     {
         TileLookup = new Dictionary<GameObject, Tile>();
         Tiles = new List<Tile>();
+        ObjectsInTile = new List<PlacedObject>();
         GridPositions = new Tile[tileRows, tileColumns];
         if (!b.LoadSettingsFromInfo)
         {
@@ -169,11 +192,11 @@ public class Tile
     public float width, length;
     public bool occupied;
     public Vector3 centerPosition;
-    public Vector2 GridPosition { get; private set; }
+    public Vector2Int GridPosition { get; private set; }
     public Tile() { width = 1; length = 1; occupied = false; centerPosition = Vector3.zero; }
     public Tile(Vector3 cp) { width = 1; length = 1; occupied = false; centerPosition = cp; }
-    public Tile(float w, float l, Vector3 cp) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2(0, 0); }
-    public Tile(float w, float l, Vector3 cp, int row, int column) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2(row, column); }
+    public Tile(float w, float l, Vector3 cp) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(0, 0); }
+    public Tile(float w, float l, Vector3 cp, int row, int column) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(row, column); }
     public void InitializeTile(Sprite s, WorldTile parentTile)
     {
         GameObject g = new GameObject("Tile Sprite");
@@ -200,7 +223,7 @@ public class Tile
         TileRenderer.sprite = s;
         TileRenderer.color = Color.red;
         g.transform.SetParent(parentTile.transform);
-        GridPosition = new Vector2(i, j);
+        GridPosition = new Vector2Int(i, j);
     }
 
     public GameObject GetGameObject()
@@ -220,11 +243,20 @@ public class WorldTileSettings
 {
     public List<Tile> TileLayoutSettings;
     public Tile PlayerTile;
+    public Vector2Int playerPosition;
+    public List<ObjectPlacementInfo> ObjectPlacementData;
     public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
     public WorldTileSettings(WorldTile toSave)
     {
         TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
         PlayerTile = toSave.PlayerPositionTile;
+        playerPosition = toSave.PlayerPositionTile.GridPosition;
+        ObjectPlacementData = new List<ObjectPlacementInfo>();
+        foreach (var o in toSave.ObjectsInTile)
+        {
+            Debug.Log(o.ObjectInformation.ObjectLookup);
+            ObjectPlacementData.Add(new ObjectPlacementInfo(o));
+        }
     }
     public void GenerateTiles(WorldTile parentTile)
     {
@@ -237,6 +269,23 @@ public class WorldTileSettings
             parentTile.GridPositions[(int)t.GridPosition.x, (int)t.GridPosition.y] = t;
             parentTile.TileLookup.Add(t.GetGameObject(), t);
         }
-        parentTile.PlayerPositionTile = PlayerTile;
+        parentTile.PlayerPositionTile = parentTile.GetTileAtPosition(playerPosition.x, playerPosition.y);
+    }
+
+    public void InitializeWorld(WorldTile t)
+    {
+        t.InstantiatePlacedObjects(this);
+    }
+
+    [Serializable]
+    public struct ObjectPlacementInfo
+    {
+        public string resourcesPath;
+        public Vector2Int gridPosition;
+        public ObjectPlacementInfo(PlacedObject p)
+        {
+            resourcesPath = p.ObjectInformation.ObjectLookup;
+            gridPosition = p.GridPosition;
+        }
     }
 }
