@@ -17,6 +17,7 @@ public class WorldTile : MonoBehaviour
 
     public GameObject PlaceableObjectPrefab;
     public PlaceableObject TestPlacements;
+    public List<PlacedObject> ObjectsInTile;
 
     private void Awake()
     {
@@ -35,29 +36,47 @@ public class WorldTile : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.right);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.right));
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.right * -1);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.right * -1));
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.up * -1);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.up * -1));
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                PlayerPositionTile = GetAdjacentTile(Vector2.up);
+                UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
 
             if (Input.GetKeyDown(KeyCode.P))
             {
-                PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
-                p.InitializePlacedObject(new Vector2(0, 0));
-                Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
-                placedAt.SetPlacedObjectPosition(p);
+                //PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
+                //p.InitializePlacedObject(new Vector2(0, 0), TestPlacements);
+                //Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
+                //placedAt.SetPlacedObjectPosition(p);
+                //ObjectsInTile.Add(p);
+                InstantiatePlacedObject(TestPlacements, Vector2.zero);
             }
+        }
+    }
 
+    void InstantiatePlacedObject(PlaceableObject po, Vector2 grid)
+    {
+        PlacedObject p = Instantiate(PlaceableObjectPrefab).GetComponent<PlacedObject>();
+        p.InitializePlacedObject(grid, po);
+        Tile placedAt = GetTileAtPosition((int)p.GridPosition.x, (int)p.GridPosition.y);
+        placedAt.SetPlacedObjectPosition(p);
+        ObjectsInTile.Add(p);
+    }
+
+    public void InstantiatePlacedObjects(Dictionary<PlaceableObject, Vector2> dictReference)
+    {
+        foreach (PlaceableObject p in dictReference.Keys)
+        {
+            InstantiatePlacedObject(p, dictReference[p]);
         }
     }
 
@@ -91,6 +110,13 @@ public class WorldTile : MonoBehaviour
         catch (IndexOutOfRangeException) { return GridPositions[0, 0]; }
     }
 
+    void UpdatePlayerTile(Tile newTile)
+    {
+        PlayerPositionTile.occupied = false;
+        PlayerPositionTile = newTile;
+        PlayerPositionTile.occupied = true;
+    }
+
     public static event Action<Tile> TileSelected;
     public static event Action<Tile> QueueTile;
 
@@ -112,6 +138,7 @@ public class WorldTile : MonoBehaviour
     {
         TileLookup = new Dictionary<GameObject, Tile>();
         Tiles = new List<Tile>();
+        ObjectsInTile = new List<PlacedObject>();
         GridPositions = new Tile[tileRows, tileColumns];
         if (!b.LoadSettingsFromInfo)
         {
@@ -220,11 +247,17 @@ public class WorldTileSettings
 {
     public List<Tile> TileLayoutSettings;
     public Tile PlayerTile;
+    public Dictionary<PlaceableObject, Vector2> ObjectsInScene;
     public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
     public WorldTileSettings(WorldTile toSave)
     {
         TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
         PlayerTile = toSave.PlayerPositionTile;
+        ObjectsInScene = new Dictionary<PlaceableObject, Vector2>();
+        foreach (PlacedObject p in toSave.ObjectsInTile)
+        {
+            ObjectsInScene.Add(p.ObjectInformation, p.GridPosition);
+        }
     }
     public void GenerateTiles(WorldTile parentTile)
     {
@@ -238,5 +271,14 @@ public class WorldTileSettings
             parentTile.TileLookup.Add(t.GetGameObject(), t);
         }
         parentTile.PlayerPositionTile = PlayerTile;
+        InitializeWorld(parentTile);
+    }
+
+    void InitializeWorld(WorldTile t)
+    {
+        if (ObjectsInScene != null && ObjectsInScene.Count > 0)
+        {
+            t.InstantiatePlacedObjects(ObjectsInScene);
+        }
     }
 }

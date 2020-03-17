@@ -8,7 +8,8 @@ public class PlacedObject : MonoBehaviour
 {
     public PlaceableObject ObjectInformation;
     public Vector2 GridPosition;
-    MeshRenderer objectRenderer { get => GetComponent<MeshRenderer>(); }
+    protected Tile PlacedOn;
+    Renderer objectRenderer { get => GetComponent<Renderer>(); }
     MeshFilter objectFilter { get => GetComponent<MeshFilter>(); }
 
     public void InitializePlacedObject()
@@ -30,5 +31,11 @@ public class PlacedObject : MonoBehaviour
             }
         }
         GridPosition = gridPosition;
+    }
+
+    public void InitializePlacedObject(Vector2 gridPosition, PlaceableObject obj)
+    {
+        ObjectInformation = obj;
+        InitializePlacedObject(gridPosition);
     }
 }
