@@ -10,5 +10,6 @@ public class PlaceableObject : ScriptableObject
     public Mesh ObjectMesh;
     public Texture ObjectTexture;
     public float Width, Length;
+    public float PurchasePrice;
 }
 

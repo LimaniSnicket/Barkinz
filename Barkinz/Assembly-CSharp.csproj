@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\HUD.cs" />
     <Compile Include="Assets\Scripts\MinigameManager.cs" />
     <Compile Include="Assets\Scripts\PlacedObject.cs" />
+    <Compile Include="Assets\Scripts\PurchasingBehavior.cs" />
     <Compile Include="Assets\Scripts\TriviaScript.cs" />
     <Compile Include="Assets\Scripts\WorldTile.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />

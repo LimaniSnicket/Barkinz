@@ -62,6 +62,8 @@ public class IntoxicationSettings
     float maxIntoxication = 100;
 
     public bool TabPaid { get => currentTab >= 0; }
+    public bool hasAlcoholPoisoning { get; private set; }
+    public float soberRate;
 
     public IntoxicationSettings() { intoxicationLevel = 0; }
     public IntoxicationSettings(ActivePlayer ap)
@@ -71,10 +73,13 @@ public class IntoxicationSettings
 
     public void SoberUp()
     {
+        soberRate = hasAlcoholPoisoning ? 5: 2;
         if (intoxicationLevel > 0)
         {
-            intoxicationLevel -= Time.deltaTime * Mathf.Ceil(intoxicationLevel) / maxIntoxication;
+            intoxicationLevel -= (Time.deltaTime/soberRate) * Mathf.Ceil(intoxicationLevel) / maxIntoxication;
         }
+
+        if(hasAlcoholPoisoning && intoxicationLevel < 3) { hasAlcoholPoisoning = false; }
     }
 
     public void InitializeSettingsAfterTime()
@@ -88,7 +93,14 @@ public class IntoxicationSettings
 
     public void Intoxicate(float chug, Drink current)
     {
-        intoxicationLevel += current.drinkStrength / 15 * chug;
+        if (current.drinkName != DrinkMenu.Water.drinkName)
+        {
+            intoxicationLevel += current.drinkStrength / 15 * chug;
+            if (!hasAlcoholPoisoning && intoxicationLevel > 97) { hasAlcoholPoisoning = true; }
+        } else
+        {
+            intoxicationLevel += current.drinkStrength / 20 * chug;
+        }
     }
 
     public void DrinkTaken()

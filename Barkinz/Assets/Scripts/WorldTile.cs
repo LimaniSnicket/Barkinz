@@ -22,6 +22,7 @@ public class WorldTile : MonoBehaviour
     private void Awake()
     {
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
+        PurchasingBehavior.ObjectPlacementConfirmed += OnObjectPlacementConfirmed;
         PlayerPositionTile = new Tile();
     }
 
@@ -51,11 +52,17 @@ public class WorldTile : MonoBehaviour
                 UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
 
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                InstantiatePlacedObject(TestPlacements, Vector2Int.zero);
-            }
+            //if (Input.GetKeyDown(KeyCode.P))
+            //{
+            //    InstantiatePlacedObject(TestPlacements, Vector2Int.zero);
+            //}
         }
+    }
+
+    void OnObjectPlacementConfirmed(Tile t, PlaceableObject p)
+    {
+        Debug.Log("Instantiate Object");
+        InstantiatePlacedObject(TestPlacements, t.GridPosition);
     }
 
     public void InstantiatePlacedObject(PlaceableObject po, Vector2Int grid)
@@ -71,7 +78,7 @@ public class WorldTile : MonoBehaviour
     {
         foreach (var e in wts.ObjectPlacementData)
         {
-            PlaceableObject p = Resources.Load<PlaceableObject>(e.resourcesPath);
+            PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
             InstantiatePlacedObject(p, e.gridPosition);
         }
     }
@@ -176,6 +183,7 @@ public class WorldTile : MonoBehaviour
     private void OnDestroy()
     {
         BarkinzManager.InitializeBarkinzData -= OnBarkinzLoad;
+        PurchasingBehavior.ObjectPlacementConfirmed -= OnObjectPlacementConfirmed;
     }
 
     private void OnApplicationQuit()
@@ -254,7 +262,6 @@ public class WorldTileSettings
         ObjectPlacementData = new List<ObjectPlacementInfo>();
         foreach (var o in toSave.ObjectsInTile)
         {
-            Debug.Log(o.ObjectInformation.ObjectLookup);
             ObjectPlacementData.Add(new ObjectPlacementInfo(o));
         }
     }
