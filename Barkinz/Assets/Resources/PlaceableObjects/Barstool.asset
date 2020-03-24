@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e025af895a64f03b1351e0502fa5a9, type: 3}
   m_Name: Barstool
   m_EditorClassIdentifier: 
-  ObjectLookup: /PlaceableObjects/Barstool.asset
+  ObjectLookup: Barstool
   ObjectMesh: {fileID: 4300002, guid: 08c35024ec9c244c98ca6e8e99796484, type: 3}
   ObjectTexture: {fileID: 2800000, guid: c575e2457dc374c719589657554516ec, type: 3}
   Width: 1
   Length: 1
+  PurchasePrice: 3

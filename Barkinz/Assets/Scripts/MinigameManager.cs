@@ -12,8 +12,11 @@ public class MinigameManager : MonoBehaviour
     private const float startingAmount = 50f;
 
     public GameObject BarCanvas, TriviaCanvas;
+    public UtilityCharacterInformation MeerkatMac;
     Dictionary<string, ActiveGameFunction> GameFunctionToTagLookup;
     ActiveGameFunction toEnter;
+
+    public static bool SwappingMode { get; private set; }
 
     private void Awake()
     {
@@ -33,6 +36,8 @@ public class MinigameManager : MonoBehaviour
         GameFunctionToTagLookup.Add("Trivia",ActiveGameFunction.TRIVIA);
     }
 
+    public static event Action<ActiveGameFunction> EnteredMode;
+
     public void Update()
     {
         BarCanvas.SetActive(ValidMode(ActiveGameFunction.BAR));
@@ -47,14 +52,24 @@ public class MinigameManager : MonoBehaviour
             activeGameFunction = ActiveGameFunction.TRIVIA;
         }
 
-        if (Input.GetKeyDown(KeyCode.L) && activeGameFunction == ActiveGameFunction.NONE)
+        if (Input.GetKeyDown(KeyCode.P) && activeGameFunction == ActiveGameFunction.NONE)
         {
-            activeGameFunction = toEnter;
+            activeGameFunction = ActiveGameFunction.SHOP;
+            EnteredMode(ActiveGameFunction.SHOP);
+        }
+
+        if (CanEnterMode())
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                StartCoroutine(EnterMode(toEnter));
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             activeGameFunction = ActiveGameFunction.NONE;
+            EnteredMode(ActiveGameFunction.NONE);
         }
     }
 
@@ -66,6 +81,11 @@ public class MinigameManager : MonoBehaviour
     void OnDrinkTab(float t)
     {
         activeCurrency -= t;
+    }
+
+    public static bool CanEnterMode()
+    {
+        return !SwappingMode && ValidMode(ActiveGameFunction.NONE);
     }
 
     public static bool ValidMode(ActiveGameFunction gameFunction)
@@ -92,12 +112,41 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    public IEnumerator EnterMode(ActiveGameFunction toEnter)
+    {
+        SwappingMode = true;
+        if (toEnter == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPopUp(true, 3f)); }
+        Debug.Log("Swapping Modes");
+        yield return new WaitForSeconds(1);
+        activeGameFunction = toEnter;
+        Debug.Log("Mode Swapped");
+        SwappingMode = false;
+    }
+
+    IEnumerator MacPopUp(bool poppingUp, float speed)
+    {
+        Vector3 goTo = poppingUp ? MeerkatMac.EndPos : MeerkatMac.StartPos;
+        while (!MeerkatMac.OverworldCharacter.transform.position.SqueezeVectors(goTo))
+        {
+            MeerkatMac.OverworldCharacter.transform.position = Vector3.Lerp(MeerkatMac.OverworldCharacter.transform.position, goTo, Time.deltaTime * speed);
+            yield return null;
+        }
+        MeerkatMac.OverworldCharacter.transform.position = goTo;
+    }
+
     private void OnDestroy()
     {
         BarkinzManager.InitializeBarkinzData -= SetCurrencyOnInitialize;
         Bartender.DrinkOnTab -= OnDrinkTab;
         ActivePlayer.EnteredTaggedArea -= OnEnteredTaggedArea;
     }
+}
+
+[System.Serializable]
+public struct UtilityCharacterInformation
+{
+    public GameObject OverworldCharacter;
+    public Vector3 StartPos, EndPos;
 }
 
 public enum ActiveGameFunction

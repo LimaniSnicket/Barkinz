@@ -35,6 +35,11 @@ ModelImporter:
     100058: Cylinder_027
     100060: Cylinder_028
     100062: Dartboard
+    100064: BarSegment
+    100066: PoolStick
+    100068: PoolStick_001
+    100070: PoolTable
+    100072: Dart
     400000: //RootNode
     400002: Barstool
     400004: Barstool_001
@@ -67,9 +72,15 @@ ModelImporter:
     400058: Cylinder_027
     400060: Cylinder_028
     400062: Dartboard
+    400064: BarSegment
+    400066: PoolStick
+    400068: PoolStick_001
+    400070: PoolTable
+    400072: Dart
     2100000: Barstool
     2100002: Material
     2100004: unnamed
+    2100006: PoolStick
     2300000: Barstool
     2300002: Barstool_001
     2300004: Table
@@ -101,6 +112,11 @@ ModelImporter:
     2300056: Cylinder_027
     2300058: Cylinder_028
     2300060: Dartboard
+    2300062: BarSegment
+    2300064: PoolStick
+    2300066: PoolStick_001
+    2300068: PoolTable
+    2300070: Dart
     3300000: Barstool
     3300002: Barstool_001
     3300004: Table
@@ -132,6 +148,11 @@ ModelImporter:
     3300056: Cylinder_027
     3300058: Cylinder_028
     3300060: Dartboard
+    3300062: BarSegment
+    3300064: PoolStick
+    3300066: PoolStick_001
+    3300068: PoolTable
+    3300070: Dart
     4300000: Barstool_001
     4300002: Barstool
     4300004: Table
@@ -163,6 +184,11 @@ ModelImporter:
     4300056: Cylinder_002
     4300058: Cylinder_001
     4300060: Dartboard
+    4300062: PoolTable
+    4300064: PoolStick_001
+    4300066: PoolStick
+    4300068: BarSegment
+    4300070: Dart
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}
