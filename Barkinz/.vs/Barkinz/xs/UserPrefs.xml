@@ -1,19 +1,19 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MinigameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Dart.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="47" Column="51" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="71" Column="76" />
       <File FileName="Assets/Scripts/BarkinzManager.cs" />
-      <File FileName="Assets/Scripts/WorldTile.cs" Line="81" Column="102" />
+      <File FileName="Assets/Scripts/WorldTile.cs" />
       <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
       <File FileName="Assets/Scripts/ActivePlayer.cs" />
-      <File FileName="Assets/Scripts/MinigameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" />
       <File FileName="Assets/Scripts/Bartender.cs" />
       <File FileName="Assets/Scripts/HUD.cs" />
       <File FileName="Assets/Scripts/TriviaScript.cs" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/StreamingAssets/KeyOffsetData.json" />
       <File FileName="Assets/Scripts/CameraMovement.cs" />
-      <File FileName="Assets/Scripts/Dart.cs" />
+      <File FileName="Assets/Scripts/Dart.cs" Line="49" Column="104" />
       <File FileName="Assets/Scripts/DartsManager.cs" />
       <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
       <File FileName="Assets/Scripts/PlacedObject.cs" />
@@ -22,7 +22,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b43b5002-7279-45f5-9002-e4b5569c1047" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5c9a857b-09cb-46da-a1f9-a077e89aa9f7" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

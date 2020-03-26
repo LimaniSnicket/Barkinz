@@ -15,6 +15,7 @@ public class DartsManager : MonoBehaviour
     public Dart ActiveDart;
     public float ShakeFactor = 0.1f;
     public float ShakeAmount = 0.2f;
+    public Color colorHit;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class DartsManager : MonoBehaviour
     private void Start()
     {
         InitializeDartGame();
+        colorHit = new Color();
     }
 
     private void Update()
@@ -33,10 +35,10 @@ public class DartsManager : MonoBehaviour
     }
 
 
-    void OnDartHit(Vector3 contactPoint)
+    void OnDartHit(Color contactColor, int pointValue)
     {
-        Vector3 differenceVector = Dartboard.GetComponent<MeshCollider>().bounds.center - contactPoint;
-        Debug.Log(Dartboard.GetComponent<MeshCollider>().bounds.center);
+        colorHit = contactColor;
+        if (contactColor == Color.red) { Debug.Log("red"); }
         CreateDart();
     }
 

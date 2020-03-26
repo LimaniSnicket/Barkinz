@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Dart : MonoBehaviour
 {
     Rigidbody dartBody { get => GetComponent<Rigidbody>(); }
+    BoxCollider dartCollider { get => GetComponent<BoxCollider>(); }
+
     public bool Thrown;
 
     private void Start()
@@ -30,6 +31,8 @@ public class Dart : MonoBehaviour
         {
             transform.eulerAngles = rot + new Vector3(deltaPosition.y / 10, deltaPosition.x / 10, 0);
         }
+
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.red);
     }
 
     void Launch(float power)
@@ -40,17 +43,23 @@ public class Dart : MonoBehaviour
         transform.SetParent(null);
     }
 
-    public static event Action<Vector3> DartHit;
+    public static event Action<Color, int> DartHit;
 
     public void OnCollisionEnter(Collision collision)
     {
-        DartHit(collision.GetContact(0).point);
+        Vector3 v = collision.GetContact(0).point;
+        Texture2D t = (Texture2D)collision.transform.GetComponent<MeshRenderer>().material.mainTexture;
+        Color c =  t.GetPixelBilinear(v.x, v.y);
+        int pointVal = int.Parse(collision.gameObject.name);
+        DartHit(c, pointVal);
+        Debug.Log(pointVal);
         Destroy(this);
     }
 
     private void OnDestroy()
     {
         Destroy(dartBody);
+        Destroy(dartCollider);
     }
 
 }
