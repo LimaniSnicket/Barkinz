@@ -7,6 +7,7 @@ public class Dart : MonoBehaviour
 {
     Rigidbody dartBody { get => GetComponent<Rigidbody>(); }
     BoxCollider dartCollider { get => GetComponent<BoxCollider>(); }
+    ActivePlayer activePlayer;
 
     public bool Thrown;
 
@@ -16,7 +17,7 @@ public class Dart : MonoBehaviour
     }
 
     public float pow;
-    float PowerCap = 4;
+    float PowerCap = 6;
 
     Vector3 currentPosition, deltaPosition, lastPosition;
     private void Update()
@@ -32,7 +33,14 @@ public class Dart : MonoBehaviour
             transform.eulerAngles = rot + new Vector3(deltaPosition.y / 10, deltaPosition.x / 10, 0);
         }
 
+        transform.position += DrunkTilt() * Mathf.Cos(Time.time);
+
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.red);
+    }
+
+    public void SetPlayerToTrack(ActivePlayer p)
+    {
+        activePlayer = p;
     }
 
     void Launch(float power)
@@ -41,6 +49,13 @@ public class Dart : MonoBehaviour
         dartBody.useGravity = true;
         dartBody.AddForce((transform.forward + Vector3.up) * 1.5f * power, ForceMode.Impulse);
         transform.SetParent(null);
+    }
+
+    Vector3 DrunkTilt()
+    {
+        float mod = 1f;
+        try { mod = activePlayer.ActiveSessionIntoxication.intoxicationLevel/100; } catch (NullReferenceException) { }
+        return new Vector3(0.03f, 0.01f, 0) * mod;
     }
 
     public static event Action<Color, int> DartHit;
@@ -52,7 +67,6 @@ public class Dart : MonoBehaviour
         Color c =  t.GetPixelBilinear(v.x, v.y);
         int pointVal = int.Parse(collision.gameObject.name);
         DartHit(c, pointVal);
-        Debug.Log(pointVal);
         Destroy(this);
     }
 

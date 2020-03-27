@@ -10,7 +10,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     public SpriteRenderer OverworldSpriteDisplay;
 
-    public  IntoxicationSettings ActiveSessionIntoxication;
+    public IntoxicationSettings ActiveSessionIntoxication;
     public static event Action<string> EnteredTaggedArea;
     public float CameraOrthoSize { get; set; }
 
