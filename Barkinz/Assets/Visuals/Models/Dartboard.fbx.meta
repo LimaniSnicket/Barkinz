@@ -32,6 +32,67 @@ ModelImporter:
     100052: Cylinder.028
     100054: //RootNode
     100056: Dartboard
+    100058: Cylinder.009
+    100060: Cylinder.029
+    100062: Cylinder.030
+    100064: Cylinder.031
+    100066: Cylinder.032
+    100068: Cylinder.033
+    100070: Cylinder.034
+    100072: Cylinder.035
+    100074: Cylinder.036
+    100076: Cylinder.037
+    100078: Cylinder.038
+    100080: Cylinder.039
+    100082: Cylinder.040
+    100084: Cylinder.041
+    100086: Cylinder.042
+    100088: Cylinder.043
+    100090: Cylinder.044
+    100092: Cylinder.045
+    100094: Cylinder.046
+    100096: Cylinder.047
+    100098: Cylinder.048
+    100100: Cylinder.049
+    100102: Cylinder.050
+    100104: Cylinder.051
+    100106: Cylinder.052
+    100108: Cylinder.053
+    100110: Cylinder.054
+    100112: Cylinder.055
+    100114: Cylinder.056
+    100116: Cylinder.057
+    100118: Cylinder.058
+    100120: Cylinder.059
+    100122: Cylinder.060
+    100124: Cylinder.061
+    100126: Cylinder.062
+    100128: Cylinder.063
+    100130: Cylinder.064
+    100132: Cylinder.065
+    100134: Cylinder.066
+    100136: Dartboard.001
+    100138: 1
+    100140: 10
+    100142: 11
+    100144: 12
+    100146: 13
+    100148: 14
+    100150: 15
+    100152: 16
+    100154: 17
+    100156: 18
+    100158: 19
+    100160: 2
+    100162: 20
+    100164: 25
+    100166: 3
+    100168: 4
+    100170: 5
+    100172: 6
+    100174: 7
+    100176: 8
+    100178: 9
     400000: Cylinder.001
     400002: Cylinder.002
     400004: Cylinder.003
@@ -61,6 +122,67 @@ ModelImporter:
     400052: Cylinder.028
     400054: //RootNode
     400056: Dartboard
+    400058: Cylinder.009
+    400060: Cylinder.029
+    400062: Cylinder.030
+    400064: Cylinder.031
+    400066: Cylinder.032
+    400068: Cylinder.033
+    400070: Cylinder.034
+    400072: Cylinder.035
+    400074: Cylinder.036
+    400076: Cylinder.037
+    400078: Cylinder.038
+    400080: Cylinder.039
+    400082: Cylinder.040
+    400084: Cylinder.041
+    400086: Cylinder.042
+    400088: Cylinder.043
+    400090: Cylinder.044
+    400092: Cylinder.045
+    400094: Cylinder.046
+    400096: Cylinder.047
+    400098: Cylinder.048
+    400100: Cylinder.049
+    400102: Cylinder.050
+    400104: Cylinder.051
+    400106: Cylinder.052
+    400108: Cylinder.053
+    400110: Cylinder.054
+    400112: Cylinder.055
+    400114: Cylinder.056
+    400116: Cylinder.057
+    400118: Cylinder.058
+    400120: Cylinder.059
+    400122: Cylinder.060
+    400124: Cylinder.061
+    400126: Cylinder.062
+    400128: Cylinder.063
+    400130: Cylinder.064
+    400132: Cylinder.065
+    400134: Cylinder.066
+    400136: Dartboard.001
+    400138: 1
+    400140: 10
+    400142: 11
+    400144: 12
+    400146: 13
+    400148: 14
+    400150: 15
+    400152: 16
+    400154: 17
+    400156: 18
+    400158: 19
+    400160: 2
+    400162: 20
+    400164: 25
+    400166: 3
+    400168: 4
+    400170: 5
+    400172: 6
+    400174: 7
+    400176: 8
+    400178: 9
     2100000: No Name
     2300000: Cylinder.001
     2300002: Cylinder.002
@@ -90,6 +212,68 @@ ModelImporter:
     2300050: Cylinder.027
     2300052: Cylinder.028
     2300054: Dartboard
+    2300056: //RootNode
+    2300058: Cylinder.009
+    2300060: Cylinder.029
+    2300062: Cylinder.030
+    2300064: Cylinder.031
+    2300066: Cylinder.032
+    2300068: Cylinder.033
+    2300070: Cylinder.034
+    2300072: Cylinder.035
+    2300074: Cylinder.036
+    2300076: Cylinder.037
+    2300078: Cylinder.038
+    2300080: Cylinder.039
+    2300082: Cylinder.040
+    2300084: Cylinder.041
+    2300086: Cylinder.042
+    2300088: Cylinder.043
+    2300090: Cylinder.044
+    2300092: Cylinder.045
+    2300094: Cylinder.046
+    2300096: Cylinder.047
+    2300098: Cylinder.048
+    2300100: Cylinder.049
+    2300102: Cylinder.050
+    2300104: Cylinder.051
+    2300106: Cylinder.052
+    2300108: Cylinder.053
+    2300110: Cylinder.054
+    2300112: Cylinder.055
+    2300114: Cylinder.056
+    2300116: Cylinder.057
+    2300118: Cylinder.058
+    2300120: Cylinder.059
+    2300122: Cylinder.060
+    2300124: Cylinder.061
+    2300126: Cylinder.062
+    2300128: Cylinder.063
+    2300130: Cylinder.064
+    2300132: Cylinder.065
+    2300134: Cylinder.066
+    2300136: Dartboard.001
+    2300138: 1
+    2300140: 10
+    2300142: 11
+    2300144: 12
+    2300146: 13
+    2300148: 14
+    2300150: 15
+    2300152: 16
+    2300154: 17
+    2300156: 18
+    2300158: 19
+    2300160: 2
+    2300162: 20
+    2300164: 25
+    2300166: 3
+    2300168: 4
+    2300170: 5
+    2300172: 6
+    2300174: 7
+    2300176: 8
+    2300178: 9
     3300000: Cylinder.001
     3300002: Cylinder.002
     3300004: Cylinder.003
@@ -118,6 +302,68 @@ ModelImporter:
     3300050: Cylinder.027
     3300052: Cylinder.028
     3300054: Dartboard
+    3300056: //RootNode
+    3300058: Cylinder.009
+    3300060: Cylinder.029
+    3300062: Cylinder.030
+    3300064: Cylinder.031
+    3300066: Cylinder.032
+    3300068: Cylinder.033
+    3300070: Cylinder.034
+    3300072: Cylinder.035
+    3300074: Cylinder.036
+    3300076: Cylinder.037
+    3300078: Cylinder.038
+    3300080: Cylinder.039
+    3300082: Cylinder.040
+    3300084: Cylinder.041
+    3300086: Cylinder.042
+    3300088: Cylinder.043
+    3300090: Cylinder.044
+    3300092: Cylinder.045
+    3300094: Cylinder.046
+    3300096: Cylinder.047
+    3300098: Cylinder.048
+    3300100: Cylinder.049
+    3300102: Cylinder.050
+    3300104: Cylinder.051
+    3300106: Cylinder.052
+    3300108: Cylinder.053
+    3300110: Cylinder.054
+    3300112: Cylinder.055
+    3300114: Cylinder.056
+    3300116: Cylinder.057
+    3300118: Cylinder.058
+    3300120: Cylinder.059
+    3300122: Cylinder.060
+    3300124: Cylinder.061
+    3300126: Cylinder.062
+    3300128: Cylinder.063
+    3300130: Cylinder.064
+    3300132: Cylinder.065
+    3300134: Cylinder.066
+    3300136: Dartboard.001
+    3300138: 1
+    3300140: 10
+    3300142: 11
+    3300144: 12
+    3300146: 13
+    3300148: 14
+    3300150: 15
+    3300152: 16
+    3300154: 17
+    3300156: 18
+    3300158: 19
+    3300160: 2
+    3300162: 20
+    3300164: 25
+    3300166: 3
+    3300168: 4
+    3300170: 5
+    3300172: 6
+    3300174: 7
+    3300176: 8
+    3300178: 9
     4300000: Cylinder.028
     4300002: Cylinder.027
     4300004: Cylinder.026
@@ -146,6 +392,68 @@ ModelImporter:
     4300050: Cylinder.002
     4300052: Cylinder.001
     4300054: Dartboard
+    4300056: NewDartboard
+    4300058: Cylinder.043
+    4300060: Cylinder.042
+    4300062: Cylinder.041
+    4300064: Cylinder.040
+    4300066: Cylinder.039
+    4300068: Cylinder.038
+    4300070: Cylinder.037
+    4300072: Cylinder.036
+    4300074: Cylinder.035
+    4300076: Cylinder.034
+    4300078: Cylinder.033
+    4300080: Cylinder.032
+    4300082: Cylinder.031
+    4300084: Cylinder.030
+    4300086: Cylinder.009
+    4300088: Cylinder.047
+    4300090: Cylinder.046
+    4300092: Cylinder.045
+    4300094: Cylinder.044
+    4300096: Cylinder.029
+    4300098: Cylinder.066
+    4300100: Cylinder.065
+    4300102: Cylinder.064
+    4300104: Cylinder.063
+    4300106: Cylinder.062
+    4300108: Cylinder.061
+    4300110: Cylinder.060
+    4300112: Cylinder.059
+    4300114: Cylinder.058
+    4300116: Cylinder.057
+    4300118: Cylinder.056
+    4300120: Cylinder.055
+    4300122: Cylinder.054
+    4300124: Cylinder.053
+    4300126: Cylinder.052
+    4300128: Cylinder.051
+    4300130: Cylinder.050
+    4300132: Cylinder.049
+    4300134: Cylinder.048
+    4300136: Dartboard.001
+    4300138: 17
+    4300140: 3
+    4300142: 19
+    4300144: 16
+    4300146: 7
+    4300148: 8
+    4300150: 11
+    4300152: 14
+    4300154: 9
+    4300156: 12
+    4300158: 5
+    4300160: 20
+    4300162: 1
+    4300164: 18
+    4300166: 4
+    4300168: 13
+    4300170: 6
+    4300172: 10
+    4300174: 15
+    4300176: 2
+    4300178: 25
   externalObjects: {}
   materials:
     importMaterials: 1

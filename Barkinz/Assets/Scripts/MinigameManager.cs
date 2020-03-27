@@ -64,13 +64,24 @@ public class MinigameManager : MonoBehaviour
             {
                 StartCoroutine(EnterMode(toEnter));
             }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                StartCoroutine(EnterMode(ActiveGameFunction.DARTS));
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            activeGameFunction = ActiveGameFunction.NONE;
-            EnteredMode(ActiveGameFunction.NONE);
+            ExitMode();
         }
+    }
+
+    public static void ExitMode()
+    {
+        gameManager.activeGameFunction = ActiveGameFunction.NONE;
+        EnteredMode(ActiveGameFunction.NONE);
+        CameraMovement.AlignWithTransform();
     }
 
     public static void RewardPlayer(float amount)
@@ -119,6 +130,7 @@ public class MinigameManager : MonoBehaviour
         Debug.Log("Swapping Modes");
         yield return new WaitForSeconds(1);
         activeGameFunction = toEnter;
+        EnteredMode(activeGameFunction);
         Debug.Log("Mode Swapped");
         SwappingMode = false;
     }

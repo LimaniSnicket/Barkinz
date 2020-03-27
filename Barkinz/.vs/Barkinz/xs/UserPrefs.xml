@@ -1,28 +1,29 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MinigameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraEffectManager.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="47" Column="51" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="71" Column="76" />
       <File FileName="Assets/Scripts/BarkinzManager.cs" />
-      <File FileName="Assets/Scripts/WorldTile.cs" Line="81" Column="102" />
+      <File FileName="Assets/Scripts/WorldTile.cs" Line="73" Column="1" />
       <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
-      <File FileName="Assets/Scripts/ActivePlayer.cs" />
-      <File FileName="Assets/Scripts/MinigameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="13" Column="11" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" Line="76" Column="24" />
       <File FileName="Assets/Scripts/Bartender.cs" />
-      <File FileName="Assets/Scripts/HUD.cs" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="20" Column="1" />
       <File FileName="Assets/Scripts/TriviaScript.cs" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/StreamingAssets/KeyOffsetData.json" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" />
-      <File FileName="Assets/Scripts/Dart.cs" />
-      <File FileName="Assets/Scripts/DartsManager.cs" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" Line="45" Column="42" />
+      <File FileName="Assets/Scripts/Dart.cs" Line="20" Column="23" />
+      <File FileName="Assets/Scripts/DartsManager.cs" Line="28" Column="49" />
       <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
-      <File FileName="Assets/Scripts/PlacedObject.cs" />
-      <File FileName="Assets/Scripts/PurchasingBehavior.cs" />
+      <File FileName="Assets/Scripts/PlacedObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PurchasingBehavior.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/CameraEffectManager.cs" Line="4" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b43b5002-7279-45f5-9002-e4b5569c1047" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="87fdc5eb-6b5f-4caa-93c4-0ef2a4edb27c" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\BarkinzInputManager.cs" />
     <Compile Include="Assets\Scripts\BarkinzManager.cs" />
     <Compile Include="Assets\Scripts\Bartender.cs" />
+    <Compile Include="Assets\Scripts\CameraEffectManager.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Dart.cs" />
     <Compile Include="Assets\Scripts\DartsManager.cs" />
