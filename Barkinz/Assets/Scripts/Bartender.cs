@@ -87,7 +87,7 @@ public class Drink
     public float drinkCost, drinkStrength;
     public float amountLeft;
     public bool available;
-    public Drink() { drinkName = "Water"; drinkCost = 0; drinkStrength = -1; available = true; amountLeft = 5; displaySpritePath = "DrinkSprites/Temp"; }
+    public Drink() { drinkName = "Water"; drinkCost = 0; drinkStrength = -1; available = true; amountLeft = 5; displaySpritePath = "DrinkSprites/Water"; }
     public Drink(string name, float cost, float strength, float amount, bool a = true)
     {
         drinkName = name;
@@ -195,10 +195,10 @@ public static class DrinkMenu
     public static int NumberOfDrinks { get => GetDrinks().Count; }
 
     public static Drink Water { get => new Drink(); }
-    public static Drink FourLoko { get => new Drink("Four Loko", 4, 8, 8); }
+    public static Drink FourLoko { get => new Drink("Four Loko", 4, 8, 8, "DrinkSprites/FourLoko"); }
     public static Drink Hennessy { get => new Drink("Hennessy", 10, 7, 4, "DrinkSprites/Henny"); }
     public static Drink Chianti { get => new Drink("Chianti", 10, 1, 4); }
     public static Drink Fireball { get => new Drink("Fireball", 5, 6, 4); }
-    public static Drink Ouzo { get => new Drink("Ouzo", 10, 10, 4); }
+    public static Drink Ouzo { get => new Drink("Ouzo", 10, 10, 4, "DrinkSprites/Ouzo"); }
     public static Drink Whiteclaw { get => new Drink("Whiteclaw", 5, 4, 7); }
 }

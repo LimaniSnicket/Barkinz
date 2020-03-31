@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DartsManager : MonoBehaviour, IGameMode
 {
@@ -17,6 +18,7 @@ public class DartsManager : MonoBehaviour, IGameMode
     public float ShakeFactor = 0.1f;
     public float ShakeAmount = 0.2f;
     public Color colorHit;
+    public TextMeshPro activeText, highText;
 
     public static DartGame ActiveDartGame;
     public ActivePlayer activePlayer;
@@ -44,6 +46,11 @@ public class DartsManager : MonoBehaviour, IGameMode
         {
             if (ActiveDart.transform.position.y < OutOfBounds) { Destroy(ActiveDart.gameObject); CreateDart(); ActiveDartGame.DartMiss(); }
         }
+
+        if (ActiveDartGame != null)
+        {
+            ActiveDartGame.infoDisplay.text = ActiveDartGame.PointsDisplay(true);
+        }
     }
 
     void OnDartHit(Color contactColor, int pointValue)
@@ -59,7 +66,7 @@ public class DartsManager : MonoBehaviour, IGameMode
 
     void InitializeDartGame()
     {
-        ActiveDartGame = new DartGame(activePlayer);
+        ActiveDartGame = new DartGame(activePlayer, activeText);
         CameraMovement.AlignWithTransform(CameraPosition, false);
         DartsRemaining = DartsOnBegin;
         CreateDart();
@@ -105,16 +112,18 @@ public class DartGame
     private int currentPoints;
     public int DartsRemaining;
     ActivePlayer p;
+    public TextMeshPro infoDisplay;
 
     public delegate void BroadcastGameComplete();
     public static event BroadcastGameComplete GameComplete;
 
-    public DartGame(ActivePlayer player)
+    public DartGame(ActivePlayer player, TextMeshPro i)
     {
         StartingPointTotal = 301;
         currentPoints = 0;
         DartsRemaining = DartsOnStart;
         p = player;
+        infoDisplay = i;
     }
 
     public void RegisterPointChanges(int pointChange)
@@ -128,6 +137,14 @@ public class DartGame
             RunEndGame();
         }
 
+    }
+
+    public string PointsDisplay(bool active)
+    {
+        string header = active ? "Current Score:" : "All Time Highs:";
+        string points = "Current Score: " + CurrentPointTotal().ToString();
+        string darts = "Darts To Go: " + DartsRemaining.ToString();
+        return header + '\n' + points + '\n' + darts;
     }
 
     public void DartMiss()

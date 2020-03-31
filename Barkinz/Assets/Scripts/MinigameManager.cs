@@ -46,10 +46,6 @@ public class MinigameManager : MonoBehaviour
         BarCanvas.SetActive(ValidMode(ActiveGameFunction.BAR));
         TriviaCanvas.SetActive(ValidMode(ActiveGameFunction.TRIVIA));
 
-        if (Input.GetKeyDown(KeyCode.B) && activeGameFunction == ActiveGameFunction.NONE)
-        {
-            activeGameFunction = ActiveGameFunction.BAR;
-        }
         if (Input.GetKeyDown(KeyCode.T) && activeGameFunction == ActiveGameFunction.NONE)
         {
             activeGameFunction = ActiveGameFunction.TRIVIA;
@@ -66,11 +62,6 @@ public class MinigameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.L))
             {
                 StartCoroutine(EnterMode(toEnter));
-            }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                StartCoroutine(EnterMode(ActiveGameFunction.DARTS));
             }
         }
 
