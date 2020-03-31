@@ -7,6 +7,7 @@ public class CameraEffectManager : MonoBehaviour
 {
     private static CameraEffectManager camEffects;
     public static ChromaticAberration chromaticAberration;
+    public static MotionBlur motionBlur;
     public static Vignette vignette;
     public float defaultVignette;
     ActivePlayer activePlayer;
@@ -21,6 +22,7 @@ public class CameraEffectManager : MonoBehaviour
     {
         GetComponent<PostProcessVolume>().profile.TryGetSettings(out chromaticAberration);
         GetComponent<PostProcessVolume>().profile.TryGetSettings(out vignette);
+        GetComponent<PostProcessVolume>().profile.TryGetSettings(out motionBlur);
     }
 
     private void Update()

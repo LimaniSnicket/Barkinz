@@ -73,7 +73,7 @@ public class MinigameManager : MonoBehaviour
 
     public static void ExitMode()
     {
-        gameManager.activeGameFunction = ActiveGameFunction.NONE;
+        gameManager.StartCoroutine(gameManager.EnterMode(ActiveGameFunction.NONE));
         EnteredMode(ActiveGameFunction.NONE);
         CameraMovement.AlignWithTransform();
     }
@@ -125,16 +125,18 @@ public class MinigameManager : MonoBehaviour
     public IEnumerator EnterMode(ActiveGameFunction toEnter)
     {
         SwappingMode = true;
-        if (toEnter == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPopUp(true, 3f)); }
+        if (toEnter == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPop(true, 3f)); }
         Debug.Log("Swapping Modes");
         yield return new WaitForSeconds(1);
+        ActiveGameFunction previous = activeGameFunction;
         activeGameFunction = toEnter;
+        if (previous == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPop(false, 5f)); }
         EnteredMode(activeGameFunction);
         Debug.Log("Mode Swapped");
         SwappingMode = false;
     }
 
-    IEnumerator MacPopUp(bool poppingUp, float speed)
+    IEnumerator MacPop(bool poppingUp, float speed)
     {
         Vector3 start = poppingUp ? new Vector3(player.transform.position.x, MeerkatMac.StartPos.y, MeerkatMac.StartPos.z) : new Vector3(player.transform.position.x, MeerkatMac.EndPos.y, MeerkatMac.EndPos.z);
         Vector3 goTo = poppingUp ? new Vector3(player.transform.position.x, MeerkatMac.EndPos.y, MeerkatMac.EndPos.z) : new Vector3(player.transform.position.x,MeerkatMac.StartPos.y, MeerkatMac.StartPos.z);

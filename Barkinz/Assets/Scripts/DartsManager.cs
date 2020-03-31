@@ -10,9 +10,6 @@ public class DartsManager : MonoBehaviour, IGameMode
     public GameObject DartPrefab;
     public GameObject Dartboard;
     public Transform CameraPosition;
-    public int DartsOnBegin;
-    public int DartsRemaining;
-    bool CanSpawnDart { get => DartsRemaining > 0; }
 
     public Dart ActiveDart;
     public float ShakeFactor = 0.1f;
@@ -68,17 +65,15 @@ public class DartsManager : MonoBehaviour, IGameMode
     {
         ActiveDartGame = new DartGame(activePlayer, activeText);
         CameraMovement.AlignWithTransform(CameraPosition, false);
-        DartsRemaining = DartsOnBegin;
         CreateDart();
     }
 
     void CreateDart()
     {
-        if (CanSpawnDart)
+        if (ActiveDartGame != null && ActiveDartGame.CanSpawnDart)
         {
             ActiveDart = Instantiate(DartPrefab, transform).GetComponent<Dart>();
             ActiveDart.SetPlayerToTrack(activePlayer ?? null);
-            DartsRemaining--;
         }
     }
 
@@ -114,6 +109,8 @@ public class DartGame
     ActivePlayer p;
     public TextMeshPro infoDisplay;
 
+    public bool CanSpawnDart { get => DartsRemaining > 0; }
+
     public delegate void BroadcastGameComplete();
     public static event BroadcastGameComplete GameComplete;
 
@@ -142,7 +139,7 @@ public class DartGame
     public string PointsDisplay(bool active)
     {
         string header = active ? "Current Score:" : "All Time Highs:";
-        string points = "Current Score: " + CurrentPointTotal().ToString();
+        string points =  CurrentPointTotal().ToString();
         string darts = "Darts To Go: " + DartsRemaining.ToString();
         return header + '\n' + points + '\n' + darts;
     }
