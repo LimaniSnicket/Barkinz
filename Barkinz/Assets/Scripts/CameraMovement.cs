@@ -6,8 +6,8 @@ using DG.Tweening;
 public class CameraMovement : MonoBehaviour
 {
     private static CameraMovement camMovement;
-    public Vector3 HomePosition;
-    private static Transform startTransform;
+    private static Vector3 HomePosition;
+    private static Quaternion HomeRotation;
     public float HomeOrthographicSize;
     public bool Zoomed { get; private set; }
 
@@ -16,7 +16,7 @@ public class CameraMovement : MonoBehaviour
         if (camMovement == null) { camMovement = this; } else { Destroy(this); }
         HomePosition = transform.position;
         HomeOrthographicSize = Camera.main.orthographicSize;
-        startTransform = transform;
+        HomeRotation = transform.rotation;
     }
 
     private void Update()
@@ -35,7 +35,9 @@ public class CameraMovement : MonoBehaviour
 
     public static void AlignWithTransform()
     {
-        AlignWithTransform(startTransform, true);
+        camMovement.transform.position = HomePosition;
+        camMovement.transform.rotation = HomeRotation;
+        Camera.main.orthographic = true;
     }
 
     public static void AlignWithTransform(Transform t, bool ortho)
