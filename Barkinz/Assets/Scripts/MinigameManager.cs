@@ -15,6 +15,7 @@ public class MinigameManager : MonoBehaviour
     public UtilityCharacterInformation MeerkatMac;
     Dictionary<string, ActiveGameFunction> GameFunctionToTagLookup;
     ActiveGameFunction toEnter;
+    ActivePlayer player;
 
     public static bool SwappingMode { get; private set; }
 
@@ -23,6 +24,7 @@ public class MinigameManager : MonoBehaviour
         BarkinzManager.InitializeBarkinzData += SetCurrencyOnInitialize;
         Bartender.DrinkOnTab += OnDrinkTab;
         ActivePlayer.EnteredTaggedArea += OnEnteredTaggedArea;
+        ActivePlayer.SetActivePlayer += OnActivePlayerSet;
     }
 
     private void Start()
@@ -34,6 +36,7 @@ public class MinigameManager : MonoBehaviour
         GameFunctionToTagLookup = new Dictionary<string, ActiveGameFunction>();
         GameFunctionToTagLookup.Add("Bar", ActiveGameFunction.BAR);
         GameFunctionToTagLookup.Add("Trivia",ActiveGameFunction.TRIVIA);
+        GameFunctionToTagLookup.Add("Darts", ActiveGameFunction.DARTS);
     }
 
     public static event Action<ActiveGameFunction> EnteredMode;
@@ -82,6 +85,11 @@ public class MinigameManager : MonoBehaviour
         gameManager.activeGameFunction = ActiveGameFunction.NONE;
         EnteredMode(ActiveGameFunction.NONE);
         CameraMovement.AlignWithTransform();
+    }
+
+    void OnActivePlayerSet(ActivePlayer p)
+    {
+        player = p;
     }
 
     public static void RewardPlayer(float amount)
@@ -137,7 +145,9 @@ public class MinigameManager : MonoBehaviour
 
     IEnumerator MacPopUp(bool poppingUp, float speed)
     {
-        Vector3 goTo = poppingUp ? MeerkatMac.EndPos : MeerkatMac.StartPos;
+        Vector3 start = poppingUp ? new Vector3(player.transform.position.x, MeerkatMac.StartPos.y, MeerkatMac.StartPos.z) : new Vector3(player.transform.position.x, MeerkatMac.EndPos.y, MeerkatMac.EndPos.z);
+        Vector3 goTo = poppingUp ? new Vector3(player.transform.position.x, MeerkatMac.EndPos.y, MeerkatMac.EndPos.z) : new Vector3(player.transform.position.x,MeerkatMac.StartPos.y, MeerkatMac.StartPos.z);
+        MeerkatMac.OverworldCharacter.transform.position = start;
         while (!MeerkatMac.OverworldCharacter.transform.position.SqueezeVectors(goTo))
         {
             MeerkatMac.OverworldCharacter.transform.position = Vector3.Lerp(MeerkatMac.OverworldCharacter.transform.position, goTo, Time.deltaTime * speed);
@@ -151,6 +161,7 @@ public class MinigameManager : MonoBehaviour
         BarkinzManager.InitializeBarkinzData -= SetCurrencyOnInitialize;
         Bartender.DrinkOnTab -= OnDrinkTab;
         ActivePlayer.EnteredTaggedArea -= OnEnteredTaggedArea;
+        ActivePlayer.SetActivePlayer -= OnActivePlayerSet;
     }
 }
 
@@ -159,6 +170,10 @@ public struct UtilityCharacterInformation
 {
     public GameObject OverworldCharacter;
     public Vector3 StartPos, EndPos;
+    public void SetPosition(Vector3 pos)
+    {
+        OverworldCharacter.transform.position = pos;
+    }
 }
 
 public enum ActiveGameFunction
@@ -168,4 +183,10 @@ public enum ActiveGameFunction
     BAR = 2,
     DARTS = 3,
     TRIVIA = 4
+}
+
+public interface IGameMode
+{
+    ActiveGameFunction GameModeFunction { get; }
+    void OnModeChange(ActiveGameFunction entered);
 }

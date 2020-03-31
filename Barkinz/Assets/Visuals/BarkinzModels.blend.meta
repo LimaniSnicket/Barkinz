@@ -105,6 +105,9 @@ ModelImporter:
     100198: 7
     100200: 8
     100202: 9
+    100204: Cube
+    100206: BarSegment_001
+    100208: Bar
     400000: //RootNode
     400002: Barstool
     400004: Barstool_001
@@ -207,10 +210,15 @@ ModelImporter:
     400198: 7
     400200: 8
     400202: 9
+    400204: Cube
+    400206: BarSegment_001
+    400208: Bar
     2100000: Barstool
     2100002: Material
     2100004: unnamed
     2100006: PoolStick
+    2100008: Cabinet
+    2100010: BarSegment
     2300000: Barstool
     2300002: Barstool_001
     2300004: Table
@@ -312,6 +320,9 @@ ModelImporter:
     2300196: 7
     2300198: 8
     2300200: 9
+    2300202: Cube
+    2300204: BarSegment_001
+    2300206: Bar
     3300000: Barstool
     3300002: Barstool_001
     3300004: Table
@@ -413,6 +424,9 @@ ModelImporter:
     3300196: 7
     3300198: 8
     3300200: 9
+    3300202: Cube
+    3300204: BarSegment_001
+    3300206: Bar
     4300000: Barstool_001
     4300002: Barstool
     4300004: Table
@@ -514,6 +528,9 @@ ModelImporter:
     4300196: 10
     4300198: 15
     4300200: 2
+    4300202: Cube
+    4300204: BarSegment_001
+    4300206: Bar
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

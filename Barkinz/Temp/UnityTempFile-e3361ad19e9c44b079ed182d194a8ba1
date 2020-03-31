@@ -316,6 +316,7 @@
 "Assets/Scripts/BarkinzInputManager.cs"
 "Assets/Scripts/BarkinzManager.cs"
 "Assets/Scripts/Bartender.cs"
+"Assets/Scripts/CameraEffectManager.cs"
 "Assets/Scripts/CameraMovement.cs"
 "Assets/Scripts/Dart.cs"
 "Assets/Scripts/DartsManager.cs"

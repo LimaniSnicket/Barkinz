@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DartsManager : MonoBehaviour
+public class DartsManager : MonoBehaviour, IGameMode
 {
     private DartsManager darts;
     public GameObject DartPrefab;
@@ -20,6 +20,9 @@ public class DartsManager : MonoBehaviour
 
     public static DartGame ActiveDartGame;
     public ActivePlayer activePlayer;
+
+    float OutOfBounds { get => Dartboard.transform.position.y - 15; }
+    public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.DARTS; }
 
     private void Awake()
     {
@@ -39,11 +42,9 @@ public class DartsManager : MonoBehaviour
         transform.position += UnityEngine.Random.insideUnitSphere * ShakeFactor * Mathf.Sin(ShakeAmount) ;
         if(ActiveDart != null)
         {
-            if (ActiveDart.transform.position.y < OutOfBounds) { Destroy(ActiveDart.gameObject); CreateDart(); }
+            if (ActiveDart.transform.position.y < OutOfBounds) { Destroy(ActiveDart.gameObject); CreateDart(); ActiveDartGame.DartMiss(); }
         }
     }
-
-    float OutOfBounds { get => Dartboard.transform.position.y - 15; }
 
     void OnDartHit(Color contactColor, int pointValue)
     {
@@ -74,9 +75,9 @@ public class DartsManager : MonoBehaviour
         }
     }
 
-    void OnModeChange(ActiveGameFunction entered)
+    public void OnModeChange(ActiveGameFunction entered)
     {
-        if (entered == ActiveGameFunction.DARTS)
+        if (entered == GameModeFunction)
         {
             InitializeDartGame();
         }
@@ -99,7 +100,7 @@ public class DartsManager : MonoBehaviour
 [Serializable]
 public class DartGame
 {
-    int DartsOnStart = 3;
+    int DartsOnStart = 6;
     protected int StartingPointTotal;
     private int currentPoints;
     public int DartsRemaining;
@@ -127,6 +128,16 @@ public class DartGame
             RunEndGame();
         }
 
+    }
+
+    public void DartMiss()
+    {
+        DartsRemaining--;
+        if (DartsRemaining == 0)
+        {
+            GameComplete();
+            RunEndGame();
+        }
     }
 
     void RunEndGame()

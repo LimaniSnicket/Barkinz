@@ -12,6 +12,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     public IntoxicationSettings ActiveSessionIntoxication;
     public static event Action<string> EnteredTaggedArea;
+    public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
 
     private void Awake()
@@ -24,6 +25,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     private void Start()
     {
+        SetActivePlayer(this);
         OverworldSpriteDisplay = GetComponentInChildren<SpriteRenderer>();
         CameraOrthoSize = 1;
     }

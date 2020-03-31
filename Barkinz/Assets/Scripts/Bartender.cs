@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Bartender : MonoBehaviour
+public class Bartender : MonoBehaviour, IGameMode
 {
     private static Bartender bartender;
     public static Drink currentDrink;
@@ -14,7 +14,16 @@ public class Bartender : MonoBehaviour
 
     public List<OrderDrinkButton> OrderButtons;
     public DrinkDisplay DrinkDisplay;
+
+    public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.BAR; }
+
     public static event Action<float> DrinkOnTab;
+
+
+    void Awake()
+    {
+        MinigameManager.EnteredMode += OnModeChange;
+    }
 
     private void Start()
     {
@@ -36,12 +45,12 @@ public class Bartender : MonoBehaviour
     private void Update()
     {
         debugCurrent = currentDrink;
-        DrinkDisplay.RunDrinkDisplay();
+        DrinkDisplay.RunDrinkDisplay(currentDrink);
     }
 
     void OnClickOrderDrink(Drink d)
     {
-        currentDrink = d;
+        currentDrink = new Drink(d);
         if (d.Affordable) { MinigameManager.activeCurrency -= d.drinkCost; } else
         {
             DrinkOnTab(d.DifferenceForTab);
@@ -55,6 +64,19 @@ public class Bartender : MonoBehaviour
     {
         if(currentDrink != null && !currentDrink.FinishedDrink) { return true; }
         return false;
+    }
+
+    public void OnModeChange(ActiveGameFunction entered)
+    {
+        if (entered == GameModeFunction)
+        {
+            Debug.Log("Bartender Mode");
+        }
+    }
+
+    void OnDestroy()
+    {
+        MinigameManager.EnteredMode -= OnModeChange;
     }
 }
 
@@ -84,6 +106,16 @@ public class Drink
         amountLeft = amount;
         available = a;
         displaySpritePath = spritePath;
+    }
+
+    public Drink(Drink copy)
+    {
+        drinkName = copy.drinkName;
+        drinkCost = copy.drinkCost;
+        drinkStrength = copy.drinkStrength;
+        amountLeft = copy.amountLeft;
+        available = copy.available;
+        displaySpritePath = copy.displaySpritePath;
     }
 
     public string displaySpritePath;
@@ -141,6 +173,10 @@ public struct DrinkDisplay
     public void RunDrinkDisplay()
     {
         fillDisplay.value = drinkToDisplay.amountLeft;
+    }
+    public void RunDrinkDisplay(Drink d)
+    {
+        fillDisplay.value = d.amountLeft;
     }
 }
 
