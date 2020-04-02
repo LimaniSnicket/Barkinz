@@ -96,7 +96,7 @@ public class IntoxicationSettings
     public void Intoxicate(float chug, Drink current)
     {
         soberingBuffer = 10f;
-        if (current.drinkName != DrinkMenu.Water.drinkName)
+        if (current.drinkName != "Water")
         {
             intoxicationLevel += current.drinkStrength / 15 * chug;
             if (!hasAlcoholPoisoning && intoxicationLevel > 97) { hasAlcoholPoisoning = true; }

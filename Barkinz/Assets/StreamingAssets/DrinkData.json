@@ -1,0 +1,69 @@
+﻿{
+  "drinkData": [
+    {
+        "drinkName": "Water",
+        "drinkCost": 0,
+        "drinkStrength": -1,
+        "amountLeft": 5,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Water",
+        "prefBarkinzPath": ""
+    },
+    {
+        "drinkName": "Four Loko",
+        "drinkCost": 4,
+        "drinkStrength": 5,
+        "amountLeft": 8,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/FourLoko",
+        "prefBarkinzPath": "YEET4ME"
+    },
+    {
+        "drinkName": "Hennessy",
+        "drinkCost": 10,
+        "drinkStrength": 7,
+        "amountLeft": 4,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Henny",
+        "prefBarkinzPath": "HENNYTHING"
+    },
+    {
+        "drinkName": "Chianti",
+        "drinkCost": 9,
+        "drinkStrength": 6,
+        "amountLeft": 5,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Henny",
+        "prefBarkinzPath": "WINEMOM"
+    },
+    {
+        "drinkName": "Fireball",
+        "drinkCost": 7,
+        "drinkStrength": 6,
+        "amountLeft": 4,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Fireball",
+        "prefBarkinzPath": "SIN-NAMON"
+    },
+    {
+        "drinkName": "Ouzo",
+        "drinkCost": 11,
+        "drinkStrength": 10,
+        "amountLeft": 4,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Ouzo",
+        "prefBarkinzPath": "OPA"
+    },
+    {
+        "drinkName": "Whiteclaw",
+        "drinkCost": 3,
+        "drinkStrength": 3,
+        "amountLeft": 8,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Whiteclaw",
+        "prefBarkinzPath": "ROLLTIDE"
+    }
+  ]
+}
+
+

@@ -30,6 +30,7 @@ public class CameraEffectManager : MonoBehaviour
         if (activePlayer != null)
         {
             chromaticAberration.intensity.value = (activePlayer.ActiveSessionIntoxication.intoxicationLevel / 100) * 1.5f + Mathf.Sin(Time.time * Mathf.PI) * 0.01f;
+            motionBlur.shutterAngle.value = activePlayer.ActiveSessionIntoxication.intoxicationLevel / 100;
             vignette.intensity.value = defaultVignette + (Mathf.Sin(Time.time * Mathf.PI) /27);
         }
     }

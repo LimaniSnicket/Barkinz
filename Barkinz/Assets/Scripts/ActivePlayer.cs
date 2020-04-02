@@ -14,6 +14,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public static event Action<string> EnteredTaggedArea;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
+    public Transform ZoomObjectTransform { get => transform; }
 
     private void Awake()
     {
@@ -121,7 +122,6 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public Vector3 ZoomCamPosition()
     {
         Vector3 p = transform.position + new Vector3(0, 1, -1);
-        Debug.Log(p);
         return p;
     }
 }

@@ -25,6 +25,11 @@ MonoBehaviour:
       length: 1
       occupied: 0
       centerPosition: {x: 0, y: 0, z: 0}
+    playerPosition: {x: 0, y: 0}
+    ObjectPlacementData: []
   barkinzIntoxication:
     currentTab: 0
     intoxicationLevel: 0
+    soberRate: 0
+    soberingBuffer: 10
+  prefDrink: Kahlua

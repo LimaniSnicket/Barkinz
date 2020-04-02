@@ -33,7 +33,7 @@ public class WorldTile : MonoBehaviour
             SetTargetTileViaClick();
         }
 
-        if (MinigameManager.ValidMode(ActiveGameFunction.NONE))
+        if (MinigameManager.ValidMode(ActiveGameFunction.NONE) && MinigameManager.AcceptPlayerInput)
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -51,11 +51,6 @@ public class WorldTile : MonoBehaviour
             {
                 UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
-
-            //if (Input.GetKeyDown(KeyCode.P))
-            //{
-            //    InstantiatePlacedObject(TestPlacements, Vector2Int.zero);
-            //}
         }
     }
 

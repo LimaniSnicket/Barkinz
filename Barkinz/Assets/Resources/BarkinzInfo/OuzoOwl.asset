@@ -38,7 +38,7 @@ MonoBehaviour:
       centerPosition: {x: -5.2, y: 0, z: -2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: -5.2, y: 0, z: -5.2}
     - width: 2.6
       length: 2.6
@@ -58,7 +58,7 @@ MonoBehaviour:
       centerPosition: {x: -2.6, y: 0, z: -2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: -2.6, y: 0, z: -5.2}
     - width: 2.6
       length: 2.6
@@ -90,7 +90,7 @@ MonoBehaviour:
       centerPosition: {x: 2.6, y: 0, z: 2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: 2.6, y: 0, z: 0}
     - width: 2.6
       length: 2.6
@@ -126,9 +126,10 @@ MonoBehaviour:
       occupied: 1
       centerPosition: {x: -5.2, y: 0, z: 5.2}
     playerPosition: {x: 0, y: 0}
-    ObjectPlacementData:
-    - resourcesPath: Barstool
-      gridPosition: {x: 0, y: 4}
+    ObjectPlacementData: []
   barkinzIntoxication:
     currentTab: 0
     intoxicationLevel: 0
+    soberRate: 2
+    soberingBuffer: -90.418526
+  prefDrink: Ouzo
