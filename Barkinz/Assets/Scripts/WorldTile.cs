@@ -71,10 +71,12 @@ public class WorldTile : MonoBehaviour
 
     public void InstantiatePlacedObjects(WorldTileSettings wts)
     {
-        foreach (var e in wts.ObjectPlacementData)
-        {
-            PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
-            InstantiatePlacedObject(p, e.gridPosition);
+        if (wts.ObjectPlacementData != null && wts.ObjectPlacementData.Count > 0) {
+            foreach (var e in wts.ObjectPlacementData)
+            {
+                PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
+                InstantiatePlacedObject(p, e.gridPosition);
+            }
         }
     }
 

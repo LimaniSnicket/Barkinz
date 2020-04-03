@@ -50,6 +50,9 @@ public class MinigameManager : MonoBehaviour
         if (!BarkinzManager.PrimaryBarkinz.LoadSettingsFromInfo) {
             StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE, MeerkatMac));
             dialogueReader.InitializeDialogue(BarkinzManager.introductionDialoguePath, this, (IZoomOn)MeerkatMac);
+        } else
+        {
+            AcceptPlayerInput = true;
         }
     }
 
@@ -82,6 +85,7 @@ public class MinigameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            AcceptPlayerInput = true;
             ExitMode();
         }
     }
@@ -140,6 +144,7 @@ public class MinigameManager : MonoBehaviour
     void OnDialogueComplete()
     {
         StartCoroutine(EnterMode(ActiveGameFunction.NONE, MeerkatMac));
+        AcceptPlayerInput = true;
         CameraMovement.ResetCameraZoom();
     }
 
@@ -182,6 +187,11 @@ public class MinigameManager : MonoBehaviour
             yield return null;
         }
         MeerkatMac.OverworldCharacter.transform.position = goTo;
+    }
+
+    private void OnApplicationQuit()
+    {
+        BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
     }
 
     private void OnDestroy()
@@ -232,7 +242,7 @@ public interface IGameMode
     void OnModeChange(ActiveGameFunction entered);
 }
 
-[System.Serializable]
+[Serializable]
 public class DialogueReader 
 {
     public TextMeshProUGUI dialogueTextMesh;
@@ -240,7 +250,7 @@ public class DialogueReader
     public DialogueTree treeToRead;
     public ActiveGameFunction previousGameFunction { get; private set; }
     public bool onFinalNode { get => activeDialogueNode != null && activeDialogueNode.pointer < 0; }
-    public string activeLine;
+    public string activeLine, displayLine;
     public bool reading { get; private set; }
     public DialogueReader() { activeDialogueNode = new DialogueNode(); }
     public DialogueReader(TextMeshProUGUI textMesh) { dialogueTextMesh = textMesh; }
@@ -276,13 +286,14 @@ public class DialogueReader
         reading = true;
         activeDialogueNode = nodes[pointer];
         Queue<string> l = new Queue<string>(nodes[pointer].lines);
+        bool w = false;
         while (l.Count > 0)
         {
-            activeLine = l.Peek();
-            Debug.Log(activeLine);
+            if (!w) { w = true; mb.StartCoroutine(WriteLine(new Queue<char>(l.Peek().ToCharArray()), 0.0001f)); }
+            //activeLine = l.Peek();
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                l.Dequeue();
+                if (!writingLine) { l.Dequeue(); w = false; } else { mb.StopCoroutine("WriteLine"); activeLine = l.Peek();writingLine = false; }
             }
             yield return null;
         }
@@ -296,6 +307,43 @@ public class DialogueReader
         {
             mb.StartCoroutine(ReadDialogue(nodes, activeDialogueNode.pointer, mb));
         }
+    }
+
+    bool writingLine;
+
+    private IEnumerator WriteLine(Queue<char> c, float interval)
+    {
+        activeLine = "";
+        string affector = "";
+        writingLine = true;
+        while (c.Count > 0 && writingLine)
+        {
+            if (c.Peek() == '<')
+            {
+                affector = "";
+                while (!affector.EndsWith(">"))
+                {
+                    if (c.Peek() == '>')
+                    {
+                        affector += c.Peek();
+                    } else
+                    {
+                        affector += c.Dequeue();
+                    }
+                }
+            }
+            char add = c.Peek() == '>' ? ' ' : c.Dequeue();
+            activeLine += affector + add;
+            yield return new WaitForSeconds(interval);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                yield return new WaitForSeconds(interval / 2);
+                writingLine = false;
+                break;
+            }
+            yield return null;
+        }
+        writingLine = false;
     }
 
 }

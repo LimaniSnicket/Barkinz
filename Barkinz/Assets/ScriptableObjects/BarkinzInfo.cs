@@ -16,6 +16,7 @@ public class BarkinzInfo : ScriptableObject
     public float currencyOwned;
     [SerializeField] private WorldTileSettings individualSettings;
     [SerializeField] private IntoxicationSettings barkinzIntoxication;
+    [SerializeField] private InventorySettings barkinzInventory;
 
     public void ClearData()
     {
@@ -34,6 +35,7 @@ public class BarkinzInfo : ScriptableObject
     public void UpdateIntoxicationSettings(ActivePlayer player)
     {
         barkinzIntoxication = player.ActiveSessionIntoxication;
+        currencyOwned = MinigameManager.activeCurrency;
     }
 
     public void SetPlayerPosition(ActivePlayer p)
@@ -50,6 +52,11 @@ public class BarkinzInfo : ScriptableObject
     public void UpdateWorldTileSettings(WorldTile world)
     {
         individualSettings = new WorldTileSettings(world);
+    }
+
+    public void UpdateInventorySettings(InventorySettings inventory)
+    {
+        barkinzInventory = inventory;
     }
 }
 

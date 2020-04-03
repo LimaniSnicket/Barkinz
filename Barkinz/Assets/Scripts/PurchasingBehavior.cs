@@ -8,9 +8,9 @@ public class PurchasingBehavior : MonoBehaviour
 {
     private static PurchasingBehavior purchase;
     private static Tile PlacementTile;
-    public static List<PlaceableObject> purchasedPlaceableObjects { get; private set; }
     private static PlaceableObject objectToPlace;
     public static ConfirmationMenu confirmationMenu;
+    public static event Action<PlaceableObject, bool> AdjustItemInventory;
 
     [Header("Constructor Objects")]
     public GameObject confirmationMenuGameObject;
@@ -61,11 +61,12 @@ public class PurchasingBehavior : MonoBehaviour
     public static event Action<Tile, PlaceableObject> ObjectPlacementConfirmed;
     void ConfirmObjectPlacement()
     {
-        Debug.Log("Clicked object place button");
         ObjectPlacementConfirmed(PlacementTile, objectToPlace);
+        AdjustItemInventory(objectToPlace, false);
         if (objectToPlace != null)
         {
             ObjectPlacementConfirmed(PlacementTile, objectToPlace);
+            AdjustItemInventory(objectToPlace, false);
         }
     }
 
@@ -97,12 +98,60 @@ public class PurchasingBehavior : MonoBehaviour
 }
 
 [Serializable]
-public class PurchaseSettings
+public class InventorySettings
 {
     public List<string> placeableObjectLookups;
-    public PurchaseSettings() {
-        placeableObjectLookups = new List<string>();
+    private List<PlaceableObject> itemIndices;
+    public List<InventoryListing> inventoryListings;
 
+    public InventorySettings() {
+        placeableObjectLookups = new List<string>();
+        itemIndices = new List<PlaceableObject>();
+        inventoryListings = new List<InventoryListing>();
+    }
+
+    public void AdjustInventory(PlaceableObject obj, bool add = true)
+    {
+        if (Owned(obj))
+        {
+            int index = itemIndices.IndexOf(obj);
+            inventoryListings[index].IncrementAmount(add);
+            if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); }
+        }
+        else
+        {
+            if (add)
+            {
+                itemIndices.Add(obj);
+                inventoryListings.Add(new InventoryListing(obj));
+            }
+        }
+    }
+
+    bool Owned(PlaceableObject obj)
+    {
+        if (itemIndices.Count <= 0 || inventoryListings.Count <=0) { return false; }
+        return itemIndices.Contains(obj);
+    }
+
+    [Serializable]
+    public struct InventoryListing
+    {
+        public PlaceableObject item;
+        public int amountOwned;
+
+        public InventoryListing(PlaceableObject p)
+        {
+            item = p;
+            amountOwned = 1;
+        }
+
+        public void IncrementAmount(bool increase)
+        {
+            if (increase) { amountOwned++; } else { amountOwned--; }
+        }
+
+        public bool NoneOwned { get => amountOwned <= 0; }
     }
    
 }

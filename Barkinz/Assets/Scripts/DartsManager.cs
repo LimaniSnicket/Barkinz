@@ -53,11 +53,13 @@ public class DartsManager : MonoBehaviour, IGameMode
     void OnDartHit(Color contactColor, int pointValue)
     {
         colorHit = contactColor;
-        if (contactColor == Color.red) { Debug.Log("red"); }
+        int p = pointValue;
+        if (contactColor == Color.red) { Debug.Log("red"); p = pointValue * 2; }
+        if(contactColor == Color.green) { p = pointValue * 3; }
         CreateDart();
         if (ActiveDartGame != null)
         {
-            ActiveDartGame.RegisterPointChanges(pointValue);
+            ActiveDartGame.RegisterPointChanges(p);
         }
     }
 
@@ -87,6 +89,7 @@ public class DartsManager : MonoBehaviour, IGameMode
 
     void OnGameComplete()
     {
+        if (ActiveDart != null) { Destroy(ActiveDart); }
         ActiveDartGame = null;
         MinigameManager.ExitMode();
     }
@@ -127,13 +130,11 @@ public class DartGame
     {
         currentPoints += pointChange;
         DartsRemaining--;
-        Debug.Log(currentPoints);
         if (currentPoints >= StartingPointTotal || DartsRemaining == 0)
         {
             GameComplete();
             RunEndGame();
         }
-
     }
 
     public string PointsDisplay(bool active)

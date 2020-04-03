@@ -11,6 +11,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public SpriteRenderer OverworldSpriteDisplay;
 
     public IntoxicationSettings ActiveSessionIntoxication;
+    public InventorySettings activeInventory;
     public static event Action<string> EnteredTaggedArea;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
@@ -22,6 +23,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         WorldTile.TileSelected += OnTileSelected;
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
+        PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
     }
 
     private void Start()
@@ -54,9 +56,18 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         }
     }
 
+    void OnInventoryAdjustment(PlaceableObject obj, bool add)
+    {
+        if (add) { activeInventory.AdjustInventory(obj); } else
+        {
+            Debug.Log("And <i>this</i> is where I'd adjust player's inventory!" + '\n' + "<b>IF I HAD IMPLEMENTED IT</b>");
+        }
+    }
+
     void OnBarkinzInitialization(BarkinzInfo b)
     {
         ActiveSessionIntoxication = new IntoxicationSettings();
+        activeInventory = new InventorySettings();
         if (b.LoadSettingsFromInfo)
         {
             b.SetPlayerPosition(this);
@@ -112,6 +123,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
+        PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
     }
 
     private void OnApplicationQuit()
