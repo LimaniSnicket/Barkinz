@@ -1134,6 +1134,11 @@ MonoBehaviour:
     length: 1
     occupied: 0
     centerPosition: {x: 0, y: 0, z: 0}
+  mouseHoverTile:
+    width: 1
+    length: 1
+    occupied: 0
+    centerPosition: {x: 0, y: 0, z: 0}
   PlaceableObjectPrefab: {fileID: 6200209736255525532, guid: fb83bdfbe281541f8b1209c697d66a15,
     type: 3}
   TestPlacements: {fileID: 11400000, guid: 300223ce1904a4a3ea1148d53d2053b3, type: 2}
@@ -1460,6 +1465,7 @@ MonoBehaviour:
       lines: []
       pointer: 0
     activeLine: 
+    displayLine: 
 --- !u!1 &572226537
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,6 +2938,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 1e58d014158894105a7efef796b0b222, type: 3}
       propertyPath: m_Name
       value: DartboardCabinet
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1e58d014158894105a7efef796b0b222, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1e58d014158894105a7efef796b0b222, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4589,6 +4599,94 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dartboard
       objectReference: {fileID: 0}
+    - target: {fileID: 100054, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100138, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100140, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100142, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100144, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100146, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100148, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100150, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100152, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100154, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100156, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100158, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100160, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100162, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100164, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100166, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100168, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100170, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100172, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100174, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100176, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100178, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400054, guid: b7174d2825bc14aa0aaa3780461ffed6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.20000076
@@ -5391,6 +5489,9 @@ MonoBehaviour:
     intoxicationLevel: 0
     soberRate: 0
     soberingBuffer: 10
+  activeInventory:
+    placeableObjectLookups: []
+    inventoryListings: []
   chugSpeed: 0
 --- !u!54 &1889314149
 Rigidbody:
@@ -5418,7 +5519,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1904822408}
   - component: {fileID: 1904822409}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Darts [BAR AREA]
   m_TagString: Darts
   m_Icon: {fileID: 0}

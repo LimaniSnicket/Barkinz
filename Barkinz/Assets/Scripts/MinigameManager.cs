@@ -332,8 +332,14 @@ public class DialogueReader
                     }
                 }
             }
-            char add = c.Peek() == '>' ? ' ' : c.Dequeue();
-            activeLine += affector + add;
+            if (c.Peek() == '>')
+            {
+                c.Dequeue();
+            } else
+            {
+                activeLine += affector + c.Dequeue();
+            }
+          
             yield return new WaitForSeconds(interval);
             if (Input.GetKeyDown(KeyCode.Space))
             {

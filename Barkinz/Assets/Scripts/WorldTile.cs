@@ -13,7 +13,7 @@ public class WorldTile : MonoBehaviour
     public Dictionary<GameObject, Tile> TileLookup;
     public Tile[,] GridPositions;
 
-    public Tile PlayerPositionTile;
+    public Tile PlayerPositionTile, mouseHoverTile;
 
     public GameObject PlaceableObjectPrefab;
     public PlaceableObject TestPlacements;
@@ -31,6 +31,13 @@ public class WorldTile : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             SetTargetTileViaClick();
+        }
+
+        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition - (Vector3.up * -.45f));
+        RaycastHit rh = new RaycastHit();
+        if (Physics.SphereCast(r, .5f, out rh, Mathf.Infinity) && TileLookup.ContainsKey(rh.transform.gameObject))
+        {
+            TileLookup[rh.transform.gameObject].SetSpriteColor(Color.blue);
         }
 
         if (MinigameManager.ValidMode(ActiveGameFunction.NONE) && MinigameManager.AcceptPlayerInput)
@@ -240,6 +247,11 @@ public class Tile
     {
         p.transform.position = centerPosition;
         occupied = true;
+    }
+
+    public void SetSpriteColor(Color c)
+    {
+        TileRenderer.color = c;
     }
 }
 
