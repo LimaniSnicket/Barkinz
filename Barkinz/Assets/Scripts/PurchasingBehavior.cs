@@ -12,6 +12,8 @@ public class PurchasingBehavior : MonoBehaviour
     public static ConfirmationMenu confirmationMenu;
     public static event Action<PlaceableObject, bool> AdjustItemInventory;
 
+    public PlaceableObject testPlacement;
+
     [Header("Constructor Objects")]
     public GameObject confirmationMenuGameObject;
     public GameObject purchaseMenuGameObject;
@@ -31,12 +33,21 @@ public class PurchasingBehavior : MonoBehaviour
     private void Start()
     {
         purchaseMenuGameObject.SetActive(false);
+        objectToPlace = testPlacement;
+    }
+
+    private void Update()
+    {
+        if (PlacementTile != null && Input.GetKeyDown(KeyCode.K))
+        {
+            ConfirmObjectPlacement();
+        }
     }
 
     void OnTileSelected(Tile t)
     {
         PlacementTile = t;
-        confirmationMenu.ToggleActivation();
+        //confirmationMenu.ToggleActivation();
     }
 
     void OnClickSelectObjectToPlace(PlaceableObject p)
@@ -61,8 +72,6 @@ public class PurchasingBehavior : MonoBehaviour
     public static event Action<Tile, PlaceableObject> ObjectPlacementConfirmed;
     void ConfirmObjectPlacement()
     {
-        ObjectPlacementConfirmed(PlacementTile, objectToPlace);
-        AdjustItemInventory(objectToPlace, false);
         if (objectToPlace != null)
         {
             ObjectPlacementConfirmed(PlacementTile, objectToPlace);

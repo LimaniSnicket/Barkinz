@@ -1134,11 +1134,6 @@ MonoBehaviour:
     length: 1
     occupied: 0
     centerPosition: {x: 0, y: 0, z: 0}
-  mouseHoverTile:
-    width: 1
-    length: 1
-    occupied: 0
-    centerPosition: {x: 0, y: 0, z: 0}
   PlaceableObjectPrefab: {fileID: 6200209736255525532, guid: fb83bdfbe281541f8b1209c697d66a15,
     type: 3}
   TestPlacements: {fileID: 11400000, guid: 300223ce1904a4a3ea1148d53d2053b3, type: 2}
@@ -5002,6 +4997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f968c362040914e088848a2694a4c4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testPlacement: {fileID: 11400000, guid: 300223ce1904a4a3ea1148d53d2053b3, type: 2}
   confirmationMenuGameObject: {fileID: 16432442}
   purchaseMenuGameObject: {fileID: 834815361}
   MenuBackground: {fileID: 1858463718}
