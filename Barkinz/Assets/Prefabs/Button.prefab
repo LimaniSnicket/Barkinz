@@ -178,7 +178,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b9a3d0661445d4001a39efb1409380cc, type: 3}
+    m_Font: {fileID: 12800000, guid: d8d93be4f82394cc386d8a113e230209, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1

@@ -108,6 +108,8 @@ ModelImporter:
     100204: Cube
     100206: BarSegment_001
     100208: Bar
+    100210: Bookshelf_001
+    100212: Shelves_001
     400000: //RootNode
     400002: Barstool
     400004: Barstool_001
@@ -213,6 +215,8 @@ ModelImporter:
     400204: Cube
     400206: BarSegment_001
     400208: Bar
+    400210: Bookshelf_001
+    400212: Shelves_001
     2100000: Barstool
     2100002: Material
     2100004: unnamed
@@ -323,6 +327,8 @@ ModelImporter:
     2300202: Cube
     2300204: BarSegment_001
     2300206: Bar
+    2300208: Bookshelf_001
+    2300210: Shelves_001
     3300000: Barstool
     3300002: Barstool_001
     3300004: Table
@@ -427,6 +433,8 @@ ModelImporter:
     3300202: Cube
     3300204: BarSegment_001
     3300206: Bar
+    3300208: Bookshelf_001
+    3300210: Shelves_001
     4300000: Barstool_001
     4300002: Barstool
     4300004: Table
@@ -531,6 +539,8 @@ ModelImporter:
     4300202: Cube
     4300204: BarSegment_001
     4300206: Bar
+    4300208: Bookshelf_001
+    4300210: Shelves_001
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

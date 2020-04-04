@@ -69,7 +69,25 @@ public class CameraMovement : MonoBehaviour
     {
         StartCoroutine(LerpCameraToZoomPosition(HomePosition, 10));
         StartCoroutine(LerpCameraToZoomPosition(HomeOrthographicSize, 12f));
+        camMovement.transform.rotation = HomeRotation;
+        Camera.main.orthographic = true;
         Zoomed = false;
+    }
+
+    public static void ResetCameraZoom()
+    {
+        camMovement.ResetZoom();
+    }
+
+    public static void ZoomOn(IZoomOn zoom, bool adjustForward = false)
+    {
+        if (!camMovement.Zoomed) {
+            Camera.main.orthographic = false;
+            camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.ZoomCamPosition(), 5));
+            camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 12));
+            if (adjustForward) { camMovement.transform.forward = (zoom.ZoomObjectTransform.forward + zoom.ZoomObjectTransform.right); }
+            camMovement.Zoomed = true;
+        }
     }
 
     public IEnumerator LerpCameraToZoomPosition(Vector3 pos, float speed)
@@ -97,7 +115,8 @@ public class CameraMovement : MonoBehaviour
 public interface IZoomOn
 {
     Vector3 ZoomCamPosition();
-    float CameraOrthoSize { get; set; }
+    Transform ZoomObjectTransform { get; }
+    float CameraOrthoSize { get; }
 }
 
 public static class Squeeze

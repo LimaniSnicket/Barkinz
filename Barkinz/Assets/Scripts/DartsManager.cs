@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DartsManager : MonoBehaviour, IGameMode
 {
@@ -9,14 +10,12 @@ public class DartsManager : MonoBehaviour, IGameMode
     public GameObject DartPrefab;
     public GameObject Dartboard;
     public Transform CameraPosition;
-    public int DartsOnBegin;
-    public int DartsRemaining;
-    bool CanSpawnDart { get => DartsRemaining > 0; }
 
     public Dart ActiveDart;
     public float ShakeFactor = 0.1f;
     public float ShakeAmount = 0.2f;
     public Color colorHit;
+    public TextMeshPro activeText, highText;
 
     public static DartGame ActiveDartGame;
     public ActivePlayer activePlayer;
@@ -44,34 +43,39 @@ public class DartsManager : MonoBehaviour, IGameMode
         {
             if (ActiveDart.transform.position.y < OutOfBounds) { Destroy(ActiveDart.gameObject); CreateDart(); ActiveDartGame.DartMiss(); }
         }
+
+        if (ActiveDartGame != null)
+        {
+            ActiveDartGame.infoDisplay.text = ActiveDartGame.PointsDisplay(true);
+        }
     }
 
     void OnDartHit(Color contactColor, int pointValue)
     {
         colorHit = contactColor;
-        if (contactColor == Color.red) { Debug.Log("red"); }
+        int p = pointValue;
+        if (contactColor == Color.red) { Debug.Log("red"); p = pointValue * 2; }
+        if(contactColor == Color.green) { p = pointValue * 3; }
         CreateDart();
         if (ActiveDartGame != null)
         {
-            ActiveDartGame.RegisterPointChanges(pointValue);
+            ActiveDartGame.RegisterPointChanges(p);
         }
     }
 
     void InitializeDartGame()
     {
-        ActiveDartGame = new DartGame(activePlayer);
+        ActiveDartGame = new DartGame(activePlayer, activeText);
         CameraMovement.AlignWithTransform(CameraPosition, false);
-        DartsRemaining = DartsOnBegin;
         CreateDart();
     }
 
     void CreateDart()
     {
-        if (CanSpawnDart)
+        if (ActiveDartGame != null && ActiveDartGame.CanSpawnDart)
         {
             ActiveDart = Instantiate(DartPrefab, transform).GetComponent<Dart>();
             ActiveDart.SetPlayerToTrack(activePlayer ?? null);
-            DartsRemaining--;
         }
     }
 
@@ -85,6 +89,7 @@ public class DartsManager : MonoBehaviour, IGameMode
 
     void OnGameComplete()
     {
+        if (ActiveDart != null) { Destroy(ActiveDart); }
         ActiveDartGame = null;
         MinigameManager.ExitMode();
     }
@@ -105,29 +110,39 @@ public class DartGame
     private int currentPoints;
     public int DartsRemaining;
     ActivePlayer p;
+    public TextMeshPro infoDisplay;
+
+    public bool CanSpawnDart { get => DartsRemaining > 0; }
 
     public delegate void BroadcastGameComplete();
     public static event BroadcastGameComplete GameComplete;
 
-    public DartGame(ActivePlayer player)
+    public DartGame(ActivePlayer player, TextMeshPro i)
     {
         StartingPointTotal = 301;
         currentPoints = 0;
         DartsRemaining = DartsOnStart;
         p = player;
+        infoDisplay = i;
     }
 
     public void RegisterPointChanges(int pointChange)
     {
         currentPoints += pointChange;
         DartsRemaining--;
-        Debug.Log(currentPoints);
         if (currentPoints >= StartingPointTotal || DartsRemaining == 0)
         {
             GameComplete();
             RunEndGame();
         }
+    }
 
+    public string PointsDisplay(bool active)
+    {
+        string header = active ? "Current Score:" : "All Time Highs:";
+        string points =  CurrentPointTotal().ToString();
+        string darts = "Darts To Go: " + DartsRemaining.ToString();
+        return header + '\n' + points + '\n' + darts;
     }
 
     public void DartMiss()

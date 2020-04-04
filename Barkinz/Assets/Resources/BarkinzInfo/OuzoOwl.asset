@@ -17,7 +17,7 @@ MonoBehaviour:
   MainBarkinzSprite: {fileID: 21300000, guid: 10f193d8f72224c8393e84f31f48f16a, type: 3}
   OverworldSprite: {fileID: 21300012, guid: 83b5a7ffede184eb08811db21a033ebe, type: 3}
   LoadSettingsFromInfo: 1
-  currencyOwned: 0
+  currencyOwned: 46
   individualSettings:
     TileLayoutSettings:
     - width: 2.6
@@ -38,7 +38,7 @@ MonoBehaviour:
       centerPosition: {x: -5.2, y: 0, z: -2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: -5.2, y: 0, z: -5.2}
     - width: 2.6
       length: 2.6
@@ -58,7 +58,7 @@ MonoBehaviour:
       centerPosition: {x: -2.6, y: 0, z: -2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: -2.6, y: 0, z: -5.2}
     - width: 2.6
       length: 2.6
@@ -90,7 +90,7 @@ MonoBehaviour:
       centerPosition: {x: 2.6, y: 0, z: 2.6}
     - width: 2.6
       length: 2.6
-      occupied: 1
+      occupied: 0
       centerPosition: {x: 2.6, y: 0, z: 0}
     - width: 2.6
       length: 2.6
@@ -123,12 +123,12 @@ MonoBehaviour:
     PlayerTile:
       width: 2.6
       length: 2.6
-      occupied: 1
-      centerPosition: {x: -5.2, y: 0, z: 5.2}
+      occupied: 0
+      centerPosition: {x: 5.2, y: 0, z: -5.2}
     playerPosition: {x: 0, y: 0}
-    ObjectPlacementData:
-    - resourcesPath: Barstool
-      gridPosition: {x: 0, y: 4}
+    ObjectPlacementData: []
   barkinzIntoxication:
     currentTab: 0
-    intoxicationLevel: 0
+    intoxicationLevel: -6.372145e+10
+    soberRate: 2
+    soberingBuffer: -97.3557

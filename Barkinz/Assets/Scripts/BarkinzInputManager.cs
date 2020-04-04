@@ -13,7 +13,6 @@ public class BarkinzInputManager : MonoBehaviour
     public TextMeshProUGUI BarkinzNameDisplay;
 
     const string nullBarkinz = "NO ACTIVE BARKINZ";
-
     private string inputCode { get => CodeInputField.text; }
 
     private void Start()

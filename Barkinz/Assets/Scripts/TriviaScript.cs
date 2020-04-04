@@ -11,7 +11,7 @@ public class TriviaScript : MonoBehaviour
     public TMP_InputField AnswerInput;
     public TextMeshProUGUI QuestionText, AnswerText;
     private string hiddenAnswer, displayAnswer;
-    public List<string> characterInput;
+    public List<char> characterInput;
     public ActivePlayer player;
 
     string path;
@@ -28,10 +28,12 @@ public class TriviaScript : MonoBehaviour
     public Dictionary<KeyCode, List<KeyCodeBinding>> keyOffsetDictionary;
     public OffsetType activeOffset;
 
+    public int OffsetAmount;
+
     private void Start()
     {
-        AnswerInput.onValueChanged.AddListener( delegate { OnAnswerInput(); });
-        characterInput = new List<string>();
+        AnswerInput.onValueChanged.AddListener( delegate { OnAnswerInputDoCaesarCipher(); });
+        characterInput = new List<char>();
         displayAnswer = "";
         path = Application.streamingAssetsPath + "/TriviaData.json";
         keycodePath = Application.streamingAssetsPath + "/KeyOffsetData.json";
@@ -43,6 +45,7 @@ public class TriviaScript : MonoBehaviour
         KeyOffsetMapping = GetKeyOffsetMapping();
         keyOffsetDictionary = keyOffsetData.KeyCodeToOffsetDictionary();
         activeOffset = OffsetType.None;
+        OffsetAmount = 0;
     }
 
     private void Update()
@@ -52,45 +55,19 @@ public class TriviaScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             AnswerQuestion();
+            OffsetAmount = Mathf.FloorToInt(player.ActiveSessionIntoxication.intoxicationLevel);
             activeOffset = RandomizeCharacter()? (OffsetType)Mathf.FloorToInt(UnityEngine.Random.Range(1, 5)): OffsetType.None;
         }
     }
 
-    void OnAnswerInput()
+    void OnAnswerInputDoCaesarCipher()
     {
-        if(displayAnswer.Length <= AnswerInput.text.Length)
+        if (AnswerInput.text.Length > 0)
         {
-            string toAdd = "";
-            if (AnswerInput.text.Length > 0)
-            {
-                if (activeOffset != OffsetType.None)
-                {
-                    foreach (KeyCode k in Enum.GetValues(typeof(KeyCode)))
-                    {
-                        if (Input.GetKeyDown(k) && keyOffsetDictionary.ContainsKey(k))
-                        {
-                            toAdd = keyOffsetDictionary[k][(int)activeOffset].keycode.ToString();
-                        }
-                        else if (Input.GetKeyDown(k) && !keyOffsetDictionary.ContainsKey(k))
-                        {
-                            toAdd = AnswerInput.text.Substring(AnswerInput.text.Length - 1);
-                        }
-                    }
-                } else
-                {
-                    toAdd = AnswerInput.text.Substring(AnswerInput.text.Length - 1);
-                }
-                characterInput.Add(toAdd);
-            }
-            if (!typing) { StartCoroutine(MaintainDisplayWhileIntoxicated()); }
-        } else
-        {
-            if (characterInput.Count > 0)
-            {
-                characterInput.RemoveAt(characterInput.Count - 1);
-            }
-            displayAnswer = displayAnswer.Remove(displayAnswer.Length - 1);
-            Debug.Log("remove chars at end of display");
+            char input = CaesarCipher(AnswerInput.text[AnswerInput.text.Length - 1], OffsetAmount);
+            Debug.Log(input);
+            characterInput.Add(input);
+            StartCoroutine(MaintainDisplayWhileIntoxicated());
         }
     }
 
@@ -108,7 +85,7 @@ public class TriviaScript : MonoBehaviour
         AnswerInput.text = "";
         characterInput.Clear();
         activeTriviaQuestion = GetTriviaQuestion();
-        if(incorrectBacklog != null && incorrectBacklog.Count > 0 && incorrectBacklog.Count % 3 == 0) { availableTriviaQuestions.Add(incorrectBacklog.Dequeue()); }
+        if (incorrectBacklog != null && incorrectBacklog.Count > 0 && incorrectBacklog.Count % 3 == 0) { availableTriviaQuestions.Add(incorrectBacklog.Dequeue()); }
         
     }
 
@@ -166,6 +143,12 @@ public class TriviaScript : MonoBehaviour
     {
         char[] possibilities = KeyOffsetMapping[k];
         return possibilities[(int)UnityEngine.Random.Range(0, possibilities.Length)];
+    }
+
+    public char CaesarCipher(char input, int shift)
+    {
+        if(shift == 0) { return input; }
+        return (char)((int)input + shift);
     }
 
 }

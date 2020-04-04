@@ -11,12 +11,14 @@ public class BarkinzManager : MonoBehaviour
     public static BarkinzInfo PrimaryBarkinz;
 
     const string gameplaySceneName = "GameScene";
+    public static string introductionDialoguePath { get; private set; }
 
     private void Awake()
     {
         if(barkinz == null) { barkinz = this; } else { Destroy(this); }
         DontDestroyOnLoad(this.gameObject);
         SceneManager.sceneLoaded += OnSceneLoad;
+        introductionDialoguePath = Application.streamingAssetsPath + "/TutorialDialogue.json";
     }
 
     public static event Action<BarkinzInfo> InitializeBarkinzData;

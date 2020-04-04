@@ -11,9 +11,11 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public SpriteRenderer OverworldSpriteDisplay;
 
     public IntoxicationSettings ActiveSessionIntoxication;
+    public InventorySettings activeInventory;
     public static event Action<string> EnteredTaggedArea;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
+    public Transform ZoomObjectTransform { get => transform; }
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         WorldTile.TileSelected += OnTileSelected;
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
+        PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
     }
 
     private void Start()
@@ -53,9 +56,19 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         }
     }
 
+    void OnInventoryAdjustment(PlaceableObject obj, bool add)
+    {
+        if (add) { activeInventory.AdjustInventory(obj); } else
+        {
+            activeInventory.AdjustInventory(obj, false);
+            //Debug.Log("And <i>this</i> is where I'd adjust player's inventory!" + '\n' + "<b>IF I HAD IMPLEMENTED IT</b>");
+        }
+    }
+
     void OnBarkinzInitialization(BarkinzInfo b)
     {
         ActiveSessionIntoxication = new IntoxicationSettings();
+        activeInventory = new InventorySettings();
         if (b.LoadSettingsFromInfo)
         {
             b.SetPlayerPosition(this);
@@ -67,6 +80,11 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     void SetBarkinzIntoxicationData(BarkinzInfo b)
     {
         b.UpdateIntoxicationSettings(this);
+    }
+
+    void SetBarkinzInventoryData(BarkinzInfo b)
+    {
+        b.UpdateInventorySettings(activeInventory);
     }
 
     void OnTileSelected(Tile t)
@@ -111,17 +129,18 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
+        PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
     }
 
     private void OnApplicationQuit()
     {
         SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
+        SetBarkinzInventoryData(BarkinzManager.PrimaryBarkinz);
     }
 
     public Vector3 ZoomCamPosition()
     {
         Vector3 p = transform.position + new Vector3(0, 1, -1);
-        Debug.Log(p);
         return p;
     }
 }

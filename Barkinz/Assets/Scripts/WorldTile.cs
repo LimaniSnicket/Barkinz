@@ -14,6 +14,7 @@ public class WorldTile : MonoBehaviour
     public Tile[,] GridPositions;
 
     public Tile PlayerPositionTile;
+    private Tile mouseHoverTile;
 
     public GameObject PlaceableObjectPrefab;
     public PlaceableObject TestPlacements;
@@ -24,16 +25,37 @@ public class WorldTile : MonoBehaviour
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
         PurchasingBehavior.ObjectPlacementConfirmed += OnObjectPlacementConfirmed;
         PlayerPositionTile = new Tile();
+        mouseHoverTile = new Tile();
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            SetTargetTileViaClick();
+            if (Tiles.Contains(mouseHoverTile))
+            {
+                SetTargetTileViaClick(mouseHoverTile);
+            }
         }
 
-        if (MinigameManager.ValidMode(ActiveGameFunction.NONE))
+        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition - (Vector3.up * -.45f));
+        RaycastHit rh = new RaycastHit();
+        if (Physics.SphereCast(r, .5f, out rh, Mathf.Infinity) && TileLookup.ContainsKey(rh.transform.gameObject))
+        {
+            Tile t = TileLookup[rh.transform.gameObject];
+            if (mouseHoverTile != t)
+            {
+                mouseHoverTile.SetSpriteColor(Color.red);
+                mouseHoverTile = t;
+                mouseHoverTile.SetSpriteColor(Color.blue);
+            }
+        } else
+        {
+            mouseHoverTile.SetSpriteColor(Color.red);
+            mouseHoverTile = new Tile();
+        }
+
+        if (MinigameManager.ValidMode(ActiveGameFunction.NONE) && MinigameManager.AcceptPlayerInput)
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -51,11 +73,6 @@ public class WorldTile : MonoBehaviour
             {
                 UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
-
-            //if (Input.GetKeyDown(KeyCode.P))
-            //{
-            //    InstantiatePlacedObject(TestPlacements, Vector2Int.zero);
-            //}
         }
     }
 
@@ -76,10 +93,12 @@ public class WorldTile : MonoBehaviour
 
     public void InstantiatePlacedObjects(WorldTileSettings wts)
     {
-        foreach (var e in wts.ObjectPlacementData)
-        {
-            PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
-            InstantiatePlacedObject(p, e.gridPosition);
+        if (wts.ObjectPlacementData != null && wts.ObjectPlacementData.Count > 0) {
+            foreach (var e in wts.ObjectPlacementData)
+            {
+                PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
+                InstantiatePlacedObject(p, e.gridPosition);
+            }
         }
     }
 
@@ -123,18 +142,11 @@ public class WorldTile : MonoBehaviour
     public static event Action<Tile> TileSelected;
     public static event Action<Tile> QueueTile;
 
-    public void SetTargetTileViaClick()
+
+    public void SetTargetTileViaClick(Tile t)
     {
-        Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rh = new RaycastHit();
-        if (Physics.SphereCast(r, 1, out rh, Mathf.Infinity) && TileLookup.ContainsKey(rh.transform.gameObject))
-        {
-            if (!TileLookup[rh.transform.gameObject].occupied)
-            {
-                TileLookup[rh.transform.gameObject].occupied = true;
-                TileSelected(TileLookup[rh.transform.gameObject]);
-            }
-        }
+        Debug.Log("Clicked on Tile");
+        TileSelected(t);
     }
 
     void OnBarkinzLoad(BarkinzInfo b)
@@ -193,7 +205,7 @@ public class WorldTile : MonoBehaviour
 }
 
 [Serializable]
-public class Tile
+public class Tile: IZoomOn
 {
     private GameObject go;
     private SpriteRenderer TileRenderer;
@@ -201,10 +213,16 @@ public class Tile
     public bool occupied;
     public Vector3 centerPosition;
     public Vector2Int GridPosition { get; private set; }
+
+    public Transform ZoomObjectTransform => go.transform;
+    public float CameraOrthoSize => 2;
+
     public Tile() { width = 1; length = 1; occupied = false; centerPosition = Vector3.zero; }
     public Tile(Vector3 cp) { width = 1; length = 1; occupied = false; centerPosition = cp; }
     public Tile(float w, float l, Vector3 cp) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(0, 0); }
     public Tile(float w, float l, Vector3 cp, int row, int column) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(row, column); }
+
+
     public void InitializeTile(Sprite s, WorldTile parentTile)
     {
         GameObject g = new GameObject("Tile Sprite");
@@ -243,6 +261,18 @@ public class Tile
     {
         p.transform.position = centerPosition;
         occupied = true;
+    }
+
+    public void SetSpriteColor(Color c)
+    {
+        if(TileRenderer == null) { return; }
+        TileRenderer.color = c;
+    }
+
+    public Vector3 ZoomCamPosition()
+    {
+        Vector3 p = go.transform.position;
+        return p + new Vector3(-1, .5f, -1);
     }
 }
 

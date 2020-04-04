@@ -47,7 +47,7 @@ public class Dart : MonoBehaviour
     {
         Thrown = true;
         dartBody.useGravity = true;
-        dartBody.AddForce((transform.forward + Vector3.up) * 1.5f * power, ForceMode.Impulse);
+        dartBody.AddForce((transform.forward * 3 + Vector3.up * 0.6f) * power, ForceMode.Impulse);
         transform.SetParent(null);
     }
 

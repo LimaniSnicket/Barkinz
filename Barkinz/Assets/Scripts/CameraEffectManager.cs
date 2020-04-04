@@ -7,6 +7,7 @@ public class CameraEffectManager : MonoBehaviour
 {
     private static CameraEffectManager camEffects;
     public static ChromaticAberration chromaticAberration;
+    public static MotionBlur motionBlur;
     public static Vignette vignette;
     public float defaultVignette;
     ActivePlayer activePlayer;
@@ -21,13 +22,15 @@ public class CameraEffectManager : MonoBehaviour
     {
         GetComponent<PostProcessVolume>().profile.TryGetSettings(out chromaticAberration);
         GetComponent<PostProcessVolume>().profile.TryGetSettings(out vignette);
+        GetComponent<PostProcessVolume>().profile.TryGetSettings(out motionBlur);
     }
 
     private void Update()
     {
         if (activePlayer != null)
         {
-            chromaticAberration.intensity.value = (activePlayer.ActiveSessionIntoxication.intoxicationLevel / 100) * 1.5f + Mathf.Sin(Time.time * Mathf.PI * 0.01f);
+            chromaticAberration.intensity.value = (activePlayer.ActiveSessionIntoxication.intoxicationLevel / 100) * 1.5f + Mathf.Sin(Time.time * Mathf.PI) * 0.01f;
+            motionBlur.shutterAngle.value = activePlayer.ActiveSessionIntoxication.intoxicationLevel / 100;
             vignette.intensity.value = defaultVignette + (Mathf.Sin(Time.time * Mathf.PI) /27);
         }
     }

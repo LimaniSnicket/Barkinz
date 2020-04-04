@@ -8,9 +8,11 @@ public class PurchasingBehavior : MonoBehaviour
 {
     private static PurchasingBehavior purchase;
     private static Tile PlacementTile;
-    public static List<PlaceableObject> purchasedPlaceableObjects { get; private set; }
     private static PlaceableObject objectToPlace;
     public static ConfirmationMenu confirmationMenu;
+    public static event Action<PlaceableObject, bool> AdjustItemInventory;
+
+    public PlaceableObject testPlacement;
 
     [Header("Constructor Objects")]
     public GameObject confirmationMenuGameObject;
@@ -31,12 +33,35 @@ public class PurchasingBehavior : MonoBehaviour
     private void Start()
     {
         purchaseMenuGameObject.SetActive(false);
+        objectToPlace = testPlacement;
+    }
+
+    private void Update()
+    {
+        if (PlacementTile != null && Input.GetKeyDown(KeyCode.K))
+        {
+            ConfirmObjectPlacement();
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Purchase(objectToPlace);
+        }
     }
 
     void OnTileSelected(Tile t)
     {
         PlacementTile = t;
-        confirmationMenu.ToggleActivation();
+        //confirmationMenu.ToggleActivation();
+    }
+
+    void Purchase(PlaceableObject p)
+    {
+        if (IsValidPurchase(p))
+        {
+            objectToPlace = p;
+            MinigameManager.activeCurrency -= p.PurchasePrice;
+            AdjustItemInventory(p, true);
+        }
     }
 
     void OnClickSelectObjectToPlace(PlaceableObject p)
@@ -61,11 +86,10 @@ public class PurchasingBehavior : MonoBehaviour
     public static event Action<Tile, PlaceableObject> ObjectPlacementConfirmed;
     void ConfirmObjectPlacement()
     {
-        Debug.Log("Clicked object place button");
-        ObjectPlacementConfirmed(PlacementTile, objectToPlace);
         if (objectToPlace != null)
         {
             ObjectPlacementConfirmed(PlacementTile, objectToPlace);
+            AdjustItemInventory(objectToPlace, false);
         }
     }
 
@@ -97,12 +121,64 @@ public class PurchasingBehavior : MonoBehaviour
 }
 
 [Serializable]
-public class PurchaseSettings
+public class InventorySettings
 {
-    public List<string> placeableObjectLookups;
-    public PurchaseSettings() {
-        placeableObjectLookups = new List<string>();
+    private List<PlaceableObject> itemIndices;
+    public List<InventoryListing> inventoryListings;
 
+    public InventorySettings() {
+        itemIndices = new List<PlaceableObject>();
+        inventoryListings = new List<InventoryListing>();
+    }
+
+    public void AdjustInventory(PlaceableObject obj, bool add = true)
+    {
+        if (Owned(obj))
+        {
+            int index = itemIndices.IndexOf(obj);
+            inventoryListings[index].AdjustInventoryListing(add);
+            if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); }
+        }
+        else
+        {
+            if (add)
+            {
+                itemIndices.Add(obj);
+                inventoryListings.Add(new InventoryListing(obj));
+            }
+        }
+    }
+
+    bool Owned(PlaceableObject obj)
+    {
+        if (itemIndices.Count <= 0) { return false; }
+        return itemIndices.Contains(obj);
+    }
+
+    [Serializable]
+    public class InventoryListing
+    {
+        public PlaceableObject item;
+        public int amountOwned;
+
+        public InventoryListing(PlaceableObject p)
+        {
+            item = p;
+            amountOwned = 1;
+        }
+
+        public InventoryListing(PlaceableObject p, int add)
+        {
+            item = p;
+            amountOwned = 1 + add;
+        }
+
+        public void AdjustInventoryListing(bool add)
+        {
+            if (add) { amountOwned++; } else { amountOwned--; }
+        }
+
+        public bool NoneOwned { get => amountOwned <= 0; }
     }
    
 }

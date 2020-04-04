@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,24 +19,26 @@ public class Bartender : MonoBehaviour, IGameMode
     public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.BAR; }
 
     public static event Action<float> DrinkOnTab;
+    public DrinkMenu drinkMenu;
 
 
     void Awake()
     {
+        string drinkPath = Application.streamingAssetsPath + "/DrinkData.json";
+        InitializeDrinkMenu(drinkPath);
         MinigameManager.EnteredMode += OnModeChange;
+        BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
     }
 
     private void Start()
     {
         if(bartender == null) { bartender = this; } else { Destroy(this); }
-        currentDrink = new Drink();
         orderedDrinkBacklog = new List<Drink>();
         OrderButtons = new List<OrderDrinkButton>();
-        Debug.Log(DrinkMenu.NumberOfDrinks);
-        for (int i = 0; i < DrinkMenu.NumberOfDrinks; i++)
+        for (int i = 0; i < drinkMenu.drinkData.Count; i++)
         {
             Button b = Instantiate(ButtonPrefab, ButtonPanel.transform).GetComponent<Button>();
-            OrderDrinkButton odb = new OrderDrinkButton(b, DrinkMenu.GetDrinks()[i]);
+            OrderDrinkButton odb = new OrderDrinkButton(b, drinkMenu.drinkData[i]);
             odb.orderButton.onClick.AddListener(() => OnClickOrderDrink(odb.orderDrink));
             OrderButtons.Add(odb);
         }
@@ -74,6 +77,21 @@ public class Bartender : MonoBehaviour, IGameMode
         }
     }
 
+    void OnBarkinzLoad(BarkinzInfo primary)
+    {
+        currentDrink = new Drink();
+        Drink pref = drinkMenu.GetDrinkFromCode(primary);
+        Debug.Log(pref.drinkName);
+        currentDrink = new Drink(pref);
+    }
+
+    void InitializeDrinkMenu(string path)
+    {
+        string json = File.ReadAllText(path);
+        drinkMenu = JsonUtility.FromJson<DrinkMenu>(json);
+    }
+
+
     void OnDestroy()
     {
         MinigameManager.EnteredMode -= OnModeChange;
@@ -87,26 +105,7 @@ public class Drink
     public float drinkCost, drinkStrength;
     public float amountLeft;
     public bool available;
-    public Drink() { drinkName = "Water"; drinkCost = 0; drinkStrength = -1; available = true; amountLeft = 5; displaySpritePath = "DrinkSprites/Temp"; }
-    public Drink(string name, float cost, float strength, float amount, bool a = true)
-    {
-        drinkName = name;
-        drinkCost = cost;
-        drinkStrength = strength;
-        amountLeft = amount;
-        available = a;
-        displaySpritePath = "DrinkSprites/Temp";
-    }
-
-    public Drink(string name, float cost, float strength, float amount, string spritePath, bool a = true)
-    {
-        drinkName = name;
-        drinkCost = cost;
-        drinkStrength = strength;
-        amountLeft = amount;
-        available = a;
-        displaySpritePath = spritePath;
-    }
+    public Drink() { }
 
     public Drink(Drink copy)
     {
@@ -116,9 +115,10 @@ public class Drink
         amountLeft = copy.amountLeft;
         available = copy.available;
         displaySpritePath = copy.displaySpritePath;
+        prefBarkinzPath = copy.prefBarkinzPath;
     }
 
-    public string displaySpritePath;
+    public string displaySpritePath, prefBarkinzPath;
     public bool FinishedDrink { get => amountLeft <= 0; }
     public void SipDrink(float mod) { amountLeft -= Time.deltaTime * mod; }
     public bool Affordable { get => drinkCost <= MinigameManager.activeCurrency; }
@@ -134,7 +134,7 @@ public struct OrderDrinkButton
     {
         orderButton = b;
         orderDrink = d;
-        b.GetComponentInChildren<Text>().text = orderDrink.drinkName;
+        b.GetComponentInChildren<Text>().text = orderDrink.drinkName + ": $" + orderDrink.drinkCost;
     }
 }
 [Serializable]
@@ -174,31 +174,23 @@ public struct DrinkDisplay
     {
         fillDisplay.value = drinkToDisplay.amountLeft;
     }
+
     public void RunDrinkDisplay(Drink d)
     {
         fillDisplay.value = d.amountLeft;
     }
 }
 
-public static class DrinkMenu
+[Serializable]
+public class DrinkMenu
 {
-    public static List<Drink> GetDrinks()
+    public List<Drink> drinkData;
+    public Drink GetDrinkFromCode(BarkinzInfo b)
     {
-        List<Drink> drinks = new List<Drink>();
-        drinks.Add(Water); drinks.Add(FourLoko);
-        drinks.Add(Hennessy); drinks.Add(Chianti);
-        drinks.Add(Fireball); drinks.Add(Ouzo);
-        drinks.Add(Whiteclaw);
-        return drinks;
+        foreach (Drink d in drinkData)
+        {
+            if (d.prefBarkinzPath == b.BarkinzCode) { return d; }
+        }
+        return drinkData[0];
     }
-
-    public static int NumberOfDrinks { get => GetDrinks().Count; }
-
-    public static Drink Water { get => new Drink(); }
-    public static Drink FourLoko { get => new Drink("Four Loko", 4, 8, 8); }
-    public static Drink Hennessy { get => new Drink("Hennessy", 10, 7, 4, "DrinkSprites/Henny"); }
-    public static Drink Chianti { get => new Drink("Chianti", 10, 1, 4); }
-    public static Drink Fireball { get => new Drink("Fireball", 5, 6, 4); }
-    public static Drink Ouzo { get => new Drink("Ouzo", 10, 10, 4); }
-    public static Drink Whiteclaw { get => new Drink("Whiteclaw", 5, 4, 7); }
 }
