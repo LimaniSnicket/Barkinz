@@ -42,12 +42,26 @@ public class PurchasingBehavior : MonoBehaviour
         {
             ConfirmObjectPlacement();
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Purchase(objectToPlace);
+        }
     }
 
     void OnTileSelected(Tile t)
     {
         PlacementTile = t;
         //confirmationMenu.ToggleActivation();
+    }
+
+    void Purchase(PlaceableObject p)
+    {
+        if (IsValidPurchase(p))
+        {
+            objectToPlace = p;
+            MinigameManager.activeCurrency -= p.PurchasePrice;
+            AdjustItemInventory(p, true);
+        }
     }
 
     void OnClickSelectObjectToPlace(PlaceableObject p)
@@ -109,12 +123,10 @@ public class PurchasingBehavior : MonoBehaviour
 [Serializable]
 public class InventorySettings
 {
-    public List<string> placeableObjectLookups;
     private List<PlaceableObject> itemIndices;
     public List<InventoryListing> inventoryListings;
 
     public InventorySettings() {
-        placeableObjectLookups = new List<string>();
         itemIndices = new List<PlaceableObject>();
         inventoryListings = new List<InventoryListing>();
     }
@@ -124,7 +136,7 @@ public class InventorySettings
         if (Owned(obj))
         {
             int index = itemIndices.IndexOf(obj);
-            inventoryListings[index].IncrementAmount(add);
+            inventoryListings[index].AdjustInventoryListing(add);
             if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); }
         }
         else
@@ -139,12 +151,12 @@ public class InventorySettings
 
     bool Owned(PlaceableObject obj)
     {
-        if (itemIndices.Count <= 0 || inventoryListings.Count <=0) { return false; }
+        if (itemIndices.Count <= 0) { return false; }
         return itemIndices.Contains(obj);
     }
 
     [Serializable]
-    public struct InventoryListing
+    public class InventoryListing
     {
         public PlaceableObject item;
         public int amountOwned;
@@ -155,9 +167,15 @@ public class InventorySettings
             amountOwned = 1;
         }
 
-        public void IncrementAmount(bool increase)
+        public InventoryListing(PlaceableObject p, int add)
         {
-            if (increase) { amountOwned++; } else { amountOwned--; }
+            item = p;
+            amountOwned = 1 + add;
+        }
+
+        public void AdjustInventoryListing(bool add)
+        {
+            if (add) { amountOwned++; } else { amountOwned--; }
         }
 
         public bool NoneOwned { get => amountOwned <= 0; }

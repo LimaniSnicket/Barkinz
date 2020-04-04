@@ -60,7 +60,8 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         if (add) { activeInventory.AdjustInventory(obj); } else
         {
-            Debug.Log("And <i>this</i> is where I'd adjust player's inventory!" + '\n' + "<b>IF I HAD IMPLEMENTED IT</b>");
+            activeInventory.AdjustInventory(obj, false);
+            //Debug.Log("And <i>this</i> is where I'd adjust player's inventory!" + '\n' + "<b>IF I HAD IMPLEMENTED IT</b>");
         }
     }
 
@@ -79,6 +80,11 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     void SetBarkinzIntoxicationData(BarkinzInfo b)
     {
         b.UpdateIntoxicationSettings(this);
+    }
+
+    void SetBarkinzInventoryData(BarkinzInfo b)
+    {
+        b.UpdateInventorySettings(activeInventory);
     }
 
     void OnTileSelected(Tile t)
@@ -129,6 +135,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     private void OnApplicationQuit()
     {
         SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
+        SetBarkinzInventoryData(BarkinzManager.PrimaryBarkinz);
     }
 
     public Vector3 ZoomCamPosition()
