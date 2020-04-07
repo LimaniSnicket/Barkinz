@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -79,6 +80,8 @@ public class CameraMovement : MonoBehaviour
         camMovement.ResetZoom();
     }
 
+
+    public static event Action<IZoomOn> ZoomedOnObject;
     public static void ZoomOn(IZoomOn zoom, bool adjustForward = false)
     {
         if (!camMovement.Zoomed) {
@@ -87,6 +90,7 @@ public class CameraMovement : MonoBehaviour
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 12));
             if (adjustForward) { camMovement.transform.forward = (zoom.ZoomObjectTransform.forward + zoom.ZoomObjectTransform.right); }
             camMovement.Zoomed = true;
+            ZoomedOnObject(zoom);
         }
     }
 

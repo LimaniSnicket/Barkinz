@@ -3,7 +3,7 @@
     <Files>
       <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="58" Column="6" />
       <File FileName="Assets/Scripts/BarkinzManager.cs" />
-      <File FileName="Assets/Scripts/WorldTile.cs" Line="172" Column="64" />
+      <File FileName="Assets/Scripts/WorldTile.cs" />
       <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
       <File FileName="Assets/Scripts/ActivePlayer.cs" Line="64" Column="15" />
       <File FileName="Assets/Scripts/MinigameManager.cs" />
@@ -17,7 +17,7 @@
       <File FileName="Assets/Scripts/DartsManager.cs" />
       <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
       <File FileName="Assets/Scripts/PlacedObject.cs" />
-      <File FileName="Assets/Scripts/PurchasingBehavior.cs" Line="55" Column="6" />
+      <File FileName="Assets/Scripts/PurchasingBehavior.cs" />
       <File FileName="Assets/Scripts/CameraEffectManager.cs" />
       <File FileName="Assets/StreamingAssets/TutorialDialogue.json" />
       <File FileName="Assets/StreamingAssets/DrinkData.json" />
@@ -25,7 +25,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="ddb90f91-3ed9-4c57-b267-ee8c6952e995" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9f637335-42b6-4c76-9450-7eaaaeb70b55" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
