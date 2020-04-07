@@ -30,11 +30,21 @@ public class WorldTile : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            //if (Tiles.Contains(mouseHoverTile))
+            //{
+            //    SetTargetTileViaClick(mouseHoverTile);
+            //}
+            CameraMovement.ResetCameraZoom();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (Tiles.Contains(mouseHoverTile))
             {
                 SetTargetTileViaClick(mouseHoverTile);
+                CameraMovement.ZoomOn(mouseHoverTile);
             }
         }
 
@@ -214,8 +224,12 @@ public class Tile: IZoomOn
     public Vector3 centerPosition;
     public Vector2Int GridPosition { get; private set; }
 
+    public GameObject occupyingTile;
+
     public Transform ZoomObjectTransform => go.transform;
-    public float CameraOrthoSize => 2;
+    public float CameraOrthoSize => 3;
+
+    public static event Action<PlaceableObject> RemovedPlacedObjectFromTile;
 
     public Tile() { width = 1; length = 1; occupied = false; centerPosition = Vector3.zero; }
     public Tile(Vector3 cp) { width = 1; length = 1; occupied = false; centerPosition = cp; }
@@ -261,6 +275,14 @@ public class Tile: IZoomOn
     {
         p.transform.position = centerPosition;
         occupied = true;
+        occupyingTile = p.gameObject;
+    }
+
+    public void RemovePlacedObject(PlacedObject p)
+    {
+        RemovedPlacedObjectFromTile(p.ObjectInformation);
+        occupied = false;
+        occupyingTile = null;
     }
 
     public void SetSpriteColor(Color c)
@@ -274,6 +296,16 @@ public class Tile: IZoomOn
         Vector3 p = go.transform.position;
         return p + new Vector3(-1, .5f, -1);
     }
+}
+
+[Serializable]
+public class TileFocuser
+{
+    public bool InFocus;
+    public Tile FocusOn;
+
+    public GameObject inventoryListing;
+
 }
 
 [Serializable]

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class PurchasingBehavior : MonoBehaviour
 {
@@ -12,28 +13,44 @@ public class PurchasingBehavior : MonoBehaviour
     public static ConfirmationMenu confirmationMenu;
     public static event Action<PlaceableObject, bool> AdjustItemInventory;
 
+    public PlaceableObject purchaseToConfirm { get; set; }
+    PlaceableObject[] placeablesFromResources;
+    static PurchaseButton[] purchaseButtons;
+
     public PlaceableObject testPlacement;
 
     [Header("Constructor Objects")]
     public GameObject confirmationMenuGameObject;
     public GameObject purchaseMenuGameObject;
+    public GameObject purchaseButtonPrefab;
     public Image MenuBackground;
 
     private void Awake()
     {
         if (purchase == null) { purchase = this; } else { Destroy(this); }
         confirmationMenu = new ConfirmationMenu(confirmationMenuGameObject);
-        confirmationMenu.ConfirmationButton.onClick.AddListener(()=> ConfirmObjectPlacement());
+        confirmationMenu.ConfirmationButton.onClick.AddListener(()=> Purchase());
         confirmationMenu.DenyButton.onClick.AddListener(() => DenyPlacement());
         confirmationMenu.ToggleActivation();
         WorldTile.TileSelected += OnTileSelected;
         MinigameManager.EnteredMode += OnEnteredMode;
+        CameraMovement.ZoomedOnObject += OnZoomed;
     }
 
     private void Start()
     {
         purchaseMenuGameObject.SetActive(false);
         objectToPlace = testPlacement;
+        placeablesFromResources = Resources.LoadAll<PlaceableObject>("PlaceableObjects");
+        purchaseButtons = new PurchaseButton[placeablesFromResources.Length];
+        int temp;
+        for (int i =0; i< placeablesFromResources.Length; i++)
+        {
+            temp = i;
+            GameObject newPurchaseButton = Instantiate(purchaseButtonPrefab, MenuBackground.GetComponent<RectTransform>());
+            purchaseButtons[i] = new PurchaseButton(newPurchaseButton, placeablesFromResources[i]);
+            purchaseButtons[temp].purchaseButton.onClick.AddListener(() => purchaseButtons[temp].OnClickSetObjectToPurchase(this));
+        }
     }
 
     private void Update()
@@ -44,31 +61,28 @@ public class PurchasingBehavior : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Purchase(objectToPlace);
+            Purchase();
         }
     }
 
     void OnTileSelected(Tile t)
     {
         PlacementTile = t;
-        //confirmationMenu.ToggleActivation();
     }
 
-    void Purchase(PlaceableObject p)
+    void OnZoomed(IZoomOn zoom)
     {
-        if (IsValidPurchase(p))
-        {
-            objectToPlace = p;
-            MinigameManager.activeCurrency -= p.PurchasePrice;
-            AdjustItemInventory(p, true);
-        }
+
     }
 
-    void OnClickSelectObjectToPlace(PlaceableObject p)
+    void Purchase()
     {
-        if (IsValidPurchase(p))
+        if (IsValidPurchase(purchaseToConfirm))
         {
-            objectToPlace = p;
+            MinigameManager.activeCurrency -= purchaseToConfirm.PurchasePrice;
+            AdjustItemInventory(purchaseToConfirm, true);
+            confirmationMenu.ToggleActivation();
+            purchaseToConfirm = null;
         }
     }
 
@@ -77,7 +91,7 @@ public class PurchasingBehavior : MonoBehaviour
         if (a == ActiveGameFunction.SHOP)
         {
             TogglePurchaseMenu(true);
-        } else if (a == ActiveGameFunction.NONE)
+        } else
         {
             TogglePurchaseMenu(false);
         }
@@ -117,6 +131,7 @@ public class PurchasingBehavior : MonoBehaviour
     {
         WorldTile.TileSelected -= OnTileSelected;
         MinigameManager.EnteredMode -= OnEnteredMode;
+        CameraMovement.ZoomedOnObject -= OnZoomed;
     }
 }
 
@@ -184,15 +199,38 @@ public class InventorySettings
 }
 
 [Serializable]
+public struct InventoryListUIObject
+{
+    private GameObject parentObject;
+    public GameObject buttonPrefab;
+    public InventoryListUIObject(GameObject parent, GameObject prefab)
+    {
+        parentObject = parent;
+        buttonPrefab = prefab;
+    }
+
+    public void OpenActiveInventory(InventorySettings activeInventory)
+    {
+
+    }
+}
+
+[Serializable]
 public struct ConfirmationMenu
 {
     public GameObject MenuContainer;
     public Button ConfirmationButton, DenyButton;
+    public TextMeshProUGUI ConfirmationMessageText;
+    string defaultMessage;
+    public string Message;
     public ConfirmationMenu(GameObject container)
     {
         MenuContainer = container;
         ConfirmationButton = container.transform.Find("ConfirmButton").GetComponent<Button>();
         DenyButton = container.transform.Find("DenyButton").GetComponent<Button>();
+        ConfirmationMessageText = container.GetComponentInChildren<TextMeshProUGUI>();
+        defaultMessage = "YOU SURE 'BOUT THIS?";
+        Message = defaultMessage;
     }
 
     public void ToggleActivation()
@@ -200,4 +238,43 @@ public struct ConfirmationMenu
         bool currentState = MenuContainer.activeSelf;
         MenuContainer.SetActive(!currentState);
     }
+
+    public void SetMessage(string message)
+    {
+        Message = message;
+    }
+
+    public void SetMessage()
+    {
+        Message = defaultMessage;
+    }
 }
+
+[Serializable]
+public struct PurchaseButton
+{
+    public Button purchaseButton;
+    public TextMeshProUGUI additionalTextDisplay;
+    public PlaceableObject objectForSale;
+    public PurchaseButton(GameObject prefab, PlaceableObject p)
+    {
+        purchaseButton = prefab.GetComponentInChildren<Button>();
+        additionalTextDisplay = prefab.GetComponentInChildren<TextMeshProUGUI>();
+        objectForSale = p;
+        SetComponentValues();
+    }
+
+    public void OnClickSetObjectToPurchase(PurchasingBehavior p)
+    {
+        p.purchaseToConfirm = objectForSale;
+        PurchasingBehavior.confirmationMenu.SetMessage("PURCHASE " + objectForSale.ObjectLookup.ToUpper());
+        PurchasingBehavior.confirmationMenu.ToggleActivation();
+    }
+
+    public void SetComponentValues()
+    {
+        purchaseButton.GetComponentInChildren<Text>().text = objectForSale.ObjectLookup;
+        additionalTextDisplay.text = "$" + objectForSale.PurchasePrice.ToString();
+    }
+}
+

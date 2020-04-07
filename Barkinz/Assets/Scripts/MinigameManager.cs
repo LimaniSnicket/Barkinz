@@ -63,6 +63,7 @@ public class MinigameManager : MonoBehaviour
         BarCanvas.SetActive(ValidMode(ActiveGameFunction.BAR));
         TriviaCanvas.SetActive(ValidMode(ActiveGameFunction.TRIVIA));
         dialogueReader.MaintainDialogueDisplay();
+        AcceptPlayerInput = ValidMode(ActiveGameFunction.NONE);
 
         if (Input.GetKeyDown(KeyCode.T) && activeGameFunction == ActiveGameFunction.NONE)
         {
@@ -85,9 +86,13 @@ public class MinigameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            AcceptPlayerInput = true;
             ExitMode();
         }
+    }
+
+    public static void EnterGameMode(ActiveGameFunction toEnter)
+    {
+        if (CanEnterMode()) { gameManager.StartCoroutine(gameManager.EnterMode(toEnter)); }
     }
 
     public static void ExitMode()
@@ -233,7 +238,8 @@ public enum ActiveGameFunction
     BAR = 2,
     DARTS = 3,
     TRIVIA = 4,
-    DIALOGUE = 5
+    DIALOGUE = 5,
+    PLACEMENT = 6
 }
 
 public interface IGameMode
