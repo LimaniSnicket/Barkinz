@@ -17,6 +17,9 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public float CameraOrthoSize { get; set; }
     public Transform ZoomObjectTransform { get => transform; }
 
+    public GameObject purchaseButtonPrefab;
+    public GameObject inventoryUIObject;
+
     private void Awake()
     {
         tileTargets = new Queue<Tile>();
@@ -24,6 +27,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
         PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
+        MinigameManager.EnteredMode += OnEnteredMode;
     }
 
     private void Start()
@@ -31,6 +35,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         SetActivePlayer(this);
         OverworldSpriteDisplay = GetComponentInChildren<SpriteRenderer>();
         CameraOrthoSize = 1;
+        activeInventory.activeInventoryList.Toggle(false);
     }
 
     public float chugSpeed = 0;
@@ -65,6 +70,13 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         }
     }
 
+    void OnEnteredMode(ActiveGameFunction gameFunction)
+    {
+        if (gameFunction == ActiveGameFunction.FOCUS) {
+            activeInventory.activeInventoryList.Toggle();
+        } else { activeInventory.activeInventoryList.Toggle(false); }
+    }
+
     void OnBarkinzInitialization(BarkinzInfo b)
     {
         ActiveSessionIntoxication = new IntoxicationSettings();
@@ -75,6 +87,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
             b.SetIntoxicationData(this);
         }
         OverworldSpriteDisplay.sprite = b.OverworldSprite;
+        activeInventory.InitializeInventoryUIObject(inventoryUIObject, purchaseButtonPrefab);
     }
 
     void SetBarkinzIntoxicationData(BarkinzInfo b)
@@ -130,6 +143,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
         PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
+        MinigameManager.EnteredMode -= OnEnteredMode;
     }
 
     private void OnApplicationQuit()

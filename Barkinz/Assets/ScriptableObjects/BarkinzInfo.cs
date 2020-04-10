@@ -40,7 +40,7 @@ public class BarkinzInfo : ScriptableObject
 
     public void SetPlayerPosition(ActivePlayer p)
     {
-        p.transform.position = individualSettings.PlayerTile.centerPosition;
+        p.transform.position = individualSettings.StartTile.centerPosition;
     }
 
     public void SetWorldTileFromSettings(WorldTile toSet)

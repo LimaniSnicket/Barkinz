@@ -1,15 +1,15 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ActivePlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/StreamingAssets/TutorialDialogue.json">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="58" Column="6" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="43" Column="76" />
       <File FileName="Assets/Scripts/BarkinzManager.cs" />
       <File FileName="Assets/Scripts/WorldTile.cs" />
       <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
-      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="64" Column="15" />
-      <File FileName="Assets/Scripts/MinigameManager.cs" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" Line="69" Column="12" />
       <File FileName="Assets/Scripts/Bartender.cs" />
       <File FileName="Assets/Scripts/HUD.cs" />
-      <File FileName="Assets/Scripts/TriviaScript.cs" />
+      <File FileName="Assets/Scripts/TriviaScript.cs" Line="16" Column="25" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/StreamingAssets/KeyOffsetData.json" />
       <File FileName="Assets/Scripts/CameraMovement.cs" />
@@ -19,13 +19,14 @@
       <File FileName="Assets/Scripts/PlacedObject.cs" />
       <File FileName="Assets/Scripts/PurchasingBehavior.cs" />
       <File FileName="Assets/Scripts/CameraEffectManager.cs" />
-      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" />
+      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" Line="1" Column="1" />
       <File FileName="Assets/StreamingAssets/DrinkData.json" />
+      <File FileName="Assets/StreamingAssets/TriviaDialogue.json" Line="2" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9f637335-42b6-4c76-9450-7eaaaeb70b55" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="40a9067f-a9da-44b7-8a9c-f85631e47633" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

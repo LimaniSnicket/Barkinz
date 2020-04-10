@@ -9,13 +9,13 @@ public class PurchasingBehavior : MonoBehaviour
 {
     private static PurchasingBehavior purchase;
     private static Tile PlacementTile;
-    private static PlaceableObject objectToPlace;
+    public static PlaceableObject objectToPlace;
     public static ConfirmationMenu confirmationMenu;
     public static event Action<PlaceableObject, bool> AdjustItemInventory;
 
-    public PlaceableObject purchaseToConfirm { get; set; }
+    public static PlaceableObject purchaseToConfirm { get; set; }
     PlaceableObject[] placeablesFromResources;
-    static PurchaseButton[] purchaseButtons;
+    public PurchaseButton[] purchaseButtons;
 
     public PlaceableObject testPlacement;
 
@@ -44,12 +44,11 @@ public class PurchasingBehavior : MonoBehaviour
         placeablesFromResources = Resources.LoadAll<PlaceableObject>("PlaceableObjects");
         purchaseButtons = new PurchaseButton[placeablesFromResources.Length];
         int temp;
-        for (int i =0; i< placeablesFromResources.Length; i++)
+        for (int i = 0; i< placeablesFromResources.Length; i++)
         {
             temp = i;
             GameObject newPurchaseButton = Instantiate(purchaseButtonPrefab, MenuBackground.GetComponent<RectTransform>());
-            purchaseButtons[i] = new PurchaseButton(newPurchaseButton, placeablesFromResources[i]);
-            purchaseButtons[temp].purchaseButton.onClick.AddListener(() => purchaseButtons[temp].OnClickSetObjectToPurchase(this));
+            purchaseButtons[temp] = new PurchaseButton(newPurchaseButton, placeablesFromResources[temp]);
         }
     }
 
@@ -98,7 +97,7 @@ public class PurchasingBehavior : MonoBehaviour
     }
 
     public static event Action<Tile, PlaceableObject> ObjectPlacementConfirmed;
-    void ConfirmObjectPlacement()
+    public static void ConfirmObjectPlacement()
     {
         if (objectToPlace != null)
         {
@@ -140,10 +139,22 @@ public class InventorySettings
 {
     private List<PlaceableObject> itemIndices;
     public List<InventoryListing> inventoryListings;
+    public InventoryListUIObject activeInventoryList;
 
     public InventorySettings() {
         itemIndices = new List<PlaceableObject>();
         inventoryListings = new List<InventoryListing>();
+    }
+
+    public void InitializeInventoryUIObject(GameObject parent, GameObject prefab)
+    {
+        activeInventoryList = new InventoryListUIObject(parent, prefab);
+        activeInventoryList.SetFromInventoryListing(this, true);
+        for(int i =0; i< activeInventoryList.inventoryButtons.Count; i++)
+        {
+            int t = i;
+            activeInventoryList.inventoryButtons[t].purchaseButton.onClick.AddListener(()=> OnClickGetObjectToSpawn(t));
+        }
     }
 
     public void AdjustInventory(PlaceableObject obj, bool add = true)
@@ -152,7 +163,8 @@ public class InventorySettings
         {
             int index = itemIndices.IndexOf(obj);
             inventoryListings[index].AdjustInventoryListing(add);
-            if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); }
+            activeInventoryList.Adjust(index, "x" + inventoryListings[index].amountOwned.ToString());
+            if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); activeInventoryList.Adjust(inventoryListings[index].item, false); }
         }
         else
         {
@@ -160,8 +172,16 @@ public class InventorySettings
             {
                 itemIndices.Add(obj);
                 inventoryListings.Add(new InventoryListing(obj));
+                activeInventoryList.Adjust(obj, true);
+                activeInventoryList.GetAtIndex(itemIndices.Count - 1).purchaseButton.onClick.AddListener(()=>OnClickGetObjectToSpawn(itemIndices.Count - 1));
             }
         }
+    }
+
+    public void OnClickGetObjectToSpawn(int index)
+    {
+        PurchasingBehavior.objectToPlace = itemIndices[index];
+        PurchasingBehavior.ConfirmObjectPlacement();
     }
 
     bool Owned(PlaceableObject obj)
@@ -201,17 +221,68 @@ public class InventorySettings
 [Serializable]
 public struct InventoryListUIObject
 {
-    private GameObject parentObject;
-    public GameObject buttonPrefab;
-    public InventoryListUIObject(GameObject parent, GameObject prefab)
+    public GameObject parentObject { get; private set; }
+    public GameObject prefab;
+    public List<PurchaseButton> inventoryButtons;
+    public InventoryListUIObject(GameObject parent, GameObject buttonPrefab)
     {
         parentObject = parent;
-        buttonPrefab = prefab;
+        prefab = buttonPrefab;
+        inventoryButtons = new List<PurchaseButton>();
     }
 
-    public void OpenActiveInventory(InventorySettings activeInventory)
+    public void SetFromInventoryListing(InventorySettings listings, bool initialize)
     {
+        if (initialize) { SetFromInventoryListing(listings); } 
+    }
 
+    void SetFromInventoryListing(InventorySettings listings)
+    {
+        for (int i = 0; i < listings.inventoryListings.Count; i++)
+        {
+            Adjust(listings.inventoryListings[i].item, true);
+
+        }
+    }
+
+    public PurchaseButton GetAtIndex(int i)
+    {
+        return inventoryButtons[i];
+    }
+
+    public void Toggle(bool tog = true)
+    {
+        parentObject.SetActive(tog);
+    }
+
+    public void Adjust(int index, string message)
+    {
+        try
+        {
+            GetAtIndex(index).additionalTextDisplay.text = message;
+        } catch(IndexOutOfRangeException) { Debug.Log("Tried to adjust an inventory listing that was out of bounds."); }
+    }
+
+    public void Adjust(PlaceableObject p, bool add)
+    {
+        if (add)
+        {
+            GameObject g = GameObject.Instantiate(prefab, parentObject.GetComponent<RectTransform>());
+            PurchaseButton pb = new PurchaseButton(g, p, "x 1");
+            inventoryButtons.Add(pb);
+        } else
+        {
+            foreach(var b in inventoryButtons)
+            {
+                if(b.objectForSale == p)
+                {
+                    PurchaseButton dstry = b;
+                    inventoryButtons.Remove(b);
+                    GameObject.Destroy(dstry.gameObject);
+                    return;
+                }
+            }
+        }
     }
 }
 
@@ -237,6 +308,7 @@ public struct ConfirmationMenu
     {
         bool currentState = MenuContainer.activeSelf;
         MenuContainer.SetActive(!currentState);
+        ConfirmationMessageText.text = Message + '\n' + defaultMessage;
     }
 
     public void SetMessage(string message)
@@ -251,23 +323,35 @@ public struct ConfirmationMenu
 }
 
 [Serializable]
-public struct PurchaseButton
+public class PurchaseButton
 {
+    public GameObject gameObject { get; private set; }
     public Button purchaseButton;
     public TextMeshProUGUI additionalTextDisplay;
     public PlaceableObject objectForSale;
     public PurchaseButton(GameObject prefab, PlaceableObject p)
     {
+        gameObject = prefab;
         purchaseButton = prefab.GetComponentInChildren<Button>();
         additionalTextDisplay = prefab.GetComponentInChildren<TextMeshProUGUI>();
         objectForSale = p;
         SetComponentValues();
+        purchaseButton.onClick.AddListener(()=> OnClickSetObjectToPurchase());
     }
 
-    public void OnClickSetObjectToPurchase(PurchasingBehavior p)
+    public PurchaseButton(GameObject prefab, PlaceableObject p, string message)
     {
-        p.purchaseToConfirm = objectForSale;
-        PurchasingBehavior.confirmationMenu.SetMessage("PURCHASE " + objectForSale.ObjectLookup.ToUpper());
+        gameObject = prefab;
+        purchaseButton = prefab.GetComponentInChildren<Button>();
+        additionalTextDisplay = prefab.GetComponentInChildren<TextMeshProUGUI>();
+        objectForSale = p;
+        SetComponentValues(message);
+    }
+
+    public void OnClickSetObjectToPurchase()
+    {
+        PurchasingBehavior.purchaseToConfirm = objectForSale;
+        PurchasingBehavior.confirmationMenu.SetMessage("PURCHASING " + objectForSale.ObjectLookup.ToUpper());
         PurchasingBehavior.confirmationMenu.ToggleActivation();
     }
 
@@ -275,6 +359,12 @@ public struct PurchaseButton
     {
         purchaseButton.GetComponentInChildren<Text>().text = objectForSale.ObjectLookup;
         additionalTextDisplay.text = "$" + objectForSale.PurchasePrice.ToString();
+    }
+
+    public void SetComponentValues(string additionalMessage)
+    {
+        purchaseButton.GetComponentInChildren<Text>().text = objectForSale.ObjectLookup;
+        additionalTextDisplay.text = additionalMessage;
     }
 }
 

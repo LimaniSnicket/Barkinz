@@ -13,6 +13,7 @@ public class TriviaScript : MonoBehaviour
     private string hiddenAnswer, displayAnswer;
     public List<char> characterInput;
     public ActivePlayer player;
+    string dialoguePath;
 
     string path;
     public TriviaLoad triviaLookup;

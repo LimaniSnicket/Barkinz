@@ -13,7 +13,7 @@ public class WorldTile : MonoBehaviour
     public Dictionary<GameObject, Tile> TileLookup;
     public Tile[,] GridPositions;
 
-    public Tile PlayerPositionTile;
+    public Tile PlayerPositionTile, StartTile;
     private Tile mouseHoverTile;
 
     public GameObject PlaceableObjectPrefab;
@@ -30,19 +30,18 @@ public class WorldTile : MonoBehaviour
 
     private void Update()
     {
+        StartTile.isStartingTile = true;
         if (Input.GetMouseButtonDown(1))
         {
-            //if (Tiles.Contains(mouseHoverTile))
-            //{
-            //    SetTargetTileViaClick(mouseHoverTile);
-            //}
             CameraMovement.ResetCameraZoom();
+            if (MinigameManager.ValidMode(ActiveGameFunction.FOCUS)) { MinigameManager.ExitMode(); }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && MinigameManager.ValidMode(ActiveGameFunction.NONE))
         {
             if (Tiles.Contains(mouseHoverTile))
             {
+                MinigameManager.EnterGameMode(ActiveGameFunction.FOCUS);
                 SetTargetTileViaClick(mouseHoverTile);
                 CameraMovement.ZoomOn(mouseHoverTile);
             }
@@ -55,13 +54,13 @@ public class WorldTile : MonoBehaviour
             Tile t = TileLookup[rh.transform.gameObject];
             if (mouseHoverTile != t)
             {
-                mouseHoverTile.SetSpriteColor(Color.red);
+                mouseHoverTile.SetSpriteColor(new Color(1, 1, 1, 0.3f));
                 mouseHoverTile = t;
-                mouseHoverTile.SetSpriteColor(Color.blue);
+                mouseHoverTile.SetSpriteColor(new Color(0, 0, 1, 0.5f));
             }
         } else
         {
-            mouseHoverTile.SetSpriteColor(Color.red);
+            mouseHoverTile.SetSpriteColor(new Color(1, 1, 1, 0.3f));
             mouseHoverTile = new Tile();
         }
 
@@ -194,13 +193,16 @@ public class WorldTile : MonoBehaviour
                 GridPositions[i, j] = t;
             }
         }
-        PlayerPositionTile = GridPositions[0,0];
+        PlayerPositionTile = GridPositions[Median(0, tileColumns), 0];
+        StartTile = PlayerPositionTile;
     }
 
     void UpdatePrimaryBarkinzOnQuit(BarkinzInfo b)
     {
         b.UpdateWorldTileSettings(this);
     }
+
+    int Median(int low, int high) { return (Mathf.CeilToInt((low + high) / 2)); }
 
     private void OnDestroy()
     {
@@ -215,12 +217,12 @@ public class WorldTile : MonoBehaviour
 }
 
 [Serializable]
-public class Tile: IZoomOn
+public class Tile : IZoomOn
 {
     private GameObject go;
     private SpriteRenderer TileRenderer;
     public float width, length;
-    public bool occupied;
+    public bool occupied, isStartingTile;
     public Vector3 centerPosition;
     public Vector2Int GridPosition { get; private set; }
 
@@ -228,6 +230,7 @@ public class Tile: IZoomOn
 
     public Transform ZoomObjectTransform => go.transform;
     public float CameraOrthoSize => 3;
+    public bool placeableTile { get => !occupied && !isStartingTile; }
 
     public static event Action<PlaceableObject> RemovedPlacedObjectFromTile;
 
@@ -247,7 +250,7 @@ public class Tile: IZoomOn
         BoxCollider b = g.AddComponent<BoxCollider>();
         b.isTrigger = true;
         TileRenderer.sprite = s;
-        TileRenderer.color = Color.red;
+        TileRenderer.color = new Color(1, 1, 1, 0.3f);
         g.transform.SetParent(parentTile.transform);
     }
 
@@ -261,7 +264,7 @@ public class Tile: IZoomOn
         BoxCollider b = g.AddComponent<BoxCollider>();
         b.isTrigger = true;
         TileRenderer.sprite = s;
-        TileRenderer.color = Color.red;
+        TileRenderer.color = new Color(1,1,1,0.3f);
         g.transform.SetParent(parentTile.transform);
         GridPosition = new Vector2Int(i, j);
     }
@@ -299,20 +302,10 @@ public class Tile: IZoomOn
 }
 
 [Serializable]
-public class TileFocuser
-{
-    public bool InFocus;
-    public Tile FocusOn;
-
-    public GameObject inventoryListing;
-
-}
-
-[Serializable]
 public class WorldTileSettings
 {
     public List<Tile> TileLayoutSettings;
-    public Tile PlayerTile;
+    public Tile PlayerTile, StartTile;
     public Vector2Int playerPosition;
     public List<ObjectPlacementInfo> ObjectPlacementData;
     public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
@@ -320,7 +313,8 @@ public class WorldTileSettings
     {
         TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
         PlayerTile = toSave.PlayerPositionTile;
-        playerPosition = toSave.PlayerPositionTile.GridPosition;
+        StartTile = toSave.StartTile;
+        playerPosition = toSave.StartTile.GridPosition;//toSave.PlayerPositionTile.GridPosition;
         ObjectPlacementData = new List<ObjectPlacementInfo>();
         foreach (var o in toSave.ObjectsInTile)
         {
