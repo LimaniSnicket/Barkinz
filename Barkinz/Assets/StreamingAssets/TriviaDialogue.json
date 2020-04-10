@@ -1,0 +1,26 @@
+﻿{
+  "nodesToRead": [
+    {
+      "ID": 0,
+      "speaker": "Trish",
+      "lines": [
+        "Heyyy! You're new around here ain'tcha?!",
+        "Well come on, don't be shy! I don't peck!",
+        "I'm Trish! I'm in charge of running Trivia night here at the Boozy Burrow!",
+        "The way it works is that I'll ask ya a quick question, and if you give me a right answer, you win some cold hard cash!",
+        "But I also have to understand what you're saying, cause I'm not a mind reader.",
+        "Here we go!"
+      ],
+      "pointer": -1
+    },
+    {
+      "ID": 1,
+      "speaker": "Trish",
+      "lines": [
+        "Heyyy you! Back for more?",
+        "Let's go!"
+      ],
+      "pointer": -1
+    }
+  ]
+}

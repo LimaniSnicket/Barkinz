@@ -1,24 +1,24 @@
 ﻿{
-  "nodesToRead": [
-    {
-      "ID": 0,
-      "speaker": "Meerkat Mac",
-      "lines": [
-        "...",
-        "...",
-        "Oh, hey there bud. Haven't seen you around here before. Welcome to--",
-        "<size=100>*COUGH COUGH HACK*</size>",
-        "AHEM",
-        "HmmM",
-        "Hmm",
-        "...",
-        "Welcome to The Boozy Burrow, the name's Mac and I'll be pourin' yer drinks while yer here...<size=35>so you fuckin' better pay up...</size>.",
-        "Yer first drink though, that's on me cheif, don't even worry 'bout it!",
-        "Just tell yer friends that Mac ain't whack! I love all customers, new and old.",
-        "Now drink up and go make some mistakes...and if ya could spare a dime or two to help me spruce this place up, I'd fuckin' appreciate it.",
-        "<size=35>I have no clue what you kids are into these days...</size>"
-      ],
-      "pointer": -1
-    }
-  ]
+    "nodesToRead": [
+        {
+            "ID": 0,
+            "speaker": "Meerkat Mac",
+            "lines": [
+                "...",
+                "...",
+                "Oh, hey there bud. Haven't seen you around here before. Welcome to--",
+                "<size=100>*COUGH COUGH HACK*</size>",
+                "AHEM",
+                "HmmM",
+                "Hmm",
+                "...",
+                "Welcome to The Boozy Burrow, the name's Mac and I'll be pourin' yer drinks while yer here...<size=35>so you fuckin' better pay up...</size>.",
+                "Yer first drink though, that's on me cheif, don't even worry 'bout it!",
+                "Just tell yer friends that Mac ain't whack! I love all customers, new and old.",
+                "Now drink up and go make some mistakes...and if ya could spare a dime or two to help me spruce this place up, I'd fuckin' appreciate it.",
+                "<size=35>I have no clue what you kids are into these days...</size>"
+            ],
+            "pointer": -1
+        }
+    ]
 }

@@ -20,6 +20,7 @@ public class MinigameManager : MonoBehaviour
     ActiveGameFunction toEnter;
     ActivePlayer player;
     public TextMeshProUGUI dialogueTextMesh;
+    public Image TextBG;
 
 
     public DialogueReader dialogueReader;
@@ -65,20 +66,22 @@ public class MinigameManager : MonoBehaviour
         dialogueReader.MaintainDialogueDisplay();
         AcceptPlayerInput = ValidMode(ActiveGameFunction.NONE);
 
-        if (Input.GetKeyDown(KeyCode.T) && activeGameFunction == ActiveGameFunction.NONE)
-        {
-            activeGameFunction = ActiveGameFunction.TRIVIA;
-        }
+        //if (Input.GetKeyDown(KeyCode.T) && activeGameFunction == ActiveGameFunction.NONE)
+        //{
+        //    activeGameFunction = ActiveGameFunction.TRIVIA;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.P) && activeGameFunction == ActiveGameFunction.NONE)
+        if (Input.GetKeyDown(KeyCode.R) && activeGameFunction == ActiveGameFunction.NONE)
         {
             activeGameFunction = ActiveGameFunction.SHOP;
             EnteredMode(ActiveGameFunction.SHOP);
         }
 
+        TextBG.gameObject.SetActive(ValidMode(ActiveGameFunction.DIALOGUE));
+
         if (CanEnterMode())
         {
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 StartCoroutine(EnterMode(toEnter));
             }
@@ -239,7 +242,7 @@ public enum ActiveGameFunction
     DARTS = 3,
     TRIVIA = 4,
     DIALOGUE = 5,
-    PLACEMENT = 6
+    FOCUS = 6
 }
 
 public interface IGameMode

@@ -7,6 +7,7 @@ public class Dart : MonoBehaviour
 {
     Rigidbody dartBody { get => GetComponent<Rigidbody>(); }
     BoxCollider dartCollider { get => GetComponent<BoxCollider>(); }
+    AudioSource audioSource { get => GetComponent<AudioSource>(); }
     ActivePlayer activePlayer;
 
     public bool Thrown;
@@ -67,6 +68,7 @@ public class Dart : MonoBehaviour
         Color c =  t.GetPixelBilinear(v.x, v.y);
         int pointVal = int.Parse(collision.gameObject.name);
         DartHit(c, pointVal);
+        audioSource.Play();
         Destroy(this);
     }
 
