@@ -13,6 +13,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public IntoxicationSettings ActiveSessionIntoxication;
     public InventorySettings activeInventory;
     public static event Action<string> EnteredTaggedArea;
+    public static event Action<string, string> EnteredTaggedAreaWithDialogue;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
     public Transform ZoomObjectTransform { get => transform; }
@@ -56,9 +57,15 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         if (Bartender.DrinkActive())
         {
             chugSpeed += Time.deltaTime * .75f;
-            Bartender.currentDrink.SipDrink(Mathf.Max(chugSpeed, 2));
+            Bartender.currentDrink.SipDrink(Mathf.Min(chugSpeed, 4));
             ActiveSessionIntoxication.Intoxicate(chugSpeed, Bartender.currentDrink);
         }
+    }
+
+    public float ChugAngleTilt(float chugValue, float chugMax, float angleMax)
+    {
+        float targetAngle = (angleMax * chugValue) /chugMax;
+        return targetAngle;
     }
 
     void OnInventoryAdjustment(PlaceableObject obj, bool add)
@@ -135,7 +142,13 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     private void OnTriggerEnter(Collider collision)
     {
-        EnteredTaggedArea(collision.tag);
+        if (collision.GetComponent<DialogueSource>())
+        {
+            EnteredTaggedAreaWithDialogue(collision.tag, collision.GetComponent<DialogueSource>().filePath);
+        } else
+        {
+            EnteredTaggedArea(collision.tag);
+        }
     }
 
     private void OnDestroy()

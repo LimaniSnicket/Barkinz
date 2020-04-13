@@ -17,6 +17,7 @@ public class Bartender : MonoBehaviour, IGameMode
     public DrinkDisplay DrinkDisplay;
 
     public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.BAR; }
+    ActivePlayer player;
 
     public static event Action<float> DrinkOnTab;
     public DrinkMenu drinkMenu;
@@ -28,6 +29,7 @@ public class Bartender : MonoBehaviour, IGameMode
         InitializeDrinkMenu(drinkPath);
         MinigameManager.EnteredMode += OnModeChange;
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
+        ActivePlayer.SetActivePlayer += OnSetActivePlayer;
     }
 
     private void Start()
@@ -48,7 +50,7 @@ public class Bartender : MonoBehaviour, IGameMode
     private void Update()
     {
         debugCurrent = currentDrink;
-        DrinkDisplay.RunDrinkDisplay(currentDrink);
+        DrinkDisplay.RunDrinkDisplay(currentDrink, player);
     }
 
     void OnClickOrderDrink(Drink d)
@@ -77,6 +79,11 @@ public class Bartender : MonoBehaviour, IGameMode
         }
     }
 
+    void OnSetActivePlayer(ActivePlayer p)
+    {
+        player = p;
+    }
+
     void OnBarkinzLoad(BarkinzInfo primary)
     {
         currentDrink = new Drink();
@@ -95,6 +102,7 @@ public class Bartender : MonoBehaviour, IGameMode
     void OnDestroy()
     {
         MinigameManager.EnteredMode -= OnModeChange;
+        ActivePlayer.SetActivePlayer -= OnSetActivePlayer;
     }
 }
 
@@ -175,9 +183,10 @@ public struct DrinkDisplay
         fillDisplay.value = drinkToDisplay.amountLeft;
     }
 
-    public void RunDrinkDisplay(Drink d)
+    public void RunDrinkDisplay(Drink d, ActivePlayer p)
     {
         fillDisplay.value = d.amountLeft;
+        Debug.Log(p.ChugAngleTilt(p.chugSpeed, 4, 90));
     }
 }
 

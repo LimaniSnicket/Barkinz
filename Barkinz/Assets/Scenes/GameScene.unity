@@ -5340,6 +5340,7 @@ GameObject:
   - component: {fileID: 1509018692}
   - component: {fileID: 1509018691}
   - component: {fileID: 1509018690}
+  - component: {fileID: 1509018695}
   m_Layer: 0
   m_Name: Trivia
   m_TagString: Trivia
@@ -5429,13 +5430,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509018689}
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 4.34, y: 0.66, z: -4.46}
+  m_LocalPosition: {x: 4.34, y: 0.06, z: -4.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1972911822}
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+--- !u!114 &1509018695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509018689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47de7ec5a02d14a378206c8952d79a2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueFileName: TriviaDialogue
 --- !u!1 &1551767643
 GameObject:
   m_ObjectHideFlags: 0
@@ -6862,7 +6876,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1972911821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.989, z: 0}
+  m_LocalPosition: {x: 0, y: 0.88, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 1509018694}
@@ -6905,7 +6919,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 83b5a7ffede184eb08811db21a033ebe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b4742a29beda47f8b7d5e7ce0f4bdbb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

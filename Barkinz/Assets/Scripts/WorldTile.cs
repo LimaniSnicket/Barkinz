@@ -31,10 +31,10 @@ public class WorldTile : MonoBehaviour
     private void Update()
     {
         StartTile.isStartingTile = true;
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && MinigameManager.ValidMode(ActiveGameFunction.FOCUS))
         {
             CameraMovement.ResetCameraZoom();
-            if (MinigameManager.ValidMode(ActiveGameFunction.FOCUS)) { MinigameManager.ExitMode(); }
+            MinigameManager.ExitMode();
         }
 
         if (Input.GetMouseButtonDown(0) && MinigameManager.ValidMode(ActiveGameFunction.NONE))
