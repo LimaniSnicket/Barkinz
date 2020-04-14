@@ -17,6 +17,7 @@ public class BarkinzInfo : ScriptableObject
     [SerializeField] private WorldTileSettings individualSettings;
     [SerializeField] private IntoxicationSettings barkinzIntoxication;
     [SerializeField] private InventorySettings barkinzInventory;
+    public List<ActiveGameFunction> playedModes;
 
     public void ClearData()
     {

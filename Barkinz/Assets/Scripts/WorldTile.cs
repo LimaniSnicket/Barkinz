@@ -23,18 +23,20 @@ public class WorldTile : MonoBehaviour
     private void Awake()
     {
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
+        BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed += OnObjectPlacementConfirmed;
         PlayerPositionTile = new Tile();
+        StartTile = new Tile();
         mouseHoverTile = new Tile();
     }
 
     private void Update()
     {
         StartTile.isStartingTile = true;
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && MinigameManager.ValidMode(ActiveGameFunction.FOCUS))
         {
             CameraMovement.ResetCameraZoom();
-            if (MinigameManager.ValidMode(ActiveGameFunction.FOCUS)) { MinigameManager.ExitMode(); }
+            MinigameManager.ExitMode();
         }
 
         if (Input.GetMouseButtonDown(0) && MinigameManager.ValidMode(ActiveGameFunction.NONE))
@@ -207,10 +209,16 @@ public class WorldTile : MonoBehaviour
     private void OnDestroy()
     {
         BarkinzManager.InitializeBarkinzData -= OnBarkinzLoad;
+        BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed -= OnObjectPlacementConfirmed;
     }
 
     private void OnApplicationQuit()
+    {
+        OnGameSceneExit();
+    }
+
+    void OnGameSceneExit()
     {
         UpdatePrimaryBarkinzOnQuit(BarkinzManager.PrimaryBarkinz);
     }
@@ -305,22 +313,22 @@ public class Tile : IZoomOn
 public class WorldTileSettings
 {
     public List<Tile> TileLayoutSettings;
-    public Tile PlayerTile, StartTile;
-    public Vector2Int playerPosition;
+    public Tile StartTile;
+    public Vector2Int startTilePosition;
     public List<ObjectPlacementInfo> ObjectPlacementData;
     public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
     public WorldTileSettings(WorldTile toSave)
     {
         TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
-        PlayerTile = toSave.PlayerPositionTile;
-        StartTile = toSave.StartTile;
-        playerPosition = toSave.StartTile.GridPosition;//toSave.PlayerPositionTile.GridPosition;
         ObjectPlacementData = new List<ObjectPlacementInfo>();
         foreach (var o in toSave.ObjectsInTile)
         {
             ObjectPlacementData.Add(new ObjectPlacementInfo(o));
         }
+        startTilePosition = toSave.StartTile.GridPosition;
+        StartTile = toSave.StartTile;
     }
+
     public void GenerateTiles(WorldTile parentTile)
     {
         foreach(var tile in TileLayoutSettings)
@@ -332,7 +340,8 @@ public class WorldTileSettings
             parentTile.GridPositions[(int)t.GridPosition.x, (int)t.GridPosition.y] = t;
             parentTile.TileLookup.Add(t.GetGameObject(), t);
         }
-        parentTile.PlayerPositionTile = parentTile.GetTileAtPosition(playerPosition.x, playerPosition.y);
+        parentTile.StartTile = StartTile;
+        parentTile.PlayerPositionTile = parentTile.StartTile;
     }
 
     public void InitializeWorld(WorldTile t)

@@ -8,6 +8,7 @@ using TMPro;
 
 public class TriviaScript : MonoBehaviour
 {
+    public GameObject questionUI;
     public TMP_InputField AnswerInput;
     public TextMeshProUGUI QuestionText, AnswerText;
     private string hiddenAnswer, displayAnswer;
@@ -21,13 +22,10 @@ public class TriviaScript : MonoBehaviour
     public TriviaQuestion activeTriviaQuestion;
     public Queue<TriviaQuestion> incorrectBacklog;
 
-    Dictionary<KeyCode, char[]> KeyOffsetMapping;
-    KeyCode pressed;
+    public GameObject BettingUIParent;
+    public BettingData betData;
 
-    string keycodePath;
-    public KeyOffsetData keyOffsetData;
-    public Dictionary<KeyCode, List<KeyCodeBinding>> keyOffsetDictionary;
-    public OffsetType activeOffset;
+    bool bettingPhase;
 
     public int OffsetAmount;
 
@@ -37,28 +35,29 @@ public class TriviaScript : MonoBehaviour
         characterInput = new List<char>();
         displayAnswer = "";
         path = Application.streamingAssetsPath + "/TriviaData.json";
-        keycodePath = Application.streamingAssetsPath + "/KeyOffsetData.json";
         LoadTriviaData();
-        LoadKeyOffsetData();
         availableTriviaQuestions = new List<TriviaQuestion>(triviaLookup.TriviaQuestions);
         activeTriviaQuestion = GetTriviaQuestion();
         incorrectBacklog = new Queue<TriviaQuestion>();
-        KeyOffsetMapping = GetKeyOffsetMapping();
-        keyOffsetDictionary = keyOffsetData.KeyCodeToOffsetDictionary();
-        activeOffset = OffsetType.None;
+        betData = new BettingData(BettingUIParent);
+        betData.readyButton.onClick.AddListener(()=> OnClickPlaceBet());
         OffsetAmount = 0;
     }
+
+    string answerStatus;
 
     private void Update()
     {
         AnswerText.text = displayAnswer;
-        QuestionText.text = activeTriviaQuestion.question;
-        if (Input.GetKeyDown(KeyCode.Return))
+        QuestionText.text = bettingPhase? answerStatus + " Alright! Next Question, comin' up whenever you're ready!" : activeTriviaQuestion.question;
+        if (Input.GetKeyDown(KeyCode.Return) && !bettingPhase)
         {
             AnswerQuestion();
-            OffsetAmount = Mathf.FloorToInt(player.ActiveSessionIntoxication.intoxicationLevel);
-            activeOffset = RandomizeCharacter()? (OffsetType)Mathf.FloorToInt(UnityEngine.Random.Range(1, 5)): OffsetType.None;
+            OffsetAmount = Mathf.FloorToInt(player.ActiveSessionIntoxication.intoxicationLevel/10);
+            bettingPhase = true;
         }
+        betData.gameObject.SetActive(bettingPhase);
+        betData.activeBetDisplay.text = betData.betDisplayMessage;
     }
 
     void OnAnswerInputDoCaesarCipher()
@@ -76,16 +75,17 @@ public class TriviaScript : MonoBehaviour
     {
         if (activeTriviaQuestion.Evaluate(displayAnswer))
         {
-            float reward = Mathf.Max(1, player.ActiveSessionIntoxication.intoxicationLevel / 100 * activeTriviaQuestion.pointWorth);
+            float reward = Mathf.Max(1, player.ActiveSessionIntoxication.intoxicationLevel / 100 * activeTriviaQuestion.pointWorth * betData.activeBetAmount);
             MinigameManager.RewardPlayer(reward);
+            answerStatus = "Correct!";
         } else
         {
             incorrectBacklog.Enqueue(activeTriviaQuestion);
+            answerStatus = "Oops! Incorrect! <size=45>haha idiot</size>";
         }
         displayAnswer = "";
         AnswerInput.text = "";
         characterInput.Clear();
-        activeTriviaQuestion = GetTriviaQuestion();
         if (incorrectBacklog != null && incorrectBacklog.Count > 0 && incorrectBacklog.Count % 3 == 0) { availableTriviaQuestions.Add(incorrectBacklog.Dequeue()); }
         
     }
@@ -103,16 +103,17 @@ public class TriviaScript : MonoBehaviour
         typing = false;
     }
 
+    void OnClickPlaceBet()
+    {
+        MinigameManager.activeCurrency -= betData.activeBetAmount;
+        bettingPhase = false;
+        activeTriviaQuestion = GetTriviaQuestion();
+    }
+
     void LoadTriviaData()
     {
         string json = File.ReadAllText(path);
         triviaLookup = JsonUtility.FromJson<TriviaLoad>(json);
-    }
-
-    void LoadKeyOffsetData()
-    {
-        string json = File.ReadAllText(keycodePath);
-        keyOffsetData = JsonUtility.FromJson<KeyOffsetData>(json);
     }
 
     TriviaQuestion GetTriviaQuestion()
@@ -123,16 +124,6 @@ public class TriviaScript : MonoBehaviour
         return tq;
     }
 
-    Dictionary<KeyCode, char[]> GetKeyOffsetMapping()
-    {
-        Dictionary<KeyCode, char[]> r = new Dictionary<KeyCode, char[]>();
-        r.Add(KeyCode.A, new char[] {'q', 's', 'z'});
-        r.Add(KeyCode.I, new char[] { 'u', 'k', 'o'});
-        r.Add(KeyCode.U, new char[] { 'y', 'i', 'j' });
-        r.Add(KeyCode.O, new char[] { 'i', 'p', 'l'});
-        r.Add(KeyCode.E, new char[] { 'w', 'd', 'r'});
-        return r;
-    }
 
     bool RandomizeCharacter()
     {
@@ -140,16 +131,41 @@ public class TriviaScript : MonoBehaviour
         return player.ActiveSessionIntoxication.intoxicationLevel >= rand;
     }
 
-    char GetChar(KeyCode k)
-    {
-        char[] possibilities = KeyOffsetMapping[k];
-        return possibilities[(int)UnityEngine.Random.Range(0, possibilities.Length)];
-    }
-
     public char CaesarCipher(char input, int shift)
     {
         if(shift == 0) { return input; }
         return (char)((int)input + shift);
+    }
+
+}
+
+[Serializable]
+public class BettingData
+{
+    public GameObject gameObject { get; private set; }
+    public int activeBetAmount { get; private set; }
+    public Button subtractButton, addButton, readyButton;
+    public TextMeshProUGUI activeBetDisplay;
+    int minBet = 1;
+    int maxBet = 5;
+    public BettingData(GameObject parent)
+    {
+        gameObject = parent;
+        activeBetAmount = minBet;
+        subtractButton = parent.transform.Find("Subtract Button").GetComponent<Button>();
+        addButton = parent.transform.Find("Add Button").GetComponent<Button>();
+        subtractButton.onClick.AddListener(()=> AdjustBettingAmount(-1));
+        addButton.onClick.AddListener(()=> AdjustBettingAmount(1));
+        readyButton = parent.transform.Find("Ready Button").GetComponent<Button>();
+        activeBetDisplay = parent.transform.Find("Bet Display").GetComponent<TextMeshProUGUI>();
+    }
+
+    public string betDisplayMessage { get => "$: " + activeBetAmount.ToString(); }
+
+    public void AdjustBettingAmount(int adjustment)
+    {
+        if(adjustment < 0) { if (activeBetAmount>minBet) { activeBetAmount--; } }
+        if (adjustment > 0) { if (activeBetAmount < maxBet) { activeBetAmount++; } }
     }
 
 }
@@ -184,69 +200,9 @@ public class TriviaQuestion
     }
 }
 
-[Serializable]
-public class KeyOffsetData
-{
-    public List<KeyCodeOffset> KeyOffsetMaps;
-    public Dictionary<KeyCode, List<KeyCodeBinding>> KeyCodeToOffsetDictionary()
-    {
-        Dictionary<KeyCode, List<KeyCodeBinding>> keyValuePairs = new Dictionary<KeyCode, List<KeyCodeBinding>>();
-        foreach (KeyCodeOffset k in KeyOffsetMaps)
-        {
-            KeyCode key;
-            Enum.TryParse<KeyCode>(k.PrimaryKey, out key);
-            keyValuePairs.Add(key, CreateKeyCodeBindingList(k.OffsetPairs));
-        }
-        return keyValuePairs;
-    }
 
-    List<KeyCodeBinding> CreateKeyCodeBindingList(List<KeyBinding> k)
-    {
-        List<KeyCodeBinding> kb = new List<KeyCodeBinding>();
-        foreach (KeyBinding bind in k)
-        {
-            kb.Add(new KeyCodeBinding(bind));
-        }
-        return kb;
-    }
-}
 
-[Serializable]
-public class KeyCodeOffset
-{
-    public string PrimaryKey;
-    public List<KeyBinding> OffsetPairs;
-}
 
-[Serializable]
-public class KeyBinding
-{
-    public string Key;
-    public OffsetType Offset;
-}
 
-[Serializable]
-public class KeyCodeBinding
-{
-    public KeyCode keycode;
-    public OffsetType offset;
-    public KeyCodeBinding(KeyBinding k)
-    {
-        Enum.TryParse<KeyCode>(k.Key, out keycode);
-        offset = k.Offset;
-    }
-}
 
-public enum OffsetType
-{
-    None = 0,
-    LeftOne = 1,
-    UpOne = 2,
-    RightOne = 3,
-    DownOne = 4,
-    LeftTwo = 5,
-    UpTwo = 6,
-    RightTwo = 7,
-    DownTwo = 8
-}
 

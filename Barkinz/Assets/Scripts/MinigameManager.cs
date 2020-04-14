@@ -28,13 +28,17 @@ public class MinigameManager : MonoBehaviour
     public static bool SwappingMode { get; private set; }
     public static bool AcceptPlayerInput { get; private set; }
 
+
     private void Awake()
     {
         BarkinzManager.InitializeBarkinzData += SetCurrencyOnInitialize;
+        BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         Bartender.DrinkOnTab += OnDrinkTab;
         ActivePlayer.EnteredTaggedArea += OnEnteredTaggedArea;
+        ActivePlayer.EnteredTaggedAreaWithDialogue += OnEnteredTaggedDialogueArea;
         ActivePlayer.SetActivePlayer += OnActivePlayerSet;
         DialogueReader.OnDialogueCompleted += OnDialogueComplete;
+        MinigameManager.EnteredMode += OnEnteredMode;
     }
 
     private void Start()
@@ -66,11 +70,6 @@ public class MinigameManager : MonoBehaviour
         dialogueReader.MaintainDialogueDisplay();
         AcceptPlayerInput = ValidMode(ActiveGameFunction.NONE);
 
-        //if (Input.GetKeyDown(KeyCode.T) && activeGameFunction == ActiveGameFunction.NONE)
-        //{
-        //    activeGameFunction = ActiveGameFunction.TRIVIA;
-        //}
-
         if (Input.GetKeyDown(KeyCode.R) && activeGameFunction == ActiveGameFunction.NONE)
         {
             activeGameFunction = ActiveGameFunction.SHOP;
@@ -101,8 +100,14 @@ public class MinigameManager : MonoBehaviour
     public static void ExitMode()
     {
         gameManager.StartCoroutine(gameManager.EnterMode(ActiveGameFunction.NONE));
-        EnteredMode(ActiveGameFunction.NONE);
         CameraMovement.AlignWithTransform();
+        CameraMovement.ResetCameraZoom();
+    }
+
+    void OnEnteredMode(ActiveGameFunction m)
+    {
+        //wow i'm dumb
+        BarkinzManager.AddToPlayedModes(m);
     }
 
     void OnActivePlayerSet(ActivePlayer p)
@@ -120,7 +125,7 @@ public class MinigameManager : MonoBehaviour
         activeCurrency -= t;
     }
 
-    public static bool CanEnterMode()
+    public static bool CanEnterMode(bool checkBacklog = false)
     {
         return !SwappingMode && ValidMode(ActiveGameFunction.NONE);
     }
@@ -149,9 +154,21 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-    void OnDialogueComplete()
+    void OnEnteredTaggedDialogueArea(string t, string dialoguePath)
     {
-        StartCoroutine(EnterMode(ActiveGameFunction.NONE, MeerkatMac));
+        dialogueReader.InitializeDialogue(dialoguePath, this);
+        StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE));
+    }
+
+    void OnDialogueComplete(string mode)
+    {
+        Debug.Log(mode);
+        ActiveGameFunction function = ActiveGameFunction.NONE;
+        try {function = (ActiveGameFunction)Enum.Parse(typeof(ActiveGameFunction), mode); } catch (ArgumentNullException) { }
+        if(function == ActiveGameFunction.NONE) { StartCoroutine(EnterMode(ActiveGameFunction.NONE, MeerkatMac)); } else
+        {
+            StartCoroutine(EnterMode(function));
+        }
         AcceptPlayerInput = true;
         CameraMovement.ResetCameraZoom();
     }
@@ -202,11 +219,15 @@ public class MinigameManager : MonoBehaviour
         BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
     }
 
+    void OnGameSceneExit() { BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency; }
+
     private void OnDestroy()
     {
         BarkinzManager.InitializeBarkinzData -= SetCurrencyOnInitialize;
+        BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         Bartender.DrinkOnTab -= OnDrinkTab;
         ActivePlayer.EnteredTaggedArea -= OnEnteredTaggedArea;
+        ActivePlayer.EnteredTaggedAreaWithDialogue -= OnEnteredTaggedDialogueArea;
         ActivePlayer.SetActivePlayer -= OnActivePlayerSet;
         DialogueReader.OnDialogueCompleted -= OnDialogueComplete;
     }
@@ -257,15 +278,16 @@ public class DialogueReader
     public TextMeshProUGUI dialogueTextMesh;
     public DialogueNode activeDialogueNode;
     public DialogueTree treeToRead;
-    public ActiveGameFunction previousGameFunction { get; private set; }
     public bool onFinalNode { get => activeDialogueNode != null && activeDialogueNode.pointer < 0; }
     public string activeLine, displayLine;
     public bool reading { get; private set; }
-    public DialogueReader() { activeDialogueNode = new DialogueNode(); }
-    public DialogueReader(TextMeshProUGUI textMesh) { dialogueTextMesh = textMesh; }
 
-    public delegate void DialogueComplete();
-    public static event DialogueComplete OnDialogueCompleted;
+    private Dictionary<string, DialogueTree> ArchivedDialogue;
+
+    public DialogueReader() { activeDialogueNode = new DialogueNode(); ArchivedDialogue = new Dictionary<string, DialogueTree>(); }
+    public DialogueReader(TextMeshProUGUI textMesh) { dialogueTextMesh = textMesh; activeDialogueNode = new DialogueNode(); ArchivedDialogue = new Dictionary<string, DialogueTree>(); }
+
+    public static event Action<string> OnDialogueCompleted;
 
     public void InitializeDialogue(string path, MonoBehaviour mb)
     {
@@ -310,7 +332,7 @@ public class DialogueReader
         {
             reading = false;
             Debug.Log("Exiting Dialogue");
-            OnDialogueCompleted();
+            OnDialogueCompleted(treeToRead.modeToTriggerOnComplete);
         }
         else
         {
@@ -348,8 +370,8 @@ public class DialogueReader
             {
                 activeLine += affector + c.Dequeue();
             }
-          
-            yield return new WaitForSeconds(interval);
+
+            if (!activeLine.EndsWith(" ")) { yield return new WaitForSeconds(interval); }
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 yield return new WaitForSeconds(interval / 2);
@@ -365,6 +387,8 @@ public class DialogueReader
 
 public class DialogueTree
 {
+    public int startingIndex;
+    public string modeToTriggerOnComplete;
     public List<DialogueNode> nodesToRead;
 }
 

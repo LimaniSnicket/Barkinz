@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Dart.cs" />
     <Compile Include="Assets\Scripts\DartsManager.cs" />
+    <Compile Include="Assets\Scripts\DialogueSource.cs" />
     <Compile Include="Assets\Scripts\HUD.cs" />
     <Compile Include="Assets\Scripts\MinigameManager.cs" />
     <Compile Include="Assets\Scripts\PlacedObject.cs" />
