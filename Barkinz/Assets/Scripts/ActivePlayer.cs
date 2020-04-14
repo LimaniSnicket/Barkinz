@@ -27,6 +27,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         WorldTile.TileSelected += OnTileSelected;
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
+        BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
         MinigameManager.EnteredMode += OnEnteredMode;
     }
@@ -155,11 +156,17 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
+        BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
         MinigameManager.EnteredMode -= OnEnteredMode;
     }
 
     private void OnApplicationQuit()
+    {
+        OnGameSceneExit();
+    }
+
+    void OnGameSceneExit()
     {
         SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
         SetBarkinzInventoryData(BarkinzManager.PrimaryBarkinz);

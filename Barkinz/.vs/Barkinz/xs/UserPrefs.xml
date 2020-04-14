@@ -1,32 +1,31 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ScriptableObjects/BarkinzInfo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TriviaScript.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="43" Column="76" />
-      <File FileName="Assets/Scripts/BarkinzManager.cs" />
-      <File FileName="Assets/Scripts/WorldTile.cs" />
-      <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
-      <File FileName="Assets/Scripts/ActivePlayer.cs" />
-      <File FileName="Assets/Scripts/Bartender.cs" />
-      <File FileName="Assets/Scripts/HUD.cs" />
-      <File FileName="Assets/Scripts/TriviaScript.cs" />
-      <File FileName="Assets/StreamingAssets/TriviaData.json" />
-      <File FileName="Assets/StreamingAssets/KeyOffsetData.json" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="61" Column="6" />
+      <File FileName="Assets/Scripts/BarkinzManager.cs" Line="15" Column="35" />
+      <File FileName="Assets/Scripts/WorldTile.cs" Line="194" Column="54" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="159" Column="59" />
+      <File FileName="Assets/Scripts/Bartender.cs" Line="189" Column="11" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="23" Column="80" />
+      <File FileName="Assets/Scripts/TriviaScript.cs" Line="45" Column="6" />
+      <File FileName="Assets/StreamingAssets/TriviaData.json" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" Line="92" Column="13" />
       <File FileName="Assets/Scripts/Dart.cs" />
       <File FileName="Assets/Scripts/DartsManager.cs" />
       <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
       <File FileName="Assets/Scripts/PlacedObject.cs" />
-      <File FileName="Assets/Scripts/PurchasingBehavior.cs" />
-      <File FileName="Assets/Scripts/CameraEffectManager.cs" />
-      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" />
+      <File FileName="Assets/Scripts/PurchasingBehavior.cs" Line="255" Column="1" />
+      <File FileName="Assets/Scripts/CameraEffectManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" Line="17" Column="118" />
       <File FileName="Assets/StreamingAssets/DrinkData.json" />
-      <File FileName="Assets/StreamingAssets/TriviaDialogue.json" />
-      <File FileName="Assets/Scripts/DialogueSource.cs" />
+      <File FileName="Assets/StreamingAssets/TriviaDialogue.json" Line="15" Column="69" />
+      <File FileName="Assets/Scripts/DialogueSource.cs" Line="11" Column="25" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" Line="374" Column="90" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3aac6b75-553b-49b0-b296-47cb0e221669" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="85e23021-e9bd-4630-8c13-1ac0f3f1e1d8" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

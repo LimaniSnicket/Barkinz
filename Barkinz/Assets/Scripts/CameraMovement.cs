@@ -10,7 +10,7 @@ public class CameraMovement : MonoBehaviour
     private static Vector3 HomePosition;
     private static Quaternion HomeRotation;
     public float HomeOrthographicSize;
-    public bool Zoomed { get; private set; }
+    public static bool Zoomed { get; private set; }
 
     private void Start()
     {
@@ -84,12 +84,12 @@ public class CameraMovement : MonoBehaviour
     public static event Action<IZoomOn> ZoomedOnObject;
     public static void ZoomOn(IZoomOn zoom, bool adjustForward = false)
     {
-        if (!camMovement.Zoomed) {
+        if (!Zoomed) {
             Camera.main.orthographic = false;
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.ZoomCamPosition(), 5));
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 12));
             if (adjustForward) { camMovement.transform.forward = (zoom.ZoomObjectTransform.forward + zoom.ZoomObjectTransform.right); }
-            camMovement.Zoomed = true;
+            Zoomed = true;
             ZoomedOnObject(zoom);
         }
     }

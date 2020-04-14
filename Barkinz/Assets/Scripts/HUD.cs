@@ -6,6 +6,7 @@ using TMPro;
 
 public class HUD : MonoBehaviour
 {
+    public Button QuitToTitle;
     public TextMeshProUGUI CurrencyDisplay;
     public Slider IntoxicationSlider;
     public ActivePlayer player;
@@ -13,6 +14,7 @@ public class HUD : MonoBehaviour
     private void Start()
     {
         IntoxicationSlider.maxValue = 100;
+        if(QuitToTitle!= null) { QuitToTitle.onClick.AddListener(()=>BarkinzManager.OnClickQuitToMainMenu()); }
     }
 
     private void Update()

@@ -186,7 +186,7 @@ public struct DrinkDisplay
     public void RunDrinkDisplay(Drink d, ActivePlayer p)
     {
         fillDisplay.value = d.amountLeft;
-        Debug.Log(p.ChugAngleTilt(p.chugSpeed, 4, 90));
+        //Debug.Log(p.ChugAngleTilt(p.chugSpeed, 4, 90));
     }
 }
 

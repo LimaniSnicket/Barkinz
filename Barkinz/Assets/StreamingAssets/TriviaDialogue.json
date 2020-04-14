@@ -1,26 +1,30 @@
 ﻿{
-  "nodesToRead": [
-    {
-      "ID": 0,
-      "speaker": "Trish",
-      "lines": [
-        "Heyyy! You're new around here ain'tcha?!",
-        "Well come on, don't be shy! I don't peck!",
-        "I'm Trish! I'm in charge of running Trivia night here at the Boozy Burrow!",
-        "The way it works is that I'll ask ya a quick question, and if you give me a right answer, you win some cold hard cash!",
-        "But I also have to understand what you're saying, cause I'm not a mind reader.",
-        "Here we go!"
-      ],
-      "pointer": -1
-    },
-    {
-      "ID": 1,
-      "speaker": "Trish",
-      "lines": [
-        "Heyyy you! Back for more?",
-        "Let's go!"
-      ],
-      "pointer": -1
-    }
-  ]
+    "modeToTriggerOnComplete": "TRIVIA",
+    "nodesToRead": [
+        {
+            "ID": 0,
+            "speaker": "Trish",
+            "lines": [
+                "Heyyy! You're new around here ain'tcha?!",
+                "Well come on, don't be shy! I don't peck!",
+                "I'm Trish! I'm in charge of running Trivia night here at the Boozy Burrow!",
+                "The way it works is that I'll ask ya a quick question, and if you give me a right answer, you win some cold hard cash!",
+                "Base line bets are $1, but you can bump that up if you'd like!",
+                "<size=50>Or...if you get carried away with that good ol' 'Liquid Courage...</size>'",
+                "Oh-- I also have to understand what you're saying, cause I'm a toucan, not a mind reader.",
+                "OKOKOK Here we go! <size=50>I love my JOB!!</size>"
+            ],
+            "pointer": -1
+        },
+        {
+            "ID": 1,
+            "speaker": "Trish",
+            "lines": [
+                "Heyyy you! Back for more TRIVIA?",
+                "Let's go!",
+                "<size=50>God I feel so alive!</size>"
+            ],
+            "pointer": -1
+        }
+    ]
 }

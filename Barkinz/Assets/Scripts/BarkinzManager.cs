@@ -12,6 +12,17 @@ public class BarkinzManager : MonoBehaviour
 
     const string gameplaySceneName = "GameScene";
     public static string introductionDialoguePath { get; private set; }
+    private bool enteredGameScene;
+
+    public bool returnToMainMenu
+    {
+        get
+        {
+            if (SceneManager.GetActiveScene().name != gameplaySceneName) { return false; }
+            if (!MinigameManager.ValidMode(ActiveGameFunction.NONE)) { return false; }
+            return !CameraMovement.Zoomed;
+        }
+    }
 
     private void Awake()
     {
@@ -22,6 +33,8 @@ public class BarkinzManager : MonoBehaviour
     }
 
     public static event Action<BarkinzInfo> InitializeBarkinzData;
+    public delegate void QuittingGameScene();
+    public static event QuittingGameScene OnGameSceneExit;
 
     void OnSceneLoad(Scene s, LoadSceneMode mode)
     {
@@ -29,12 +42,29 @@ public class BarkinzManager : MonoBehaviour
         {
             InitializeBarkinzData(PrimaryBarkinz);
             Debug.Log("Initializing " + PrimaryBarkinz.name + " as Primary Barkinz");
+            enteredGameScene = true;
+        } else
+        {
+            if (enteredGameScene) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
         }
+    }
+
+    public static void AddToPlayedModes(ActiveGameFunction mode)
+    {
+        if (PrimaryBarkinz == null) { return; }
+        if (!PrimaryBarkinz.playedModes.Contains(mode)) { PrimaryBarkinz.playedModes.Add(mode); Debug.LogFormat("Adding {0} to list of played modes", mode.ToString()); }
+    }
+
+    public static void OnClickQuitToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        OnGameSceneExit();
     }
 
     private void OnApplicationQuit()
     {
-        if(SceneManager.GetActiveScene().name == gameplaySceneName) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
+        // if(SceneManager.GetActiveScene().name == gameplaySceneName) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
+        if (enteredGameScene) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
     }
 
     private void OnDestroy()
