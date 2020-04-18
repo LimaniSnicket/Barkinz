@@ -134,4 +134,9 @@ public static class Squeeze
     {
         return Mathf.Abs(f - comp) <= threshold;
     }
+
+    public static bool InRange(this float f, float floor, float ceil)
+    {
+        return f >= floor && f < ceil;
+    }
 }

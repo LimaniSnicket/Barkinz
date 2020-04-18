@@ -39,6 +39,7 @@ public class BarkinzInputManager : MonoBehaviour
         if (CodeValid())
         {
             BarkinzInfo b = BarkinzManager.BarkinzCodeLookup[inputCode];
+            try { UserDataStorage.activeUserData.RedeemBarkinz(b.name); } catch (System.NullReferenceException) { Debug.Log("User Data Storage is not present in scene"); }
             BarkinzProfile.gameObject.SetActive(true);
             BarkinzProfile.sprite = b.MainBarkinzSprite;
             BarkinzNameDisplay.text = b.BarkinzType.ToUpper();
@@ -52,6 +53,6 @@ public class BarkinzInputManager : MonoBehaviour
 
     void OnClickGoToScene()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

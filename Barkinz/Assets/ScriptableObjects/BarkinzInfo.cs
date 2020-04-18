@@ -19,12 +19,15 @@ public class BarkinzInfo : ScriptableObject
     [SerializeField] private InventorySettings barkinzInventory;
     public List<ActiveGameFunction> playedModes;
 
+    public BarkinzData barkinzData;
+
     public void ClearData()
     {
         LoadSettingsFromInfo = false;
         currencyOwned = 0;
         individualSettings = new WorldTileSettings();
         barkinzIntoxication = new IntoxicationSettings();
+        barkinzData = new BarkinzData();
     }
 
     public void SetIntoxicationData(ActivePlayer player)
@@ -46,18 +49,39 @@ public class BarkinzInfo : ScriptableObject
 
     public void SetWorldTileFromSettings(WorldTile toSet)
     {
-        individualSettings.GenerateTiles(toSet);
+        //individualSettings.GenerateTiles(toSet);
+        PopulateWorld(toSet);
         individualSettings.InitializeWorld(toSet);
     }
 
     public void UpdateWorldTileSettings(WorldTile world)
     {
         individualSettings = new WorldTileSettings(world);
+        barkinzData = new BarkinzData(world);
     }
 
     public void UpdateInventorySettings(InventorySettings inventory)
     {
         barkinzInventory = inventory;
+    }
+
+    void PopulateWorld(WorldTile toPopulate)
+    {
+        if(barkinzData == null || barkinzData.worldTileSettings == null || barkinzData.worldTileSettings.Count <= 0)
+        {
+            return;
+        } else
+        {
+            foreach (TileData t in barkinzData.worldTileSettings)
+            {
+                Tile tile = new Tile(t);
+                tile.InitializeTile(toPopulate.TileSprite, toPopulate);
+                toPopulate.Tiles.Add(tile);
+                toPopulate.GridPositions[tile.GridPosition.x, tile.GridPosition.y] = tile;
+                toPopulate.TileLookup.Add(tile.GetGameObject(), tile);
+                if (tile.isStartingTile) { toPopulate.StartTile = tile; }
+            }
+        }
     }
 }
 
@@ -73,6 +97,8 @@ public class IntoxicationSettings
     public bool hasAlcoholPoisoning { get; private set; }
     public float soberRate;
     public float soberingBuffer = 10f;
+    string[] intoxicationMessages { get=> new string[] { "Stone-Cold Sober", "Tipsy", "Lit", "Smacked", "Absolutely Trashed"};}
+    public string intoxicationMessage { get { return intoxicationMessages[IntoxicationRange]; } }
 
     public IntoxicationSettings() { intoxicationLevel = 0; }
     public IntoxicationSettings(ActivePlayer ap)
@@ -117,6 +143,18 @@ public class IntoxicationSettings
     public void DrinkTaken()
     {
         lastDrinkTaken = DateTime.Now;
+    }
+
+    public int IntoxicationRange
+    {
+        get
+        {
+            if(intoxicationLevel < 10) { return 0; }
+            if(intoxicationLevel.SqueezeFloats(10, 20)) { return 1; }
+            if (intoxicationLevel.SqueezeFloats(20, 45)) { return 2; }
+            if (intoxicationLevel.SqueezeFloats(45, 75)) { return 3; }
+            return 4;
+        }
     }
 }
 

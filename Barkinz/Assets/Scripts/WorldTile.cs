@@ -202,6 +202,7 @@ public class WorldTile : MonoBehaviour
     void UpdatePrimaryBarkinzOnQuit(BarkinzInfo b)
     {
         b.UpdateWorldTileSettings(this);
+        b.barkinzData = new BarkinzData(this);
     }
 
     int Median(int low, int high) { return (Mathf.CeilToInt((low + high) / 2)); }
@@ -228,6 +229,7 @@ public class WorldTile : MonoBehaviour
 public class Tile : IZoomOn
 {
     private GameObject go;
+    private TileData thisTileData;
     private SpriteRenderer TileRenderer;
     public float width, length;
     public bool occupied, isStartingTile;
@@ -246,6 +248,17 @@ public class Tile : IZoomOn
     public Tile(Vector3 cp) { width = 1; length = 1; occupied = false; centerPosition = cp; }
     public Tile(float w, float l, Vector3 cp) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(0, 0); }
     public Tile(float w, float l, Vector3 cp, int row, int column) { width = w; length = l; centerPosition = cp; occupied = false; GridPosition = new Vector2Int(row, column); }
+    public Tile(TileData d)
+    {
+        thisTileData = d;
+        width = d.dimension;
+        length = d.dimension;
+        occupied = d.occupied;
+        isStartingTile = d.startTile;
+        GridPosition = new Vector2Int(d.gridPosition[0], d.gridPosition[1]);
+        centerPosition = new Vector3(d.centerX, 0, d.centerZ);
+        Debug.Log("Tile occupied by: " + d.occupiedBy);
+    }
 
 
     public void InitializeTile(Sprite s, WorldTile parentTile)
@@ -272,7 +285,7 @@ public class Tile : IZoomOn
         BoxCollider b = g.AddComponent<BoxCollider>();
         b.isTrigger = true;
         TileRenderer.sprite = s;
-        TileRenderer.color = new Color(1,1,1,0.3f);
+        TileRenderer.color = new Color(1, 1, 1, 0.3f);
         g.transform.SetParent(parentTile.transform);
         GridPosition = new Vector2Int(i, j);
     }
@@ -298,7 +311,7 @@ public class Tile : IZoomOn
 
     public void SetSpriteColor(Color c)
     {
-        if(TileRenderer == null) { return; }
+        if (TileRenderer == null) { return; }
         TileRenderer.color = c;
     }
 
@@ -307,57 +320,88 @@ public class Tile : IZoomOn
         Vector3 p = go.transform.position;
         return p + new Vector3(-1, .5f, -1);
     }
+
+    public PlaceableObject GetPlaceableObjectAtTile(string name)
+    {
+        try {
+            return Resources.Load<PlaceableObject>("/PlaceableObjects" + name);
+        } catch (NullReferenceException) { }
+        return null;
+    }
+}
+
+    [Serializable]
+    public class WorldTileSettings
+    {
+        public List<Tile> TileLayoutSettings;
+        public Tile StartTile;
+        public Vector2Int startTilePosition;
+        public List<ObjectPlacementInfo> ObjectPlacementData;
+        public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
+        public WorldTileSettings(WorldTile toSave)
+        {
+            TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
+            ObjectPlacementData = new List<ObjectPlacementInfo>();
+            foreach (var o in toSave.ObjectsInTile)
+            {
+                ObjectPlacementData.Add(new ObjectPlacementInfo(o));
+            }
+            startTilePosition = toSave.StartTile.GridPosition;
+            StartTile = toSave.StartTile;
+        }
+
+        public void GenerateTiles(WorldTile parentTile)
+        {
+            foreach (var tile in TileLayoutSettings)
+            {
+                Tile t = new Tile();
+                t = tile;
+                t.InitializeTile(parentTile.TileSprite, parentTile, (int)t.GridPosition.x, (int)t.GridPosition.y);
+                parentTile.Tiles.Add(t);
+                parentTile.GridPositions[(int)t.GridPosition.x, (int)t.GridPosition.y] = t;
+                parentTile.TileLookup.Add(t.GetGameObject(), t);
+            }
+            parentTile.StartTile = StartTile;
+            parentTile.PlayerPositionTile = parentTile.StartTile;
+        }
+
+        public void InitializeWorld(WorldTile t)
+        {
+            t.InstantiatePlacedObjects(this);
+        }
+    }
+
+[Serializable]
+public struct TileData
+{
+    public float dimension{ get; private set; }
+    public bool startTile { get; private set; }
+    public bool occupied { get; private set; }
+    public int[] gridPosition { get; private set; }
+    public string occupiedBy { get; private set; }
+    public float centerX, centerZ;
+    public TileData(Tile t)
+    {
+        dimension = t.width;
+        startTile = t.isStartingTile;
+        occupied = t.occupied;
+        gridPosition = new int[] { t.GridPosition.x, t.GridPosition.y};
+        occupiedBy = t.occupyingTile != null ? t.occupyingTile.name : "NONE";
+        centerX = t.centerPosition.x;
+        centerZ = t.centerPosition.z;
+    }
 }
 
 [Serializable]
-public class WorldTileSettings
+public struct ObjectPlacementInfo
 {
-    public List<Tile> TileLayoutSettings;
-    public Tile StartTile;
-    public Vector2Int startTilePosition;
-    public List<ObjectPlacementInfo> ObjectPlacementData;
-    public WorldTileSettings() { TileLayoutSettings = new List<Tile>(); }
-    public WorldTileSettings(WorldTile toSave)
+    public string resourcesPath;
+    public int gridX, gridY;
+    public Vector2Int gridPosition;
+    public ObjectPlacementInfo(PlacedObject p)
     {
-        TileLayoutSettings = new List<Tile>(toSave.TileLookup.Values);
-        ObjectPlacementData = new List<ObjectPlacementInfo>();
-        foreach (var o in toSave.ObjectsInTile)
-        {
-            ObjectPlacementData.Add(new ObjectPlacementInfo(o));
-        }
-        startTilePosition = toSave.StartTile.GridPosition;
-        StartTile = toSave.StartTile;
-    }
-
-    public void GenerateTiles(WorldTile parentTile)
-    {
-        foreach(var tile in TileLayoutSettings)
-        {
-            Tile t = new Tile();
-            t = tile;
-            t.InitializeTile(parentTile.TileSprite, parentTile,(int)t.GridPosition.x, (int)t.GridPosition.y);
-            parentTile.Tiles.Add(t);
-            parentTile.GridPositions[(int)t.GridPosition.x, (int)t.GridPosition.y] = t;
-            parentTile.TileLookup.Add(t.GetGameObject(), t);
-        }
-        parentTile.StartTile = StartTile;
-        parentTile.PlayerPositionTile = parentTile.StartTile;
-    }
-
-    public void InitializeWorld(WorldTile t)
-    {
-        t.InstantiatePlacedObjects(this);
-    }
-
-    [Serializable]
-    public struct ObjectPlacementInfo
-    {
-        public string resourcesPath;
-        public Vector2Int gridPosition;
-        public ObjectPlacementInfo(PlacedObject p)
-        {
-            resourcesPath = p.ObjectInformation.ObjectLookup;
-            gridPosition = p.GridPosition;
-        }
+        resourcesPath = p.ObjectInformation.ObjectLookup;
+        gridPosition = p.GridPosition;
+        gridX = p.GridPosition.x; gridY = p.GridPosition.y;
     }
 }

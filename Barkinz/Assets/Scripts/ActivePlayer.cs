@@ -13,13 +13,15 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public IntoxicationSettings ActiveSessionIntoxication;
     public InventorySettings activeInventory;
     public static event Action<string> EnteredTaggedArea;
-    public static event Action<string, string> EnteredTaggedAreaWithDialogue;
+    public static event Action<string, string, IZoomOn> EnteredTaggedAreaWithDialogue;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
     public Transform ZoomObjectTransform { get => transform; }
 
     public GameObject purchaseButtonPrefab;
     public GameObject inventoryUIObject;
+
+    public Sprite[] statusSprites;
 
     private void Awake()
     {
@@ -145,7 +147,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         if (collision.GetComponent<DialogueSource>())
         {
-            EnteredTaggedAreaWithDialogue(collision.tag, collision.GetComponent<DialogueSource>().filePath);
+            EnteredTaggedAreaWithDialogue(collision.tag, collision.GetComponent<DialogueSource>().filePath, (IZoomOn)collision);
         } else
         {
             EnteredTaggedArea(collision.tag);

@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class HUD : MonoBehaviour
 {
@@ -21,5 +23,14 @@ public class HUD : MonoBehaviour
     {
         IntoxicationSlider.value = player.ActiveSessionIntoxication.intoxicationLevel;
         CurrencyDisplay.text = "$" + MinigameManager.activeCurrency.ToString();
+    }
+}
+
+public static class HelperFunctions
+{
+    public static void PulseText(this RectTransform rt, float minSize, float modifier, float speed)
+    {
+        Vector3 scale = (Mathf.Sin(Time.time * Mathf.PI * speed) + 1) * modifier * Vector3.one;
+        rt.localScale = Vector3.one * minSize + scale;
     }
 }
