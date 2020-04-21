@@ -19,12 +19,16 @@ public class WorldTile : MonoBehaviour
     public GameObject PlaceableObjectPrefab;
     public PlaceableObject TestPlacements;
     public List<PlacedObject> ObjectsInTile;
+    ActivePlayer player;
+    public InventorySettings playerInventory { get => player.activeInventory; }
+    public IntoxicationSettings playerIntoxication { get => player.ActiveSessionIntoxication; }
 
     private void Awake()
     {
         BarkinzManager.InitializeBarkinzData += OnBarkinzLoad;
         BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed += OnObjectPlacementConfirmed;
+        ActivePlayer.SetActivePlayer += OnSetActivePlayer;
         PlayerPositionTile = new Tile();
         StartTile = new Tile();
         mouseHoverTile = new Tile();
@@ -89,8 +93,8 @@ public class WorldTile : MonoBehaviour
 
     void OnObjectPlacementConfirmed(Tile t, PlaceableObject p)
     {
-        Debug.Log("Instantiate Object");
-        InstantiatePlacedObject(TestPlacements, t.GridPosition);
+        Debug.Log("Instantiate Object: " + p.name);
+        InstantiatePlacedObject(p, t.GridPosition);
     }
 
     public void InstantiatePlacedObject(PlaceableObject po, Vector2Int grid)
@@ -102,10 +106,11 @@ public class WorldTile : MonoBehaviour
         ObjectsInTile.Add(p);
     }
 
-    public void InstantiatePlacedObjects(WorldTileSettings wts)
+    public void InstantiatePlacedObjects(BarkinzData data)
     {
-        if (wts.ObjectPlacementData != null && wts.ObjectPlacementData.Count > 0) {
-            foreach (var e in wts.ObjectPlacementData)
+        if (data.objectData != null && data.objectData.Count > 0)
+        {
+            foreach (var e in data.objectData)
             {
                 PlaceableObject p = Resources.Load<PlaceableObject>("PlaceableObjects/" + e.resourcesPath);
                 InstantiatePlacedObject(p, e.gridPosition);
@@ -145,9 +150,14 @@ public class WorldTile : MonoBehaviour
 
     void UpdatePlayerTile(Tile newTile)
     {
-        PlayerPositionTile.occupied = false;
+        PlayerPositionTile.occupiedByPlayer = false;
         PlayerPositionTile = newTile;
-        PlayerPositionTile.occupied = true;
+        PlayerPositionTile.occupiedByPlayer = true;
+    }
+
+    void OnSetActivePlayer(ActivePlayer p)
+    {
+        player = p;
     }
 
     public static event Action<Tile> TileSelected;
@@ -169,11 +179,13 @@ public class WorldTile : MonoBehaviour
         if (!b.LoadSettingsFromInfo)
         {
             GenerateDefaultTileMap();
-            QueueTile(PlayerPositionTile);
-        } else
+        }
+        else
         {
             b.SetWorldTileFromSettings(this);
         }
+        QueueTile(StartTile);
+        StartTile.occupiedByPlayer = true;
     }
 
     public void GenerateDefaultTileMap()
@@ -202,7 +214,6 @@ public class WorldTile : MonoBehaviour
     void UpdatePrimaryBarkinzOnQuit(BarkinzInfo b)
     {
         b.UpdateWorldTileSettings(this);
-        b.barkinzData = new BarkinzData(this);
     }
 
     int Median(int low, int high) { return (Mathf.CeilToInt((low + high) / 2)); }
@@ -212,6 +223,7 @@ public class WorldTile : MonoBehaviour
         BarkinzManager.InitializeBarkinzData -= OnBarkinzLoad;
         BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed -= OnObjectPlacementConfirmed;
+        ActivePlayer.SetActivePlayer -= OnSetActivePlayer;
     }
 
     private void OnApplicationQuit()
@@ -232,7 +244,7 @@ public class Tile : IZoomOn
     private TileData thisTileData;
     private SpriteRenderer TileRenderer;
     public float width, length;
-    public bool occupied, isStartingTile;
+    public bool occupied, isStartingTile, occupiedByPlayer;
     public Vector3 centerPosition;
     public Vector2Int GridPosition { get; private set; }
 
@@ -257,7 +269,6 @@ public class Tile : IZoomOn
         isStartingTile = d.startTile;
         GridPosition = new Vector2Int(d.gridPosition[0], d.gridPosition[1]);
         centerPosition = new Vector3(d.centerX, 0, d.centerZ);
-        Debug.Log("Tile occupied by: " + d.occupiedBy);
     }
 
 
@@ -364,11 +375,6 @@ public class Tile : IZoomOn
             parentTile.StartTile = StartTile;
             parentTile.PlayerPositionTile = parentTile.StartTile;
         }
-
-        public void InitializeWorld(WorldTile t)
-        {
-            t.InstantiatePlacedObjects(this);
-        }
     }
 
 [Serializable]
@@ -378,7 +384,6 @@ public struct TileData
     public bool startTile { get; private set; }
     public bool occupied { get; private set; }
     public int[] gridPosition { get; private set; }
-    public string occupiedBy { get; private set; }
     public float centerX, centerZ;
     public TileData(Tile t)
     {
@@ -386,7 +391,6 @@ public struct TileData
         startTile = t.isStartingTile;
         occupied = t.occupied;
         gridPosition = new int[] { t.GridPosition.x, t.GridPosition.y};
-        occupiedBy = t.occupyingTile != null ? t.occupyingTile.name : "NONE";
         centerX = t.centerPosition.x;
         centerZ = t.centerPosition.z;
     }

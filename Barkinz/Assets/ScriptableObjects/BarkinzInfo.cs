@@ -14,7 +14,6 @@ public class BarkinzInfo : ScriptableObject
 
     public bool LoadSettingsFromInfo;
     public float currencyOwned;
-    [SerializeField] private WorldTileSettings individualSettings;
     [SerializeField] private IntoxicationSettings barkinzIntoxication;
     [SerializeField] private InventorySettings barkinzInventory;
     public List<ActiveGameFunction> playedModes;
@@ -25,15 +24,23 @@ public class BarkinzInfo : ScriptableObject
     {
         LoadSettingsFromInfo = false;
         currencyOwned = 0;
-        individualSettings = new WorldTileSettings();
         barkinzIntoxication = new IntoxicationSettings();
         barkinzData = new BarkinzData();
     }
 
     public void SetIntoxicationData(ActivePlayer player)
     {
-        barkinzIntoxication.InitializeSettingsAfterTime();
-        player.ActiveSessionIntoxication = barkinzIntoxication;
+        //barkinzIntoxication.InitializeSettingsAfterTime();
+        //player.ActiveSessionIntoxication = barkinzIntoxication;
+        barkinzData.intoxicationData.InitializeSettingsAfterTime();
+        player.ActiveSessionIntoxication = barkinzData.intoxicationData;
+    }
+
+    public void LoadActivePlayerData(ActivePlayer player)
+    {
+        player.activeInventory = barkinzData.storageInfo;
+        barkinzData.intoxicationData.InitializeSettingsAfterTime();
+        player.ActiveSessionIntoxication = barkinzData.intoxicationData;
     }
 
     public void UpdateIntoxicationSettings(ActivePlayer player)
@@ -42,21 +49,14 @@ public class BarkinzInfo : ScriptableObject
         currencyOwned = MinigameManager.activeCurrency;
     }
 
-    public void SetPlayerPosition(ActivePlayer p)
-    {
-        p.transform.position = individualSettings.StartTile.centerPosition;
-    }
-
     public void SetWorldTileFromSettings(WorldTile toSet)
     {
-        //individualSettings.GenerateTiles(toSet);
         PopulateWorld(toSet);
-        individualSettings.InitializeWorld(toSet);
+        toSet.InstantiatePlacedObjects(barkinzData);
     }
 
     public void UpdateWorldTileSettings(WorldTile world)
     {
-        individualSettings = new WorldTileSettings(world);
         barkinzData = new BarkinzData(world);
     }
 
@@ -99,11 +99,40 @@ public class IntoxicationSettings
     public float soberingBuffer = 10f;
     string[] intoxicationMessages { get=> new string[] { "Stone-Cold Sober", "Tipsy", "Lit", "Smacked", "Absolutely Trashed"};}
     public string intoxicationMessage { get { return intoxicationMessages[IntoxicationRange]; } }
+    private List<string> drinksTaken;
+    private List<string> drinksInBacklog;
 
     public IntoxicationSettings() { intoxicationLevel = 0; }
     public IntoxicationSettings(ActivePlayer ap)
     {
         intoxicationLevel = ap.ActiveSessionIntoxication.intoxicationLevel;
+        drinksTaken = new List<string>();
+        drinksTaken = ap.ActiveSessionIntoxication.drinksTaken;
+        SetDrinksInBacklog();
+    }
+
+    void SetDrinksInBacklog()
+    {
+        drinksInBacklog = new List<string>();
+        if (Bartender.orderedDrinkBacklog != null && Bartender.orderedDrinkBacklog.Count > 0) {
+            foreach(Drink d in Bartender.orderedDrinkBacklog)
+            {
+                drinksInBacklog.Add(d.drinkName);
+            }
+        }
+    }
+
+    public Stack<Drink> SetDrinksFromBacklog(DrinkMenu menu)
+    {
+        Stack<Drink> stack = new Stack<Drink>();
+        if (drinksInBacklog != null && drinksInBacklog.Count >0)
+        {
+            for (int i =0; i < drinksInBacklog.Count; i++)
+            {
+                stack.Push(menu.GetDrinkFromName(drinksInBacklog[i]));
+            }
+        }
+        return stack;
     }
 
     public void SoberUp()
@@ -120,10 +149,12 @@ public class IntoxicationSettings
 
     public void InitializeSettingsAfterTime()
     {
-        DateTime activeTime = DateTime.Now;
-        double alcWithdrawal = (activeTime - lastDrinkTaken).TotalSeconds;
+        DateTime now = DateTime.Now;
+        double span = now.Subtract(lastDrinkTaken).TotalMinutes;
+        double alcWithdrawal = span / 60;
+        Debug.Log(span);
         float intl = intoxicationLevel;
-        intoxicationLevel = intl - (float)alcWithdrawal;
+        intoxicationLevel = Mathf.Max(0, intl - (float)alcWithdrawal);
         Debug.LogFormat("Setting Intoxication Level  from {0} to {1}", intl, intoxicationLevel);
     }
 

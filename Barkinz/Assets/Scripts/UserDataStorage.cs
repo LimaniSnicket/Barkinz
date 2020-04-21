@@ -82,14 +82,38 @@ public class UserDataStorage : MonoBehaviour
         }
         else
         {
-
+           
         }
+    }
+
+    public void OnClickSaveData()
+    {
+        StartCoroutine(SaveToWeb());
+    }
+
+    static IEnumerator SaveToWeb()
+    {
+        SaveGameWeb web = new SaveGameWeb("vera@glowup.games", "VRFiKzX*J{g2", "ftp.glowup.games");
+        yield return web.Save<Dictionary<string, UserData>>("userDataBase", userLookup);
+        if (web.IsError) { Debug.LogError(web.Error); } else { Debug.Log("Saved Data via Web"); }
     }
 
     private void OnApplicationQuit()
     {
         Debug.Log("Serialize UserData here!");
+        try
+        {
+            activeUserData.SaveFromBarkinzManager();
+            OverrideUserData();
+        }
+        catch (NullReferenceException){ }
         SaveGame.Save<Dictionary<string, UserData>>("userDataBase", userLookup);
+    }
+
+    private void OverrideUserData()
+    {
+        userLookup.Remove(activeUserKey);
+        userLookup.Add(activeUserKey, activeUserData);
     }
 
 }
@@ -123,6 +147,16 @@ public class UserData
         if (!barkinzOwned(lookup)) { userBarkinzLookup.Add(lookup, new BarkinzData()); }
         activeBarkinzData = userBarkinzLookup[lookup];
     }
+
+    public void SaveFromBarkinzManager()
+    {
+        activeBarkinzData = BarkinzManager.PrimaryBarkinz.barkinzData;
+        string n = BarkinzManager.PrimaryBarkinz.name;
+        if (barkinzOwned(n)){
+            userBarkinzLookup.Remove(n);
+            userBarkinzLookup.Add(n, activeBarkinzData);
+        }
+    }
 }
 
 [Serializable]
@@ -132,13 +166,24 @@ public class BarkinzData
     public bool loadSettingsFromPreviousSession;
     public float balance;
     public List<TileData> worldTileSettings;
+    public List<ObjectPlacementInfo> objectData;
+    public InventorySettings storageInfo;
+    public IntoxicationSettings intoxicationData;
     public BarkinzData() { }
     public BarkinzData(WorldTile w)
     {
         worldTileSettings = new List<TileData>();
+        objectData = new List<ObjectPlacementInfo>();
+        storageInfo = new InventorySettings();
+        storageInfo = w.playerInventory;
+        intoxicationData = w.playerIntoxication;
         for (int i = 0; i< w.Tiles.Count; i++)
         {
             worldTileSettings.Add(new TileData(w.Tiles[i]));
+        }
+        for (int j = 0; j< w.ObjectsInTile.Count; j++)
+        {
+            objectData.Add(new ObjectPlacementInfo(w.ObjectsInTile[j]));
         }
     }
 }

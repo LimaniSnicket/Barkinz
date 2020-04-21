@@ -11,7 +11,6 @@ public class CameraMovement : MonoBehaviour
     private static Quaternion HomeRotation;
     public float HomeOrthographicSize;
     public static bool Zoomed { get; private set; }
-
     private void Start()
     {
         if (camMovement == null) { camMovement = this; } else { Destroy(this); }

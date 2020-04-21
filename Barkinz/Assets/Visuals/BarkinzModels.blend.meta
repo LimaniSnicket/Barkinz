@@ -110,6 +110,8 @@ ModelImporter:
     100208: Bar
     100210: Bookshelf_001
     100212: Shelves_001
+    100214: LoungeChair
+    100216: LoungeChair2
     400000: //RootNode
     400002: Barstool
     400004: Barstool_001
@@ -217,6 +219,8 @@ ModelImporter:
     400208: Bar
     400210: Bookshelf_001
     400212: Shelves_001
+    400214: LoungeChair
+    400216: LoungeChair2
     2100000: Barstool
     2100002: Material
     2100004: unnamed
@@ -329,6 +333,8 @@ ModelImporter:
     2300206: Bar
     2300208: Bookshelf_001
     2300210: Shelves_001
+    2300212: LoungeChair
+    2300214: LoungeChair2
     3300000: Barstool
     3300002: Barstool_001
     3300004: Table
@@ -435,6 +441,8 @@ ModelImporter:
     3300206: Bar
     3300208: Bookshelf_001
     3300210: Shelves_001
+    3300212: LoungeChair
+    3300214: LoungeChair2
     4300000: Barstool_001
     4300002: Barstool
     4300004: Table
@@ -541,6 +549,8 @@ ModelImporter:
     4300206: Bar
     4300208: Bookshelf_001
     4300210: Shelves_001
+    4300212: LoungeChair
+    4300214: LoungeChair2
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

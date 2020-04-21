@@ -26,10 +26,8 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     private void Awake()
     {
         tileTargets = new Queue<Tile>();
-        WorldTile.TileSelected += OnTileSelected;
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
-        BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
         MinigameManager.EnteredMode += OnEnteredMode;
     }
@@ -93,26 +91,10 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         activeInventory = new InventorySettings();
         if (b.LoadSettingsFromInfo)
         {
-            b.SetPlayerPosition(this);
-            b.SetIntoxicationData(this);
+            b.LoadActivePlayerData(this);
         }
         OverworldSpriteDisplay.sprite = b.OverworldSprite;
         activeInventory.InitializeInventoryUIObject(inventoryUIObject, purchaseButtonPrefab);
-    }
-
-    void SetBarkinzIntoxicationData(BarkinzInfo b)
-    {
-        b.UpdateIntoxicationSettings(this);
-    }
-
-    void SetBarkinzInventoryData(BarkinzInfo b)
-    {
-        b.UpdateInventorySettings(activeInventory);
-    }
-
-    void OnTileSelected(Tile t)
-    {
-
     }
 
     void OnTileQueue(Tile t)
@@ -156,27 +138,14 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     private void OnDestroy()
     {
-        WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
-        BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
         MinigameManager.EnteredMode -= OnEnteredMode;
     }
 
-    private void OnApplicationQuit()
-    {
-        OnGameSceneExit();
-    }
-
-    void OnGameSceneExit()
-    {
-        SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
-        SetBarkinzInventoryData(BarkinzManager.PrimaryBarkinz);
-    }
-
     public Vector3 ZoomCamPosition()
     {
-        Vector3 p = transform.position + new Vector3(0, 1, -1);
+        Vector3 p = transform.position + new Vector3(0, 1f, -2f);
         return p;
     }
 }
