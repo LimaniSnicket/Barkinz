@@ -9,13 +9,14 @@ public class Bartender : MonoBehaviour, IGameMode
 {
     private static Bartender bartender;
     public static Drink currentDrink;
-    public List<Drink> orderedDrinkBacklog;
+    public static Stack<Drink> orderedDrinkBacklog { get; private set; }
+    static Stack<DrinkBacklogObject> backlog;
     public Drink debugCurrent;
-    public GameObject ButtonPrefab, ButtonPanel, DrinkDisplayObject;
+    public GameObject ButtonPrefab, ButtonPanel, DrinkDisplayObject, backlogContainer, backlogObject;
 
     public List<OrderDrinkButton> OrderButtons;
     public DrinkDisplay DrinkDisplay;
-
+   
     public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.BAR; }
     ActivePlayer player;
 
@@ -35,7 +36,8 @@ public class Bartender : MonoBehaviour, IGameMode
     private void Start()
     {
         if(bartender == null) { bartender = this; } else { Destroy(this); }
-        orderedDrinkBacklog = new List<Drink>();
+        orderedDrinkBacklog = new Stack<Drink>();
+        backlog = new Stack<DrinkBacklogObject>();
         OrderButtons = new List<OrderDrinkButton>();
         for (int i = 0; i < drinkMenu.drinkData.Count; i++)
         {
@@ -50,11 +52,21 @@ public class Bartender : MonoBehaviour, IGameMode
     private void Update()
     {
         debugCurrent = currentDrink;
-        DrinkDisplay.RunDrinkDisplay(currentDrink, player);
+        DrinkDisplay.RunDrinkDisplay(currentDrink);
+        if (!noDrinkActive)
+        {
+            if (currentDrink.FinishedDrink)
+            {
+               if(orderedDrinkBacklog.Count > 0) { currentDrink = RemoveDrinkFromBacklog(); DrinkDisplay.RefreshDrinkDisplay(currentDrink); } else { currentDrink = null; }
+            }
+        }
     }
+
+    public static bool noDrinkActive { get => currentDrink == null; }
 
     void OnClickOrderDrink(Drink d)
     {
+        if (!noDrinkActive) { AddDrinkToBacklog(currentDrink); }
         currentDrink = new Drink(d);
         if (d.Affordable) { MinigameManager.activeCurrency -= d.drinkCost; } else
         {
@@ -79,9 +91,31 @@ public class Bartender : MonoBehaviour, IGameMode
         }
     }
 
+    void AddDrinkToBacklog(Drink d)
+    {
+        orderedDrinkBacklog.Push(d);
+        GameObject obj = Instantiate(backlogObject, backlogContainer.GetComponent<RectTransform>());
+        DrinkBacklogObject b = new DrinkBacklogObject(obj, d);
+        backlog.Push(b);
+    }
+
+    Drink RemoveDrinkFromBacklog()
+    {
+        if (orderedDrinkBacklog.Count > 0)
+        {
+            GameObject g = backlog.Pop().gameObject;
+            Destroy(g);
+            return orderedDrinkBacklog.Pop();
+        } else
+        {
+            return null;
+        }
+    }
+
     void OnSetActivePlayer(ActivePlayer p)
     {
         player = p;
+        
     }
 
     void OnBarkinzLoad(BarkinzInfo primary)
@@ -183,10 +217,27 @@ public struct DrinkDisplay
         fillDisplay.value = drinkToDisplay.amountLeft;
     }
 
-    public void RunDrinkDisplay(Drink d, ActivePlayer p)
+    public void RunDrinkDisplay(Drink d)
     {
-        fillDisplay.value = d.amountLeft;
-        //Debug.Log(p.ChugAngleTilt(p.chugSpeed, 4, 90));
+        if (!Bartender.noDrinkActive)
+        {
+            fillDisplay.value = d.amountLeft;
+        }
+        fillDisplay.gameObject.SetActive(!Bartender.noDrinkActive);
+        drinkDisplay.gameObject.SetActive(!Bartender.noDrinkActive);
+    }
+}
+
+[Serializable]
+public struct DrinkBacklogObject
+{
+    public GameObject gameObject { get; private set; }
+    public Image drinkSprite;
+    public DrinkBacklogObject(GameObject g, Drink d)
+    {
+        gameObject = g;
+        drinkSprite = g.transform.Find("Drink Sprite").GetComponent<Image>();
+        drinkSprite.sprite = Resources.Load<Sprite>(d.displaySpritePath);
     }
 }
 
@@ -200,6 +251,12 @@ public class DrinkMenu
         {
             if (d.prefBarkinzPath == b.BarkinzCode) { return d; }
         }
+        return drinkData[0];
+    }
+
+    public Drink GetDrinkFromName(string name)
+    {
+        foreach(Drink d in drinkData) { if (d.drinkName == name) { return d; } }
         return drinkData[0];
     }
 }

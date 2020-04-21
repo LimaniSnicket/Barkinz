@@ -11,7 +11,6 @@ public class CameraMovement : MonoBehaviour
     private static Quaternion HomeRotation;
     public float HomeOrthographicSize;
     public static bool Zoomed { get; private set; }
-
     private void Start()
     {
         if (camMovement == null) { camMovement = this; } else { Destroy(this); }
@@ -133,5 +132,10 @@ public static class Squeeze
     public static bool SqueezeFloats(this float f, float comp, float threshold = 0.01f)
     {
         return Mathf.Abs(f - comp) <= threshold;
+    }
+
+    public static bool InRange(this float f, float floor, float ceil)
+    {
+        return f >= floor && f < ceil;
     }
 }

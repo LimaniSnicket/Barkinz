@@ -13,7 +13,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public IntoxicationSettings ActiveSessionIntoxication;
     public InventorySettings activeInventory;
     public static event Action<string> EnteredTaggedArea;
-    public static event Action<string, string> EnteredTaggedAreaWithDialogue;
+    public static event Action<string, string, IZoomOn> EnteredTaggedAreaWithDialogue;
     public static event Action<ActivePlayer> SetActivePlayer;
     public float CameraOrthoSize { get; set; }
     public Transform ZoomObjectTransform { get => transform; }
@@ -21,13 +21,13 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     public GameObject purchaseButtonPrefab;
     public GameObject inventoryUIObject;
 
+    public Sprite[] statusSprites;
+
     private void Awake()
     {
         tileTargets = new Queue<Tile>();
-        WorldTile.TileSelected += OnTileSelected;
         WorldTile.QueueTile += OnTileQueue;
         BarkinzManager.InitializeBarkinzData += OnBarkinzInitialization;
-        BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory += OnInventoryAdjustment;
         MinigameManager.EnteredMode += OnEnteredMode;
     }
@@ -91,26 +91,10 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
         activeInventory = new InventorySettings();
         if (b.LoadSettingsFromInfo)
         {
-            b.SetPlayerPosition(this);
-            b.SetIntoxicationData(this);
+            b.LoadActivePlayerData(this);
         }
         OverworldSpriteDisplay.sprite = b.OverworldSprite;
         activeInventory.InitializeInventoryUIObject(inventoryUIObject, purchaseButtonPrefab);
-    }
-
-    void SetBarkinzIntoxicationData(BarkinzInfo b)
-    {
-        b.UpdateIntoxicationSettings(this);
-    }
-
-    void SetBarkinzInventoryData(BarkinzInfo b)
-    {
-        b.UpdateInventorySettings(activeInventory);
-    }
-
-    void OnTileSelected(Tile t)
-    {
-
     }
 
     void OnTileQueue(Tile t)
@@ -145,7 +129,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         if (collision.GetComponent<DialogueSource>())
         {
-            EnteredTaggedAreaWithDialogue(collision.tag, collision.GetComponent<DialogueSource>().filePath);
+            EnteredTaggedAreaWithDialogue(collision.tag, collision.GetComponent<DialogueSource>().filePath, (IZoomOn)collision);
         } else
         {
             EnteredTaggedArea(collision.tag);
@@ -154,27 +138,14 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     private void OnDestroy()
     {
-        WorldTile.TileSelected -= OnTileSelected;
         BarkinzManager.InitializeBarkinzData -= OnBarkinzInitialization;
-        BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.AdjustItemInventory -= OnInventoryAdjustment;
         MinigameManager.EnteredMode -= OnEnteredMode;
     }
 
-    private void OnApplicationQuit()
-    {
-        OnGameSceneExit();
-    }
-
-    void OnGameSceneExit()
-    {
-        SetBarkinzIntoxicationData(BarkinzManager.PrimaryBarkinz);
-        SetBarkinzInventoryData(BarkinzManager.PrimaryBarkinz);
-    }
-
     public Vector3 ZoomCamPosition()
     {
-        Vector3 p = transform.position + new Vector3(0, 1, -1);
+        Vector3 p = transform.position + new Vector3(0, 1f, -2f);
         return p;
     }
 }

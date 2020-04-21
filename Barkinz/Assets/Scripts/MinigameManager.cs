@@ -154,9 +154,15 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-    void OnEnteredTaggedDialogueArea(string t, string dialoguePath)
+    void OnEnteredTaggedDialogueArea(string t, string dialoguePath, IZoomOn zoomed)
     {
-        dialogueReader.InitializeDialogue(dialoguePath, this);
+        if (zoomed == null)
+        {
+            dialogueReader.InitializeDialogue(dialoguePath, this);
+        } else
+        {
+            dialogueReader.InitializeDialogue(dialoguePath, this, zoomed);
+        }
         StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE));
     }
 

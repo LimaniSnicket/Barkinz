@@ -26,6 +26,36 @@
             "pointWorth": 30
         },
         {
+            "question": "Giraffe tongues are purple & black to prevent________",
+            "answer": "Sunburn",
+            "pointWorth": 40
+        },
+        {
+            "question": "A group of rattlesnakes is called a what?",
+            "answer": "Rhumba",
+            "pointWorth": 40
+        },
+        {
+            "question": "What's the largest shark?",
+            "answer": "Whale Shark",
+            "pointWorth": 20
+        },
+        {
+            "question": "What animal has the largest brain?",
+            "answer": "Sperm Whale",
+            "pointWorth": 20
+        },
+        {
+            "question": "What is the largest rodent?",
+            "answer": "Capybara",
+            "pointWorth": 40
+        },
+        {
+            "question": "What's the fastest bipedal animal?",
+            "answer": "Ostrich",
+            "pointWorth": 30
+        },
+        {
             "question": "What type of animal is a mandrill?",
             "answer": "Monkey",
             "pointWorth": 20

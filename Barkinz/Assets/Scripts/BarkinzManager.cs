@@ -89,4 +89,13 @@ public static class BarkinzMethods
         }
         return keyValuePairs;
     }
+
+    public static BarkinzInfo LookupBarkinz(this string barkinzName)
+    {
+        try
+        {
+            return Resources.Load<BarkinzInfo>("BarkinzInfo/" + barkinzName);
+        } catch (NullReferenceException) { Debug.Log("Barkinz Not Found"); return null; }
+       
+    }
 }
