@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DartsManager : MonoBehaviour, IGameMode
+public class DartsManager : MonoBehaviour, IGameMode, IComparer<ScoreData>
 {
     private DartsManager darts;
     public GameObject DartPrefab;
@@ -23,6 +23,8 @@ public class DartsManager : MonoBehaviour, IGameMode
     float OutOfBounds { get => Dartboard.transform.position.y - 15; }
     public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.DARTS; }
 
+    public static ScoreData highscoreInfo;
+
     private void Awake()
     {
         if(darts == null) { darts = this; } else { Destroy(this); }
@@ -34,6 +36,11 @@ public class DartsManager : MonoBehaviour, IGameMode
     private void Start()
     {
         colorHit = new Color();
+        try
+        {
+            highscoreInfo = UserDataStorage.activeUserData.GetScore("DARTS");
+        }
+        catch (NullReferenceException) { highscoreInfo = new ScoreData(0, "No High Score!"); }
     }
 
     private void Update()
@@ -90,6 +97,10 @@ public class DartsManager : MonoBehaviour, IGameMode
     void OnGameComplete()
     {
         if (ActiveDart != null) { Destroy(ActiveDart); }
+        if (Compare(ActiveDartGame.gameScoreData, highscoreInfo) > 0)
+        {
+            highscoreInfo = ActiveDartGame.gameScoreData;
+        }
         ActiveDartGame = null;
         MinigameManager.ExitMode();
     }
@@ -99,6 +110,14 @@ public class DartsManager : MonoBehaviour, IGameMode
         Dart.DartHit -= OnDartHit;
         DartGame.GameComplete -= OnGameComplete;
         MinigameManager.EnteredMode -= OnModeChange;
+    }
+
+    public int Compare(ScoreData x, ScoreData y)
+    {
+        if (x.score <=0 && y.score <= 0) { return 0; }
+        if(x.score == y.score) { return 0; }
+        if(x.score > y.score) { return -1; }
+        return 1;
     }
 }
 
@@ -111,6 +130,7 @@ public class DartGame
     public int DartsRemaining;
     ActivePlayer p;
     public TextMeshPro infoDisplay;
+    public ScoreData gameScoreData;
 
     public bool CanSpawnDart { get => DartsRemaining > 0; }
 
@@ -132,7 +152,6 @@ public class DartGame
         DartsRemaining--;
         if (currentPoints >= StartingPointTotal || DartsRemaining == 0)
         {
-            GameComplete();
             RunEndGame();
         }
     }
@@ -150,7 +169,6 @@ public class DartGame
         DartsRemaining--;
         if (DartsRemaining == 0)
         {
-            GameComplete();
             RunEndGame();
         }
     }
@@ -158,6 +176,8 @@ public class DartGame
     void RunEndGame()
     {
         MinigameManager.activeCurrency += ConvertPointsToCurrency();
+        gameScoreData = new ScoreData((int)CurrentPointTotal(), BarkinzManager.PrimaryBarkinz.BarkinzType);
+        GameComplete();
     }
 
     float ConvertPointsToCurrency()
@@ -170,9 +190,7 @@ public class DartGame
         {
             return currentPoints / 1.5f * intoxicationMod;
         }
-
         return (currentPoints / 1.5f * percentTotal) * intoxicationMod;
-        
     }
 
     public float CurrentPointTotal()

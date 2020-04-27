@@ -11,6 +11,7 @@ public class CameraMovement : MonoBehaviour
     private static Quaternion HomeRotation;
     public float HomeOrthographicSize;
     public static bool Zoomed { get; private set; }
+    public static event Action<IZoomOn> ZoomedOnObject;
     private void Start()
     {
         if (camMovement == null) { camMovement = this; } else { Destroy(this); }
@@ -54,10 +55,10 @@ public class CameraMovement : MonoBehaviour
         RaycastHit rh = new RaycastHit();
         if (Physics.SphereCast(r, .5F, out rh, Mathf.Infinity))
         {
-            Debug.Log(rh.transform.name);
             if (rh.transform.GetComponent<MonoBehaviour>() is IZoomOn)
             {
                 IZoomOn zoomOn = (IZoomOn)rh.transform.GetComponent<MonoBehaviour>();
+                ZoomedOnObject(zoomOn);
                 StartCoroutine(LerpCameraToZoomPosition(zoomOn.ZoomCamPosition(), 10f));
                 StartCoroutine(LerpCameraToZoomPosition(zoomOn.CameraOrthoSize, 12f));
                 Zoomed = true;
@@ -79,17 +80,15 @@ public class CameraMovement : MonoBehaviour
         camMovement.ResetZoom();
     }
 
-
-    public static event Action<IZoomOn> ZoomedOnObject;
     public static void ZoomOn(IZoomOn zoom, bool adjustForward = false)
     {
         if (!Zoomed) {
+            ZoomedOnObject(zoom);
             Camera.main.orthographic = false;
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.ZoomCamPosition(), 5));
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 12));
             if (adjustForward) { camMovement.transform.forward = (zoom.ZoomObjectTransform.forward + zoom.ZoomObjectTransform.right); }
             Zoomed = true;
-            ZoomedOnObject(zoom);
         }
     }
 

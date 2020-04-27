@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectLookup: Jukebox
   ObjectMesh: {fileID: 4300116, guid: 08c35024ec9c244c98ca6e8e99796484, type: 3}
-  ObjectTexture: {fileID: 2800000, guid: c575e2457dc374c719589657554516ec, type: 3}
+  ObjectTexture: {fileID: 2800000, guid: df63df085c135427faa1541f81b820de, type: 3}
   Width: 1
   Length: 1
   PurchasePrice: 20

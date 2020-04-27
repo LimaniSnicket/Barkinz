@@ -116,16 +116,23 @@ public class UserDataStorage : MonoBehaviour
         userLookup.Add(activeUserKey, activeUserData);
     }
 
+    public static ScoreData GetHighScore(string gameName)
+    {
+        if(activeUserData == null) { return new ScoreData(0, "No High Score!"); }
+        return activeUserData.GetScore(gameName);
+    }
 }
 
 [Serializable]
 public class UserData
 {
     Dictionary<string, BarkinzData> userBarkinzLookup;
+    Dictionary<string, ScoreData> userScoringData;
     public BarkinzData activeBarkinzData { get; private set; }
     public UserData()
     {
         userBarkinzLookup = new Dictionary<string, BarkinzData>();
+        userScoringData = new Dictionary<string, ScoreData>();
     }
 
     public int barkinzRedeemed {
@@ -157,6 +164,12 @@ public class UserData
             userBarkinzLookup.Add(n, activeBarkinzData);
         }
     }
+
+    public ScoreData GetScore(string gameName)
+    {
+        if(userScoringData == null || userScoringData.Count <= 0 || !userScoringData.ContainsKey(gameName)) { return new ScoreData(0, "No High Score!"); }
+        return userScoringData[gameName];
+    }
 }
 
 [Serializable]
@@ -187,4 +200,17 @@ public class BarkinzData
         }
     }
 }
+
+[Serializable]
+public struct ScoreData
+{
+    public int score;
+    public string setBy;
+    public ScoreData(int s, string n)
+    {
+        score = s;
+        setBy = n;
+    }
+}
+
 

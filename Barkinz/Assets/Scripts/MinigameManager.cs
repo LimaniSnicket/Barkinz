@@ -52,10 +52,14 @@ public class MinigameManager : MonoBehaviour
         GameFunctionToTagLookup.Add("Trivia",ActiveGameFunction.TRIVIA);
         GameFunctionToTagLookup.Add("Darts", ActiveGameFunction.DARTS);
         dialogueReader = new DialogueReader(dialogueTextMesh);
-        if (!BarkinzManager.PrimaryBarkinz.LoadSettingsFromInfo) {
+        //StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE, MeerkatMac));
+        //dialogueReader.InitializeDialogue(BarkinzManager.introductionDialoguePath, this, (IZoomOn)MeerkatMac);
+        if (!BarkinzManager.PrimaryBarkinz.barkinzData.loadSettingsFromPreviousSession)
+        {
             StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE, MeerkatMac));
             dialogueReader.InitializeDialogue(BarkinzManager.introductionDialoguePath, this, (IZoomOn)MeerkatMac);
-        } else
+        }
+        else
         {
             AcceptPlayerInput = true;
         }
@@ -137,9 +141,9 @@ public class MinigameManager : MonoBehaviour
 
     void SetCurrencyOnInitialize(BarkinzInfo b)
     {
-        if (b.LoadSettingsFromInfo)
+        if (b.barkinzData.loadSettingsFromPreviousSession)
         {
-            activeCurrency = b.currencyOwned;
+            activeCurrency = b.barkinzData.balance;
         } else
         {
             activeCurrency = startingAmount;
@@ -222,10 +226,10 @@ public class MinigameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
+       // BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
     }
 
-    void OnGameSceneExit() { BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency; }
+    void OnGameSceneExit() { }// BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency; }
 
     private void OnDestroy()
     {

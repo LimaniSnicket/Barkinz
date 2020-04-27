@@ -330,6 +330,18 @@
     <Reference Include="DOTweenEditor">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK.CognitoIdentity">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Core">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SecurityToken">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.MobileAnalytics">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.MobileAnalytics.dll</HintPath>
+    </Reference>
     <Reference Include="FullSerializer">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/BayatGames/SaveGameFree/Plugins/FullSerializer.dll</HintPath>
     </Reference>
@@ -347,18 +359,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.Core">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.MobileAnalytics">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.MobileAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>/Applications/Unity/Hub/Editor/2018.4.16f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

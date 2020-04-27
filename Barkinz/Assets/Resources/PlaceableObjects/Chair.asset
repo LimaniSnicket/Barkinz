@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectLookup: Chair
   ObjectMesh: {fileID: 4300000, guid: 8106628ce9fc04a54a371c3ae16524e2, type: 3}
-  ObjectTexture: {fileID: 2800000, guid: c575e2457dc374c719589657554516ec, type: 3}
+  ObjectTexture: {fileID: 2800000, guid: 0a6ccd24dce924e3f96dbc45c47ffaba, type: 3}
   Width: 1
   Length: 1
   PurchasePrice: 6

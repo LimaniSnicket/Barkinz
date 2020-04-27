@@ -8431,11 +8431,11 @@ MonoBehaviour:
     type: 3}
   inventoryUIObject: {fileID: 624415039}
   statusSprites:
-  - {fileID: 21300000, guid: dc05449c9b4274041bda703a4e43ffea, type: 3}
-  - {fileID: 21300002, guid: dc05449c9b4274041bda703a4e43ffea, type: 3}
-  - {fileID: 21300004, guid: dc05449c9b4274041bda703a4e43ffea, type: 3}
-  - {fileID: 21300010, guid: dc05449c9b4274041bda703a4e43ffea, type: 3}
-  - {fileID: 21300006, guid: dc05449c9b4274041bda703a4e43ffea, type: 3}
+  - {fileID: 21300000, guid: f367925fe980d4ccfa2cf8c89395a2e7, type: 3}
+  - {fileID: 21300002, guid: f367925fe980d4ccfa2cf8c89395a2e7, type: 3}
+  - {fileID: 21300004, guid: f367925fe980d4ccfa2cf8c89395a2e7, type: 3}
+  - {fileID: 21300006, guid: f367925fe980d4ccfa2cf8c89395a2e7, type: 3}
+  - {fileID: 21300008, guid: f367925fe980d4ccfa2cf8c89395a2e7, type: 3}
   chugSpeed: 0
 --- !u!54 &1889314149
 Rigidbody:

@@ -112,6 +112,12 @@ ModelImporter:
     100212: Shelves_001
     100214: LoungeChair
     100216: LoungeChair2
+    100218: Barrel
+    100220: Booth
+    100222: Circle_Table_CHungus
+    100224: Circular_Table_Skinny
+    100226: Pinball
+    100228: Thin_Bar
     400000: //RootNode
     400002: Barstool
     400004: Barstool_001
@@ -221,12 +227,21 @@ ModelImporter:
     400212: Shelves_001
     400214: LoungeChair
     400216: LoungeChair2
+    400218: Barrel
+    400220: Booth
+    400222: Circle_Table_CHungus
+    400224: Circular_Table_Skinny
+    400226: Pinball
+    400228: Thin_Bar
     2100000: Barstool
     2100002: Material
     2100004: unnamed
     2100006: PoolStick
     2100008: Cabinet
     2100010: BarSegment
+    2100012: Booth
+    2100014: Pinball
+    2100016: JukeboxTest
     2300000: Barstool
     2300002: Barstool_001
     2300004: Table
@@ -335,6 +350,12 @@ ModelImporter:
     2300210: Shelves_001
     2300212: LoungeChair
     2300214: LoungeChair2
+    2300216: Barrel
+    2300218: Booth
+    2300220: Circle_Table_CHungus
+    2300222: Circular_Table_Skinny
+    2300224: Pinball
+    2300226: Thin_Bar
     3300000: Barstool
     3300002: Barstool_001
     3300004: Table
@@ -443,6 +464,12 @@ ModelImporter:
     3300210: Shelves_001
     3300212: LoungeChair
     3300214: LoungeChair2
+    3300216: Barrel
+    3300218: Booth
+    3300220: Circle_Table_CHungus
+    3300222: Circular_Table_Skinny
+    3300224: Pinball
+    3300226: Thin_Bar
     4300000: Barstool_001
     4300002: Barstool
     4300004: Table
@@ -551,6 +578,12 @@ ModelImporter:
     4300210: Shelves_001
     4300212: LoungeChair
     4300214: LoungeChair2
+    4300216: Booth
+    4300218: Thin_Bar
+    4300220: Circle_Table_CHungus
+    4300222: Circular_Table_Skinny
+    4300224: Barrel
+    4300226: Pinball
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

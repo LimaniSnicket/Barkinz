@@ -13,18 +13,18 @@ public class BarkinzInfo : ScriptableObject
     public Sprite OverworldSprite;
 
     public bool LoadSettingsFromInfo;
-    public float currencyOwned;
-    [SerializeField] private IntoxicationSettings barkinzIntoxication;
-    [SerializeField] private InventorySettings barkinzInventory;
+    //public float currencyOwned;
+    //[SerializeField] private IntoxicationSettings barkinzIntoxication;
+    //[SerializeField] private InventorySettings barkinzInventory;
     public List<ActiveGameFunction> playedModes;
 
     public BarkinzData barkinzData;
 
     public void ClearData()
     {
-        LoadSettingsFromInfo = false;
-        currencyOwned = 0;
-        barkinzIntoxication = new IntoxicationSettings();
+        //LoadSettingsFromInfo = false;
+        //currencyOwned = 0;
+        //barkinzIntoxication = new IntoxicationSettings();
         barkinzData = new BarkinzData();
     }
 
@@ -45,8 +45,9 @@ public class BarkinzInfo : ScriptableObject
 
     public void UpdateIntoxicationSettings(ActivePlayer player)
     {
-        barkinzIntoxication = player.ActiveSessionIntoxication;
-        currencyOwned = MinigameManager.activeCurrency;
+        //barkinzIntoxication = player.ActiveSessionIntoxication;
+        //currencyOwned = MinigameManager.activeCurrency;
+        barkinzData.balance = MinigameManager.activeCurrency;
     }
 
     public void SetWorldTileFromSettings(WorldTile toSet)
@@ -62,14 +63,15 @@ public class BarkinzInfo : ScriptableObject
 
     public void UpdateInventorySettings(InventorySettings inventory)
     {
-        barkinzInventory = inventory;
+        Debug.Log(barkinzData.storageInfo.inventoryListings.Count);
+        //barkinzInventory = inventory;
     }
 
     void PopulateWorld(WorldTile toPopulate)
     {
         if(barkinzData == null || barkinzData.worldTileSettings == null || barkinzData.worldTileSettings.Count <= 0)
         {
-            return;
+            toPopulate.GenerateDefaultTileMap();
         } else
         {
             foreach (TileData t in barkinzData.worldTileSettings)

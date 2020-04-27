@@ -53,6 +53,19 @@ public class WorldTile : MonoBehaviour
             }
         }
 
+        if (mouseHoverTile!= null && mouseHoverTile.occupied)
+        {
+            try
+            {
+                PlacedObject placed = mouseHoverTile.occupyingTile.GetComponent<PlacedObject>();
+                if (Input.GetMouseButtonDown(1) && !MinigameManager.ValidMode(ActiveGameFunction.FOCUS))
+                {
+                    placed.RotateObject();
+                }
+            }
+            catch (NullReferenceException) { }
+        }
+
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition - (Vector3.up * -.45f));
         RaycastHit rh = new RaycastHit();
         if (Physics.SphereCast(r, .5f, out rh, Mathf.Infinity) && TileLookup.ContainsKey(rh.transform.gameObject))
