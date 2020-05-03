@@ -10,7 +10,7 @@ public class Dart : MonoBehaviour
     AudioSource audioSource { get => GetComponent<AudioSource>(); }
     ActivePlayer activePlayer;
 
-    public bool Thrown;
+    public bool Thrown, pegged;
 
     private void Start()
     {
@@ -23,8 +23,9 @@ public class Dart : MonoBehaviour
     Vector3 currentPosition, deltaPosition, lastPosition;
     private void Update()
     {
-        if (Input.GetKey(KeyCode.U)) { pow += Time.deltaTime * 1.2f; }
-        if (Input.GetKeyUp(KeyCode.U)) { Launch(Mathf.Min(pow, PowerCap)); }
+        if(!pegged && !DartsManager.isActiveDart(this)) { Destroy(gameObject); }
+        if (Input.GetMouseButton(0)) { pow += Time.deltaTime * 1.2f; }
+        if (Input.GetMouseButtonUp(0)) { Launch(Mathf.Min(pow, PowerCap)); }
         Vector3 rot = transform.eulerAngles;
         currentPosition = Input.mousePosition;
         deltaPosition = currentPosition - lastPosition;
@@ -34,7 +35,7 @@ public class Dart : MonoBehaviour
             transform.eulerAngles = rot + new Vector3(deltaPosition.y / 10, deltaPosition.x / 10, 0);
         }
 
-        transform.position += DrunkTilt() * Mathf.Cos(Time.time);
+        transform.position += DrunkTilt() * HelperFunctions.PulseValue(0, 1, .5f, 4, 0); //Mathf.Cos(Time.time);
 
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.red);
     }
@@ -59,15 +60,27 @@ public class Dart : MonoBehaviour
         return new Vector3(0.03f, 0.01f, 0) * mod;
     }
 
-    public static event Action<Color, int> DartHit;
+    public static event Action<Color, int, Vector3> DartHit;
 
     public void OnCollisionEnter(Collision collision)
     {
+        if (collision.transform.GetComponent<Dart>())
+        {
+            Physics.IgnoreCollision(dartCollider, collision.collider);
+        }
+
         Vector3 v = collision.GetContact(0).point;
         Texture2D t = (Texture2D)collision.transform.GetComponent<MeshRenderer>().material.mainTexture;
-        Color c =  t.GetPixelBilinear(v.x, v.y);
-        int pointVal = int.Parse(collision.gameObject.name);
-        DartHit(c, pointVal);
+        Color c = Color.clear;
+        int pointVal = 0;
+        if (t.isReadable)
+        {
+            c = t.GetPixelBilinear(v.x, v.y);
+            pointVal = int.Parse(collision.gameObject.name);
+            pegged = true;
+        }
+
+        DartHit(c, pointVal, v);
         audioSource.Play();
         Destroy(this);
     }

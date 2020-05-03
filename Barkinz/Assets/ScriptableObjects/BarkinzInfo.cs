@@ -165,11 +165,11 @@ public class IntoxicationSettings
         soberingBuffer = 10f;
         if (current.drinkName != "Water")
         {
-            intoxicationLevel += current.drinkStrength / 15 * chug;
+            intoxicationLevel += current.drinkStrength / 30 * chug;
             if (!hasAlcoholPoisoning && intoxicationLevel > 97) { hasAlcoholPoisoning = true; }
         } else
         {
-            intoxicationLevel += current.drinkStrength / 20 * chug;
+            intoxicationLevel += current.drinkStrength / 40 * chug;
         }
     }
 

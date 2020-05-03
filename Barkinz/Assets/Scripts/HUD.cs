@@ -8,21 +8,54 @@ using DG.Tweening;
 
 public class HUD : MonoBehaviour
 {
-    public Button QuitToTitle;
+    public Button QuitToTitle, SaveGame;
     public TextMeshProUGUI CurrencyDisplay;
     public Slider IntoxicationSlider;
     public ActivePlayer player;
+    public ConfirmationMenu ForfeitPopup;
+    public GameObject confirmationMenuPrefab;
+    public static event Action<ActiveGameFunction> ForfeitGameFunction;
+    public delegate void SaveGameFunc();
+    public static event SaveGameFunc OnClickSaveData;
 
     private void Start()
     {
         IntoxicationSlider.maxValue = 100;
         if(QuitToTitle!= null) { QuitToTitle.onClick.AddListener(()=>BarkinzManager.OnClickQuitToMainMenu()); }
+        if(SaveGame != null) { SaveGame.onClick.AddListener(() => SaveOnClick()); }
+        ForfeitPopup = new ConfirmationMenu(confirmationMenuPrefab, "FORFEITING GAME--");
+        ForfeitPopup.ConfirmationButton.onClick.AddListener(()=> OnClickForfeit());
+        ForfeitPopup.DenyButton.onClick.AddListener(() => OnClickCloseMenu());
+        ForfeitPopup.ToggleActivation();
     }
 
     private void Update()
     {
         IntoxicationSlider.value = player.ActiveSessionIntoxication.intoxicationLevel;
         CurrencyDisplay.text = "$" + MinigameManager.activeCurrency.ToString();
+        if (MinigameManager.waitForForfeitPopupResolution) { ForfeitPopup.MenuContainer.SetActive(true); }
+    }
+
+    void SaveOnClick()
+    {
+        if (OnClickSaveData != null)
+        {
+            OnClickSaveData();
+        }
+    }
+
+    void OnClickCloseMenu()
+    {
+        ForfeitPopup.ToggleActivation(false);
+        MinigameManager.waitForForfeitPopupResolution = false;
+    }
+
+    void OnClickForfeit()
+    {
+        ForfeitGameFunction(MinigameManager.getActiveGameFunction);
+        MinigameManager.ExitMode();
+        MinigameManager.waitForForfeitPopupResolution = false;
+        ForfeitPopup.ToggleActivation(false);
     }
 }
 
@@ -54,5 +87,11 @@ public static class HelperFunctions
         float g = PulseValue(gMin, 1, gFreq);
         float b = PulseValue(bMin, 1, bFreq);
         return new Color(r, g, b, 1);
+    }
+
+    public static float PercentTotal(float current, float max)
+    {
+        if(current <= 0) { return 0; }
+        return current * 100 / Mathf.Max(max, 1);
     }
 }

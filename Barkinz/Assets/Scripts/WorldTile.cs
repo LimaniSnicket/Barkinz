@@ -29,6 +29,7 @@ public class WorldTile : MonoBehaviour
         BarkinzManager.OnGameSceneExit += OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed += OnObjectPlacementConfirmed;
         ActivePlayer.SetActivePlayer += OnSetActivePlayer;
+        HUD.OnClickSaveData += OnGameSceneExit;
         PlayerPositionTile = new Tile();
         StartTile = new Tile();
         mouseHoverTile = new Tile();
@@ -237,11 +238,7 @@ public class WorldTile : MonoBehaviour
         BarkinzManager.OnGameSceneExit -= OnGameSceneExit;
         PurchasingBehavior.ObjectPlacementConfirmed -= OnObjectPlacementConfirmed;
         ActivePlayer.SetActivePlayer -= OnSetActivePlayer;
-    }
-
-    private void OnApplicationQuit()
-    {
-        OnGameSceneExit();
+        HUD.OnClickSaveData -= OnGameSceneExit;
     }
 
     void OnGameSceneExit()
@@ -278,7 +275,6 @@ public class Tile : IZoomOn
         thisTileData = d;
         width = d.dimension;
         length = d.dimension;
-        occupied = d.occupied;
         isStartingTile = d.startTile;
         GridPosition = new Vector2Int(d.gridPosition[0], d.gridPosition[1]);
         centerPosition = new Vector3(d.centerX, 0, d.centerZ);
@@ -395,14 +391,12 @@ public struct TileData
 {
     public float dimension{ get; private set; }
     public bool startTile { get; private set; }
-    public bool occupied { get; private set; }
     public int[] gridPosition { get; private set; }
     public float centerX, centerZ;
     public TileData(Tile t)
     {
         dimension = t.width;
         startTile = t.isStartingTile;
-        occupied = t.occupied;
         gridPosition = new int[] { t.GridPosition.x, t.GridPosition.y};
         centerX = t.centerPosition.x;
         centerZ = t.centerPosition.z;

@@ -18,6 +18,7 @@ public class Bartender : MonoBehaviour, IGameMode
     public DrinkDisplay DrinkDisplay;
    
     public ActiveGameFunction GameModeFunction { get => ActiveGameFunction.BAR; }
+    public bool canForfeit { get => false; }
     ActivePlayer player;
 
     public static event Action<float> DrinkOnTab;

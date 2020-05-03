@@ -16,183 +16,21 @@ MonoBehaviour:
   BarkinzCode: OPA
   MainBarkinzSprite: {fileID: 21300000, guid: 10f193d8f72224c8393e84f31f48f16a, type: 3}
   OverworldSprite: {fileID: 21300012, guid: 83b5a7ffede184eb08811db21a033ebe, type: 3}
-  LoadSettingsFromInfo: 1
-  currencyOwned: 50
-  individualSettings:
-    TileLayoutSettings:
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -5.2, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -5.2, y: 0, z: 2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -5.2, y: 0, z: 0}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -5.2, y: 0, z: -2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -5.2, y: 0, z: -5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -2.6, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -2.6, y: 0, z: 2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -2.6, y: 0, z: 0}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -2.6, y: 0, z: -2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: -2.6, y: 0, z: -5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 1
-      isStartingTile: 1
-      centerPosition: {x: 0, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 0, y: 0, z: 2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 0, y: 0, z: 0}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 0, y: 0, z: -2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 0, y: 0, z: -5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 2.6, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 2.6, y: 0, z: 2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 2.6, y: 0, z: 0}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 2.6, y: 0, z: -2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 2.6, y: 0, z: -5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 5.2, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 5.2, y: 0, z: 2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 5.2, y: 0, z: 0}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 5.2, y: 0, z: -2.6}
-      occupyingTile: {fileID: 0}
-    - width: 2.6
-      length: 2.6
-      occupied: 0
-      isStartingTile: 0
-      centerPosition: {x: 5.2, y: 0, z: -5.2}
-      occupyingTile: {fileID: 0}
-    StartTile:
-      width: 2.6
-      length: 2.6
-      occupied: 1
-      isStartingTile: 1
-      centerPosition: {x: 0, y: 0, z: 5.2}
-      occupyingTile: {fileID: 0}
-    startTilePosition: {x: 2, y: 0}
-    ObjectPlacementData: []
-  barkinzIntoxication:
-    currentTab: 0
-    intoxicationLevel: 160.93466
-    soberRate: 5
-    soberingBuffer: 2.476046
-  barkinzInventory:
-    inventoryListings: []
-    activeInventoryList:
-      prefab: {fileID: 7406612309236356000, guid: 312aa5b52083448888509b0794475af3,
-        type: 3}
-      inventoryButtons: []
+  LoadSettingsFromInfo: 0
   playedModes: 0500000000000000
   barkinzData:
     barkinzLookup: 
     loadSettingsFromPreviousSession: 0
     balance: 0
     worldTileSettings: []
+    objectData: []
+    storageInfo:
+      inventoryListings: []
+      activeInventoryList:
+        prefab: {fileID: 0}
+        inventoryButtons: []
+    intoxicationData:
+      currentTab: 0
+      intoxicationLevel: 0
+      soberRate: 0
+      soberingBuffer: 10
