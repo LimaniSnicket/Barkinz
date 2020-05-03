@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\Dart.cs" />
     <Compile Include="Assets\Scripts\DartsManager.cs" />
     <Compile Include="Assets\Scripts\DialogueSource.cs" />
+    <Compile Include="Assets\Scripts\FaderBehavior.cs" />
     <Compile Include="Assets\Scripts\HUD.cs" />
     <Compile Include="Assets\Scripts\LoginMenuBehavior.cs" />
     <Compile Include="Assets\Scripts\MinigameManager.cs" />
@@ -363,6 +364,18 @@
     <Reference Include="DOTween">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK.CognitoIdentity">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Core">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SecurityToken">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.MobileAnalytics">
+      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.MobileAnalytics.dll</HintPath>
+    </Reference>
     <Reference Include="FullSerializer">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/BayatGames/SaveGameFree/Plugins/FullSerializer.dll</HintPath>
     </Reference>
@@ -374,18 +387,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.CognitoIdentity">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.CognitoIdentity.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.Core">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.MobileAnalytics">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.MobileAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.SecurityToken">
-      <HintPath>/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/AWSSDK/AWSSDK.SecurityToken.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>/Applications/Unity/Hub/Editor/2018.4.16f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

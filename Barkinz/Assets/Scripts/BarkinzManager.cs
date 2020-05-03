@@ -9,6 +9,7 @@ public class BarkinzManager : MonoBehaviour
     private static BarkinzManager barkinz;
     public static Dictionary<string, BarkinzInfo> BarkinzCodeLookup { get => "BarkinzInfo".CreateLookup(); }
     public static BarkinzInfo PrimaryBarkinz;
+    public BarkinzInfo defaultBarkinz;
 
     const string gameplaySceneName = "GameScene";
     public static string introductionDialoguePath { get; private set; }
@@ -40,12 +41,14 @@ public class BarkinzManager : MonoBehaviour
     {
         if (s.name == gameplaySceneName)
         {
+            if(PrimaryBarkinz == null) { PrimaryBarkinz = defaultBarkinz; }
             InitializeBarkinzData(PrimaryBarkinz);
             Debug.Log("Initializing " + PrimaryBarkinz.name + " as Primary Barkinz");
             enteredGameScene = true;
+            FaderBehavior.DoFade(1);
         } else
         {
-            if (enteredGameScene) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
+            if (enteredGameScene) { PrimaryBarkinz.barkinzData.loadSettingsFromPreviousSession = true; }//PrimaryBarkinz.LoadSettingsFromInfo = true; }
         }
     }
 
@@ -64,7 +67,9 @@ public class BarkinzManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         // if(SceneManager.GetActiveScene().name == gameplaySceneName) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
-        if (enteredGameScene) { PrimaryBarkinz.LoadSettingsFromInfo = true; }
+        if (enteredGameScene) {
+            PrimaryBarkinz.barkinzData.loadSettingsFromPreviousSession = true;
+        }
     }
 
     private void OnDestroy()

@@ -10,6 +10,7 @@ public class MinigameManager : MonoBehaviour
 {
     private static MinigameManager gameManager;
     public ActiveGameFunction activeGameFunction;
+    public static ActiveGameFunction getActiveGameFunction { get => gameManager.activeGameFunction; }
 
     public static float activeCurrency;
     private const float startingAmount = 50f;
@@ -27,6 +28,11 @@ public class MinigameManager : MonoBehaviour
 
     public static bool SwappingMode { get; private set; }
     public static bool AcceptPlayerInput { get; private set; }
+
+    static List<ActiveGameFunction> forfeitableGameModes { get => new List<ActiveGameFunction>()
+    { ActiveGameFunction.DARTS, ActiveGameFunction.TRIVIA }; }
+    public static bool forfeitableMode { get => forfeitableGameModes.Contains(gameManager.activeGameFunction); }
+    public static bool waitForForfeitPopupResolution;
 
 
     private void Awake()
@@ -52,10 +58,13 @@ public class MinigameManager : MonoBehaviour
         GameFunctionToTagLookup.Add("Trivia",ActiveGameFunction.TRIVIA);
         GameFunctionToTagLookup.Add("Darts", ActiveGameFunction.DARTS);
         dialogueReader = new DialogueReader(dialogueTextMesh);
-        if (!BarkinzManager.PrimaryBarkinz.LoadSettingsFromInfo) {
+
+        if (!BarkinzManager.PrimaryBarkinz.barkinzData.loadSettingsFromPreviousSession)
+        {
             StartCoroutine(EnterMode(ActiveGameFunction.DIALOGUE, MeerkatMac));
             dialogueReader.InitializeDialogue(BarkinzManager.introductionDialoguePath, this, (IZoomOn)MeerkatMac);
-        } else
+        }
+        else
         {
             AcceptPlayerInput = true;
         }
@@ -69,6 +78,7 @@ public class MinigameManager : MonoBehaviour
         TriviaCanvas.SetActive(ValidMode(ActiveGameFunction.TRIVIA));
         dialogueReader.MaintainDialogueDisplay();
         AcceptPlayerInput = ValidMode(ActiveGameFunction.NONE);
+        activeCurrency = (float)Math.Round(activeCurrency, 2);
 
         if (Input.GetKeyDown(KeyCode.R) && activeGameFunction == ActiveGameFunction.NONE)
         {
@@ -88,7 +98,10 @@ public class MinigameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitMode();
+            if (!forfeitableMode) { ExitMode(); } else
+            {
+                waitForForfeitPopupResolution = true; ;
+            }
         }
     }
 
@@ -137,9 +150,9 @@ public class MinigameManager : MonoBehaviour
 
     void SetCurrencyOnInitialize(BarkinzInfo b)
     {
-        if (b.LoadSettingsFromInfo)
+        if (b.barkinzData.loadSettingsFromPreviousSession)
         {
-            activeCurrency = b.currencyOwned;
+            activeCurrency = b.barkinzData.balance;
         } else
         {
             activeCurrency = startingAmount;
@@ -184,7 +197,7 @@ public class MinigameManager : MonoBehaviour
         SwappingMode = true;
         if (toEnter == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPop(true, 3f)); }
         Debug.Log("Swapping Modes");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.1f);
         ActiveGameFunction previous = activeGameFunction;
         activeGameFunction = toEnter;
         if (previous == ActiveGameFunction.BAR) { yield return StartCoroutine(MacPop(false, 5f)); }
@@ -222,10 +235,10 @@ public class MinigameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
+       // BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency;
     }
 
-    void OnGameSceneExit() { BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency; }
+    void OnGameSceneExit() {}// BarkinzManager.PrimaryBarkinz.currencyOwned = activeCurrency; 
 
     private void OnDestroy()
     {

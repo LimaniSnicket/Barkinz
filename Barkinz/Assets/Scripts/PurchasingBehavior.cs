@@ -304,10 +304,26 @@ public struct ConfirmationMenu
         Message = defaultMessage;
     }
 
+    public ConfirmationMenu(GameObject container, string def)
+    {
+        MenuContainer = container;
+        ConfirmationButton = container.transform.Find("ConfirmButton").GetComponent<Button>();
+        DenyButton = container.transform.Find("DenyButton").GetComponent<Button>();
+        ConfirmationMessageText = container.GetComponentInChildren<TextMeshProUGUI>();
+        defaultMessage = "YOU SURE 'BOUT THIS?";
+        Message = def;
+    }
+
     public void ToggleActivation()
     {
         bool currentState = MenuContainer.activeSelf;
         MenuContainer.SetActive(!currentState);
+        ConfirmationMessageText.text = Message + '\n' + defaultMessage;
+    }
+
+    public void ToggleActivation(bool set)
+    {
+        MenuContainer.SetActive(set);
         ConfirmationMessageText.text = Message + '\n' + defaultMessage;
     }
 

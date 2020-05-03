@@ -33,6 +33,12 @@ public class PlacedObject : MonoBehaviour
         GridPosition = gridPosition;
     }
 
+    public void RotateObject()
+    {
+        Vector3 rotationEulers = transform.eulerAngles + new Vector3(0, 90, 0);
+        transform.rotation = Quaternion.Euler(rotationEulers);
+    }
+
     public void InitializePlacedObject(Vector2Int gridPosition, PlaceableObject obj)
     {
         ObjectInformation = obj;

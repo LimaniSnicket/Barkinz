@@ -9,7 +9,6 @@ public class PlayerUI : MonoBehaviour
     public SpriteRenderer statusIcon;
     ActivePlayer player;
 
-
     private void Awake()
     {
         CameraMovement.ZoomedOnObject += OnZoomed;
@@ -33,9 +32,8 @@ public class PlayerUI : MonoBehaviour
 
     void OnZoomed(IZoomOn zoom)
     {
-        bool t = zoom.GetType() == typeof(ActivePlayer);
-        Debug.Log(t);
-        if (t)
+        Debug.Log(zoom.GetType().ToString());
+        if (zoom.GetType().ToString() == "ActivePlayer")
         {
             ToggleVisibility(true);
         }

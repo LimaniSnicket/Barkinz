@@ -9,11 +9,12 @@ public class BarkinzInputManager : MonoBehaviour
 {
     public TMP_InputField CodeInputField;
     public Button RedeemButton, StartButton;
-    public Image BarkinzProfile;
+    public Image BarkinzProfile, BG;
     public TextMeshProUGUI BarkinzNameDisplay;
 
     const string nullBarkinz = "NO ACTIVE BARKINZ";
-    private string inputCode { get => CodeInputField.text; }
+    private string inputCode { get => CodeInputField.text.ToUpper(); }
+    bool canPulse;
 
     private void Start()
     {
@@ -26,7 +27,11 @@ public class BarkinzInputManager : MonoBehaviour
 
     private void Update()
     {
-        if (!CodeValid()) { BarkinzProfile.gameObject.SetActive(false); BarkinzNameDisplay.text = nullBarkinz; }
+        if (!CodeValid()) { BarkinzProfile.gameObject.SetActive(false); BarkinzNameDisplay.text = nullBarkinz; canPulse = false; } else
+        {
+            if (canPulse) { StartButton.GetComponent<RectTransform>().PulseText(1f, .2f, .8f); }
+        }
+        BG.color = HelperFunctions.Spectrum();
     }
 
     bool CodeValid()
@@ -45,6 +50,7 @@ public class BarkinzInputManager : MonoBehaviour
             BarkinzNameDisplay.text = b.BarkinzType.ToUpper();
             BarkinzManager.PrimaryBarkinz = b;
             StartButton.interactable = true;
+            canPulse = true;
         } else
         {
             StartButton.interactable = false;
@@ -53,6 +59,18 @@ public class BarkinzInputManager : MonoBehaviour
 
     void OnClickGoToScene()
     {
+        StartCoroutine(OnClickInitializeGame());
+    }
+
+    IEnumerator OnClickInitializeGame()
+    {
+        try
+        {
+            BarkinzManager.PrimaryBarkinz.barkinzData = UserDataStorage.activeUserData.activeBarkinzData;
+        } catch (System.NullReferenceException) { print("User Data Not Present in Scene!"); }
+        print("Prepping to Load");
+        FaderBehavior.DoFadeColor(2);
+        yield return new WaitForSeconds(2);
         SceneManager.LoadScene(2);
     }
 }

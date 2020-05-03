@@ -12,12 +12,14 @@ public class UserDataStorage : MonoBehaviour
     private static Dictionary<string, UserData> userLookup;
     static string tempUserGen;
     public string activeUserKey;
+    public string identifier = "userDataStorage";
 
     const string userDNE = "User does not exist in Database";
 
     private void Awake()
     {
         if(userData == null) { userData = this; } else { Destroy(this); }
+        userLookup = new Dictionary<string, UserData>();
         DontDestroyOnLoad(this);
         LoadUserDataBaseFromSaveData();
     }
@@ -72,8 +74,7 @@ public class UserDataStorage : MonoBehaviour
         if (!fromWeb) {
             try
             {
-                userLookup = SaveGame.Load<Dictionary<string, UserData>>("userDataBase");
-                Debug.Log(userLookup.Count);
+                userLookup = SaveGame.Load<Dictionary<string, UserData>>(userData.identifier, new Dictionary<string, UserData>());
             }
             catch (NullReferenceException) {
                 userLookup = new Dictionary<string, UserData>();
@@ -94,7 +95,7 @@ public class UserDataStorage : MonoBehaviour
     static IEnumerator SaveToWeb()
     {
         SaveGameWeb web = new SaveGameWeb("vera@glowup.games", "VRFiKzX*J{g2", "ftp.glowup.games");
-        yield return web.Save<Dictionary<string, UserData>>("userDataBase", userLookup);
+        yield return userData.StartCoroutine(web.Save<Dictionary<string, UserData>>(userData.identifier, userLookup));
         if (web.IsError) { Debug.LogError(web.Error); } else { Debug.Log("Saved Data via Web"); }
     }
 
@@ -107,25 +108,39 @@ public class UserDataStorage : MonoBehaviour
             OverrideUserData();
         }
         catch (NullReferenceException){ }
-        SaveGame.Save<Dictionary<string, UserData>>("userDataBase", userLookup);
+        SaveGame.Save<Dictionary<string, UserData>>(identifier, userLookup);
     }
 
     private void OverrideUserData()
     {
-        userLookup.Remove(activeUserKey);
-        userLookup.Add(activeUserKey, activeUserData);
+        userLookup[activeUserKey] = activeUserData;
     }
 
+    public static ScoreData GetHighScore(string gameName)
+    {
+        if(activeUserData == null) { return new ScoreData(0, "No High Score!"); }
+        return activeUserData.GetScore(gameName);
+    }
+
+    public static void UpdateScore(ScoreData s, string gameName)
+    {
+        if(activeUserData != null)
+        {
+            activeUserData.UpdateScore(gameName, s);
+        }
+    }
 }
 
 [Serializable]
 public class UserData
 {
     Dictionary<string, BarkinzData> userBarkinzLookup;
+    Dictionary<string, ScoreData> userScoringData;
     public BarkinzData activeBarkinzData { get; private set; }
     public UserData()
     {
         userBarkinzLookup = new Dictionary<string, BarkinzData>();
+        userScoringData = new Dictionary<string, ScoreData>();
     }
 
     public int barkinzRedeemed {
@@ -153,8 +168,25 @@ public class UserData
         activeBarkinzData = BarkinzManager.PrimaryBarkinz.barkinzData;
         string n = BarkinzManager.PrimaryBarkinz.name;
         if (barkinzOwned(n)){
-            userBarkinzLookup.Remove(n);
+            userBarkinzLookup[n] = activeBarkinzData;
+        } else
+        {
             userBarkinzLookup.Add(n, activeBarkinzData);
+        }
+    }
+
+    public ScoreData GetScore(string gameName)
+    {
+        if(userScoringData == null || userScoringData.Count <= 0 || !userScoringData.ContainsKey(gameName)) { return new ScoreData(0, "No High Score!"); }
+        return userScoringData[gameName];
+    }
+
+    public void UpdateScore(string gameName, ScoreData score)
+    {
+       if(userScoringData == null) { userScoringData = new Dictionary<string, ScoreData>(); }
+       if(GetScore(gameName).CompareTo(score) > 0)
+        {
+            userScoringData[gameName] = score;
         }
     }
 }
@@ -177,6 +209,8 @@ public class BarkinzData
         storageInfo = new InventorySettings();
         storageInfo = w.playerInventory;
         intoxicationData = w.playerIntoxication;
+        balance = MinigameManager.activeCurrency;
+        barkinzLookup = BarkinzManager.PrimaryBarkinz.BarkinzCode;
         for (int i = 0; i< w.Tiles.Count; i++)
         {
             worldTileSettings.Add(new TileData(w.Tiles[i]));
@@ -187,4 +221,26 @@ public class BarkinzData
         }
     }
 }
+
+[Serializable]
+public struct ScoreData: IComparable<ScoreData>
+{
+    public int score;
+    public string setBy;
+    public ScoreData(int s, string n)
+    {
+        score = s;
+        setBy = n;
+    }
+
+    public string scoreDisplay { get => string.Format("{0}: {1}", setBy, score); }
+
+    public int CompareTo(ScoreData other)
+    {
+        if(score == other.score) { return 0; }
+        if(score > other.score) { return -1; }
+        return 1;
+    }
+}
+
 

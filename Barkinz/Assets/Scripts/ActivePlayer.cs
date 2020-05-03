@@ -36,7 +36,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
     {
         SetActivePlayer(this);
         OverworldSpriteDisplay = GetComponentInChildren<SpriteRenderer>();
-        CameraOrthoSize = 1;
+        CameraOrthoSize = 2f;
         activeInventory.activeInventoryList.Toggle(false);
     }
 
@@ -145,7 +145,7 @@ public class ActivePlayer : MonoBehaviour, IZoomOn
 
     public Vector3 ZoomCamPosition()
     {
-        Vector3 p = transform.position + new Vector3(0, 1f, -2f);
+        Vector3 p = transform.position + new Vector3(0, 1, -1.5f);
         return p;
     }
 }

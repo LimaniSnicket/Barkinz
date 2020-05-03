@@ -1,34 +1,35 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/BayatGames/SaveGameFree/Scripts/SaveGameWeb.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/UserDataStorage.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="105" Column="12" />
-      <File FileName="Assets/Scripts/BarkinzManager.cs" Line="7" Column="14" />
-      <File FileName="Assets/Scripts/WorldTile.cs" Line="97" Column="34" />
-      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="138" Column="1" />
-      <File FileName="Assets/Scripts/Bartender.cs" Line="40" Column="51" />
-      <File FileName="Assets/Scripts/HUD.cs" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="56" Column="39" />
+      <File FileName="Assets/Scripts/BarkinzManager.cs" />
+      <File FileName="Assets/Scripts/WorldTile.cs" Line="234" Column="1" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" />
+      <File FileName="Assets/Scripts/Bartender.cs" />
+      <File FileName="Assets/Scripts/HUD.cs" Line="29" Column="41" />
       <File FileName="Assets/Scripts/TriviaScript.cs" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/Scripts/Dart.cs" />
-      <File FileName="Assets/Scripts/DartsManager.cs" />
+      <File FileName="Assets/Scripts/DartsManager.cs" Line="78" Column="36" />
       <File FileName="Assets/ScriptableObjects/PlaceableObject.cs" />
-      <File FileName="Assets/Scripts/PlacedObject.cs" Line="36" Column="17" />
-      <File FileName="Assets/Scripts/PurchasingBehavior.cs" Line="180" Column="1" />
-      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" Line="23" Column="26" />
-      <File FileName="Assets/StreamingAssets/DrinkData.json" Line="49" Column="29" />
+      <File FileName="Assets/Scripts/PlacedObject.cs" />
+      <File FileName="Assets/Scripts/PurchasingBehavior.cs" />
+      <File FileName="Assets/StreamingAssets/TutorialDialogue.json" />
+      <File FileName="Assets/StreamingAssets/DrinkData.json" />
       <File FileName="Assets/StreamingAssets/TriviaDialogue.json" />
-      <File FileName="Assets/Scripts/DialogueSource.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/UserDataStorage.cs" Line="96" Column="20" />
+      <File FileName="Assets/Scripts/DialogueSource.cs" />
+      <File FileName="Assets/Scripts/UserDataStorage.cs" Line="77" Column="93" />
       <File FileName="Assets/Scripts/LoginMenuBehavior.cs" />
-      <File FileName="Assets/Scripts/PlayerUI.cs" Line="37" Column="22" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" Line="13" Column="52" />
-      <File FileName="Assets/Scripts/BarkinzInputManager.cs" Line="43" Column="55" />
-      <File FileName="Assets/BayatGames/SaveGameFree/Scripts/SaveGameWeb.cs" Line="18" Column="15" />
+      <File FileName="Assets/Scripts/PlayerUI.cs" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" />
+      <File FileName="Assets/Scripts/BarkinzInputManager.cs" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" />
+      <File FileName="Assets/Scripts/FaderBehavior.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a87d32e4-7bf8-44b2-90c4-345ae941315a" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="f5e61d46-8322-4ee2-91d8-06be90cf3bf0" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/Scripts/PurchasingBehavior.cs" relfile="Assets/Scripts/PurchasingBehavior.cs" line="176" column="1" />

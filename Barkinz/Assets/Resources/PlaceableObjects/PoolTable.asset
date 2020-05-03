@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectLookup: PoolTable
   ObjectMesh: {fileID: 4300000, guid: d04f27050be424a1f8b287ee3f44f32c, type: 3}
-  ObjectTexture: {fileID: 2800000, guid: c575e2457dc374c719589657554516ec, type: 3}
+  ObjectTexture: {fileID: 2800000, guid: b7191bf108aca4b1caafd1adcd9f8464, type: 3}
   Width: 1
   Length: 3
   PurchasePrice: 15
