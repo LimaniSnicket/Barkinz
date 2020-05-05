@@ -33,7 +33,7 @@
         "drinkStrength": 6,
         "amountLeft": 5,
         "available": true,
-        "displaySpritePath": "DrinkSprites/Henny",
+        "displaySpritePath": "DrinkSprites/Chianti",
         "prefBarkinzPath": "WINEMOM"
     },
     {
@@ -62,6 +62,33 @@
         "available": true,
         "displaySpritePath": "DrinkSprites/Whiteclaw",
         "prefBarkinzPath": "ROLLTIDE"
+    },
+    {
+        "drinkName": "Kahlua",
+        "drinkCost": 6,
+        "drinkStrength": 6,
+        "amountLeft": 4,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Kahlua",
+        "prefBarkinzPath": "CAFFEIND"
+    },
+    {
+        "drinkName": "Baileys",
+        "drinkCost": 4,
+        "drinkStrength": 4,
+        "amountLeft": 3,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Baileys",
+        "prefBarkinzPath": "RUFFMORN"
+    },
+    {
+        "drinkName": "Pinot",
+        "drinkCost": 10,
+        "drinkStrength": 7,
+        "amountLeft": 5,
+        "available": true,
+        "displaySpritePath": "DrinkSprites/Pinot",
+        "prefBarkinzPath": "OUI"
     }
   ]
 }

@@ -15,21 +15,22 @@ MonoBehaviour:
   BarkinzType: Carmela the Chianti Cat
   BarkinzCode: WINEMOM
   MainBarkinzSprite: {fileID: 21300000, guid: 28378c474823f4c5184e26edabe1d0a4, type: 3}
-  OverworldSprite: {fileID: 0}
+  OverworldSprite: {fileID: 21300000, guid: 28378c474823f4c5184e26edabe1d0a4, type: 3}
   LoadSettingsFromInfo: 0
-  currencyOwned: 0
-  individualSettings:
-    TileLayoutSettings: []
-    PlayerTile:
-      width: 1
-      length: 1
-      occupied: 0
-      centerPosition: {x: 0, y: 0, z: 0}
-    playerPosition: {x: 0, y: 0}
-    ObjectPlacementData: []
-  barkinzIntoxication:
-    currentTab: 0
-    intoxicationLevel: 0
-    soberRate: 0
-    soberingBuffer: 10
-  prefDrink: Chianti
+  playedModes: 
+  barkinzData:
+    barkinzLookup: 
+    loadSettingsFromPreviousSession: 0
+    balance: 0
+    worldTileSettings: []
+    objectData: []
+    storageInfo:
+      inventoryListings: []
+      activeInventoryList:
+        prefab: {fileID: 0}
+        inventoryButtons: []
+    intoxicationData:
+      currentTab: 0
+      intoxicationLevel: 0
+      soberRate: 0
+      soberingBuffer: 10

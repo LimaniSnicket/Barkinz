@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
 
 public class BarkinzManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class BarkinzManager : MonoBehaviour
     public static Dictionary<string, BarkinzInfo> BarkinzCodeLookup { get => "BarkinzInfo".CreateLookup(); }
     public static BarkinzInfo PrimaryBarkinz;
     public BarkinzInfo defaultBarkinz;
+    public GameObject inactiveBarkinzPrefab;
+    public static List<NpcController> npcBarkinz;
 
     const string gameplaySceneName = "GameScene";
     public static string introductionDialoguePath { get; private set; }
@@ -31,6 +34,7 @@ public class BarkinzManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         SceneManager.sceneLoaded += OnSceneLoad;
         introductionDialoguePath = Application.streamingAssetsPath + "/TutorialDialogue.json";
+        npcBarkinz = new List<NpcController>();
     }
 
     public static event Action<BarkinzInfo> InitializeBarkinzData;
@@ -50,6 +54,14 @@ public class BarkinzManager : MonoBehaviour
         {
             if (enteredGameScene) { PrimaryBarkinz.barkinzData.loadSettingsFromPreviousSession = true; }//PrimaryBarkinz.LoadSettingsFromInfo = true; }
         }
+    }
+
+    public static void GenerateNPC(Tile t)
+    {
+        BarkinzInfo b = BarkinzCodeLookup.GetRandomBarkinz(new List<string>() {PrimaryBarkinz.BarkinzCode });
+        NpcController npc = Instantiate(barkinz.inactiveBarkinzPrefab).GetComponent<NpcController>();
+        npc.SetBarkinz(b, t);
+        npcBarkinz.Add(npc);
     }
 
     public static void AddToPlayedModes(ActiveGameFunction mode)
@@ -101,6 +113,13 @@ public static class BarkinzMethods
         {
             return Resources.Load<BarkinzInfo>("BarkinzInfo/" + barkinzName);
         } catch (NullReferenceException) { Debug.Log("Barkinz Not Found"); return null; }
-       
+    }
+
+    public static BarkinzInfo GetRandomBarkinz(this Dictionary<string, BarkinzInfo> dict, List<string> exclude)
+    {
+        int i = UnityEngine.Random.Range(1, dict.Count);
+        BarkinzInfo b = dict.ElementAt(i).Value;
+        if (exclude.Contains(b.BarkinzCode)){ return dict.GetRandomBarkinz(exclude); }
+        return b;
     }
 }

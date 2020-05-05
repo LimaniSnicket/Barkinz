@@ -92,3 +92,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectInformation: {fileID: 0}
   GridPosition: {x: 0, y: 0}
+  instantiateParticle: {fileID: 6220265630847473863, guid: 90fbdd769bb99448c9a0bf3a16f5372b,
+    type: 3}

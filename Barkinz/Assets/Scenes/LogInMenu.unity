@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeUserKey: 
+  identifier: userDataStorage
 --- !u!4 &389308988
 Transform:
   m_ObjectHideFlags: 0

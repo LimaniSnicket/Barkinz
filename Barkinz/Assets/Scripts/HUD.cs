@@ -8,12 +8,12 @@ using DG.Tweening;
 
 public class HUD : MonoBehaviour
 {
-    public Button QuitToTitle, SaveGame;
+    public Button QuitToTitle, SaveGame, howTo;
     public TextMeshProUGUI CurrencyDisplay;
     public Slider IntoxicationSlider;
     public ActivePlayer player;
     public ConfirmationMenu ForfeitPopup;
-    public GameObject confirmationMenuPrefab;
+    public GameObject confirmationMenuPrefab, howToMenu;
     public static event Action<ActiveGameFunction> ForfeitGameFunction;
     public delegate void SaveGameFunc();
     public static event SaveGameFunc OnClickSaveData;
@@ -23,6 +23,7 @@ public class HUD : MonoBehaviour
         IntoxicationSlider.maxValue = 100;
         if(QuitToTitle!= null) { QuitToTitle.onClick.AddListener(()=>BarkinzManager.OnClickQuitToMainMenu()); }
         if(SaveGame != null) { SaveGame.onClick.AddListener(() => SaveOnClick()); }
+        if(howTo != null) { howTo.onClick.AddListener(()=> OnClickDoHowToMenu()); }
         ForfeitPopup = new ConfirmationMenu(confirmationMenuPrefab, "FORFEITING GAME--");
         ForfeitPopup.ConfirmationButton.onClick.AddListener(()=> OnClickForfeit());
         ForfeitPopup.DenyButton.onClick.AddListener(() => OnClickCloseMenu());
@@ -44,10 +45,24 @@ public class HUD : MonoBehaviour
         }
     }
 
+    void OnClickDoHowToMenu()
+    {
+        bool tog = Vector3.Distance(howToMenu.GetComponent<RectTransform>().localScale, Vector3.zero) <= 0;
+        // howToMenu.SetActive(!tog);
+        StartCoroutine(ToggleMenu(tog, 1));
+    }
+
     void OnClickCloseMenu()
     {
         ForfeitPopup.ToggleActivation(false);
         MinigameManager.waitForForfeitPopupResolution = false;
+    }
+
+    IEnumerator ToggleMenu(bool setting, float duration)
+    {
+        float scale = setting ? 1 : 0;
+        howToMenu.GetComponent<RectTransform>().DOScale(scale, duration);
+        yield return new WaitForSeconds(duration);
     }
 
     void OnClickForfeit()

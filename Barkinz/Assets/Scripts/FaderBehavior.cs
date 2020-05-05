@@ -25,6 +25,11 @@ public class FaderBehavior : MonoBehaviour
         faderImage.DOFade(end, time);
     }
 
+    public static void DoFadeColor(Color[] colors, float delay, float time = 0.5f)
+    {
+        fader.StartCoroutine(FadeColors(colors, time, delay));
+    }
+
     public static void DoFadeColor(float time = 3)
     {
         DoFadeColor(Color.white, time);
@@ -33,5 +38,18 @@ public class FaderBehavior : MonoBehaviour
     public static void DoFadeColor(Color c, float time = 3)
     {
         faderImage.DOColor(c, time);
+    }
+
+    static IEnumerator FadeColors(Color[] c, float t, float d)
+    {
+        if(c.Length <= 0) { yield return null; }
+        yield return new WaitForSeconds(d);
+        int tr =0;
+        while (tr < c.Length)
+        {
+            faderImage.DOColor(c[tr], t);
+            yield return new WaitForSeconds(t);
+            tr++;
+        }
     }
 }
