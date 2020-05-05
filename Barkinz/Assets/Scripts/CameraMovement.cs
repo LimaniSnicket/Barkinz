@@ -60,7 +60,7 @@ public class CameraMovement : MonoBehaviour
                 IZoomOn zoomOn = (IZoomOn)rh.transform.GetComponent<MonoBehaviour>();
                 ZoomedOnObject(zoomOn);
                 StartCoroutine(LerpCameraToZoomPosition(zoomOn.ZoomCamPosition(), 10f));
-                StartCoroutine(LerpCameraToZoomPosition(zoomOn.CameraOrthoSize, 12f));
+                StartCoroutine(LerpCameraToZoomPosition(zoomOn.CameraOrthoSize, 1));
                 Zoomed = true;
             }
         }
@@ -69,7 +69,7 @@ public class CameraMovement : MonoBehaviour
     public void ResetZoom()
     {
         StartCoroutine(LerpCameraToZoomPosition(HomePosition, 10));
-        StartCoroutine(LerpCameraToZoomPosition(HomeOrthographicSize, 12f));
+        StartCoroutine(LerpCameraToZoomPosition(HomeOrthographicSize, 1));
         camMovement.transform.rotation = HomeRotation;
         Camera.main.orthographic = true;
         Zoomed = false;
@@ -86,7 +86,7 @@ public class CameraMovement : MonoBehaviour
             ZoomedOnObject(zoom);
             Camera.main.orthographic = false;
             camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.ZoomCamPosition(), 5));
-            camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 12));
+            camMovement.StartCoroutine(camMovement.LerpCameraToZoomPosition(zoom.CameraOrthoSize, 1));
             if (adjustForward) { camMovement.transform.forward = (zoom.ZoomObjectTransform.forward + zoom.ZoomObjectTransform.right); }
             Zoomed = true;
         }
@@ -104,12 +104,14 @@ public class CameraMovement : MonoBehaviour
 
     public IEnumerator LerpCameraToZoomPosition(float ortho, float speed)
     {
-        while (!Camera.main.orthographicSize.SqueezeFloats(ortho))
-        {
-            Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, ortho, Time.deltaTime * speed);
-            yield return null;
-        }
-        Camera.main.orthographicSize = ortho;
+        Camera.main.DOOrthoSize(ortho, speed);
+        yield return new WaitForSeconds(speed);
+    //    while (!Camera.main.orthographicSize.SqueezeFloats(ortho))
+    //    {
+    //        Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, ortho, Time.deltaTime * speed);
+    //        yield return null;
+    //    }
+    //    Camera.main.orthographicSize = ortho;
     }
 
 }

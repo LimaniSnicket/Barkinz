@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\HUD.cs" />
     <Compile Include="Assets\Scripts\LoginMenuBehavior.cs" />
     <Compile Include="Assets\Scripts\MinigameManager.cs" />
+    <Compile Include="Assets\Scripts\NpcController.cs" />
     <Compile Include="Assets\Scripts\PlacedObject.cs" />
     <Compile Include="Assets\Scripts\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\PurchasingBehavior.cs" />

@@ -164,16 +164,22 @@ public class InventorySettings
             int index = itemIndices.IndexOf(obj);
             inventoryListings[index].AdjustInventoryListing(add);
             activeInventoryList.Adjust(index, "x" + inventoryListings[index].amountOwned.ToString());
-            if (inventoryListings[index].NoneOwned) { inventoryListings.RemoveAt(index); itemIndices.RemoveAt(index); activeInventoryList.Adjust(inventoryListings[index].item, false); }
+            if (inventoryListings[index].NoneOwned) {
+                activeInventoryList.Adjust(inventoryListings[index].item, false);
+                inventoryListings.RemoveAt(index);
+                itemIndices.RemoveAt(index);
+            }
+            Debug.Log(inventoryListings[index].NoneOwned);
         }
         else
         {
             if (add)
             {
                 itemIndices.Add(obj);
+                int i = itemIndices.IndexOf(obj);
                 inventoryListings.Add(new InventoryListing(obj));
                 activeInventoryList.Adjust(obj, true);
-                activeInventoryList.GetAtIndex(itemIndices.Count - 1).purchaseButton.onClick.AddListener(()=>OnClickGetObjectToSpawn(itemIndices.Count - 1));
+                activeInventoryList.GetAtIndex(i).purchaseButton.onClick.AddListener(()=>OnClickGetObjectToSpawn(i));
             }
         }
     }
@@ -276,9 +282,8 @@ public struct InventoryListUIObject
             {
                 if(b.objectForSale == p)
                 {
-                    PurchaseButton dstry = b;
+                    GameObject.Destroy(b.gameObject);
                     inventoryButtons.Remove(b);
-                    GameObject.Destroy(dstry.gameObject);
                     return;
                 }
             }

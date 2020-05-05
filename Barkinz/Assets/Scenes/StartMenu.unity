@@ -519,6 +519,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultBarkinz: {fileID: 11400000, guid: 054ad147344dd41f6aa1491843071af7, type: 2}
+  inactiveBarkinzPrefab: {fileID: 5146388856610748050, guid: 6cea7f8cf358a43c3a225f98b8902138,
+    type: 3}
 --- !u!4 &1107243236
 Transform:
   m_ObjectHideFlags: 0

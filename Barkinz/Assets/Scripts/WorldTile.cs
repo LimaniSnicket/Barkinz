@@ -54,7 +54,7 @@ public class WorldTile : MonoBehaviour
             }
         }
 
-        if (mouseHoverTile!= null && mouseHoverTile.occupied)
+        if (mouseHoverTile != null && mouseHoverTile.occupied)
         {
             try
             {
@@ -62,6 +62,11 @@ public class WorldTile : MonoBehaviour
                 if (Input.GetMouseButtonDown(1) && !MinigameManager.ValidMode(ActiveGameFunction.FOCUS))
                 {
                     placed.RotateObject();
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    StorePlacedObject(placed.ObjectInformation, mouseHoverTile);
+                    Destroy(placed.gameObject);
                 }
             }
             catch (NullReferenceException) { }
@@ -92,17 +97,24 @@ public class WorldTile : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                UpdatePlayerTile(GetAdjacentTile(Vector2.right * -1));
+                UpdatePlayerTile(GetAdjacentTile(Vector2.left));
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                UpdatePlayerTile(GetAdjacentTile(Vector2.up * -1));
+                UpdatePlayerTile(GetAdjacentTile(Vector2.down));
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
                 UpdatePlayerTile(GetAdjacentTile(Vector2.up));
             }
         }
+    }
+
+    void StorePlacedObject(PlaceableObject p, Tile occ)
+    {
+        occ.occupied = false;
+        occ.occupyingTile = null;
+        player.activeInventory.AdjustInventory(p);
     }
 
     void OnObjectPlacementConfirmed(Tile t, PlaceableObject p)
@@ -162,6 +174,26 @@ public class WorldTile : MonoBehaviour
         catch (IndexOutOfRangeException) { return GridPositions[0, 0]; }
     }
 
+    bool allTilesOccupied {
+        get
+        {
+            foreach(Tile t in Tiles)
+            {
+                if (!t.occupied) { return false; }
+            }
+            return true;
+        }
+    }
+
+    public Tile GetRandomTile()
+    {
+        if (allTilesOccupied) { Debug.Log("All tiles are occupied, that's no bueno"); return StartTile; }
+        int i = UnityEngine.Random.Range(0, Tiles.Count);
+        Tile t = Tiles[i];
+        if(!t.occupied || t.occupiedByPlayer) { return t; }
+        return GetRandomTile();
+    }
+
     void UpdatePlayerTile(Tile newTile)
     {
         PlayerPositionTile.occupiedByPlayer = false;
@@ -200,6 +232,7 @@ public class WorldTile : MonoBehaviour
         }
         QueueTile(StartTile);
         StartTile.occupiedByPlayer = true;
+        BarkinzManager.GenerateNPC(GetRandomTile());
     }
 
     public void GenerateDefaultTileMap()
@@ -261,7 +294,7 @@ public class Tile : IZoomOn
     public GameObject occupyingTile;
 
     public Transform ZoomObjectTransform => go.transform;
-    public float CameraOrthoSize => 3;
+    public float CameraOrthoSize => 5;
     public bool placeableTile { get => !occupied && !isStartingTile; }
 
     public static event Action<PlaceableObject> RemovedPlacedObjectFromTile;
@@ -338,7 +371,7 @@ public class Tile : IZoomOn
     public Vector3 ZoomCamPosition()
     {
         Vector3 p = go.transform.position;
-        return p + new Vector3(-1, .5f, -1);
+        return p + new Vector3(-1, 1f, -1);
     }
 
     public PlaceableObject GetPlaceableObjectAtTile(string name)
