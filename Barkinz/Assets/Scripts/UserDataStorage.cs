@@ -10,6 +10,7 @@ public class UserDataStorage : MonoBehaviour
     private static UserDataStorage userData;
     public static UserData activeUserData { get; private set; }
     private static Dictionary<string, UserData> userLookup;
+    public UserSaveData test;
     static string tempUserGen;
     public string activeUserKey;
     public string identifier = "userDataStorage";
@@ -49,6 +50,7 @@ public class UserDataStorage : MonoBehaviour
         } else
         {
             userLookup.Add(name, new UserData());
+            userData.test = new UserSaveData(name);
             Debug.LogFormat("Adding new user: {0} to Database. Welcome to hell motherfucker.", name);
         }
     }
@@ -74,7 +76,8 @@ public class UserDataStorage : MonoBehaviour
         if (!fromWeb) {
             try
             {
-                userLookup = SaveGame.Load<Dictionary<string, UserData>>(userData.identifier, new Dictionary<string, UserData>());
+                //userLookup = SaveGame.Load<Dictionary<string, UserData>>(userData.identifier, new Dictionary<string, UserData>());
+                userData.test = SaveGame.Load<UserSaveData>(userData.identifier, new UserSaveData());
             }
             catch (NullReferenceException) {
                 userLookup = new Dictionary<string, UserData>();
@@ -108,7 +111,7 @@ public class UserDataStorage : MonoBehaviour
             OverrideUserData();
         }
         catch (NullReferenceException){ }
-        SaveGame.Save<Dictionary<string, UserData>>(identifier, userLookup);
+        SaveGame.Save<UserSaveData>(identifier, test);
     }
 
     private void OverrideUserData()
@@ -242,5 +245,16 @@ public struct ScoreData: IComparable<ScoreData>
         return 1;
     }
 }
-
+[Serializable]
+public class UserSaveData
+{
+    public string key;
+    public UserData data;
+    public UserSaveData() { }
+    public UserSaveData(string s)
+    {
+        key = s;
+        data = new UserData();
+    }
+}
 

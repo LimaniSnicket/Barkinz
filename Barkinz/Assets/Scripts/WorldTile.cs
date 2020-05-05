@@ -232,7 +232,7 @@ public class WorldTile : MonoBehaviour
         }
         QueueTile(StartTile);
         StartTile.occupiedByPlayer = true;
-        BarkinzManager.GenerateNPC(GetRandomTile());
+        //BarkinzManager.GenerateNPC(GetRandomTile());
     }
 
     public void GenerateDefaultTileMap()
