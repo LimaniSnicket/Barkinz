@@ -16,10 +16,15 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
+        GetTMPsAndShit();
+        player = GetComponentInParent<ActivePlayer>();   
+    }
+
+    public void GetTMPsAndShit()
+    {
         nameDisplay = transform.Find("Name Display").GetComponent<TextMeshPro>();
         statusDisplay = transform.Find("Status Display").GetComponent<TextMeshPro>();
         statusIcon = GetComponentInChildren<SpriteRenderer>();
-        player = GetComponentInParent<ActivePlayer>();
         ToggleVisibility(false);
     }
 
@@ -30,7 +35,7 @@ public class PlayerUI : MonoBehaviour
         statusDisplay.text = player.ActiveSessionIntoxication.intoxicationMessage;
     }
 
-    void OnZoomed(IZoomOn zoom)
+   public virtual void OnZoomed(IZoomOn zoom)
     {
         Debug.Log(zoom.GetType().ToString());
         if (zoom.GetType().ToString() == "ActivePlayer")
@@ -39,7 +44,7 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    public void ToggleVisibility(bool set)
+    public virtual void ToggleVisibility(bool set)
     {
         nameDisplay.gameObject.SetActive(set);
         statusDisplay.gameObject.SetActive(set);

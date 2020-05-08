@@ -190,7 +190,8 @@ public class WorldTile : MonoBehaviour
         if (allTilesOccupied) { Debug.Log("All tiles are occupied, that's no bueno"); return StartTile; }
         int i = UnityEngine.Random.Range(0, Tiles.Count);
         Tile t = Tiles[i];
-        if(!t.occupied || t.occupiedByPlayer) { return t; }
+        Debug.Log(t.GridPosition);
+        if(!t.occupied || !t.occupiedByPlayer) { return t; }
         return GetRandomTile();
     }
 
@@ -232,7 +233,7 @@ public class WorldTile : MonoBehaviour
         }
         QueueTile(StartTile);
         StartTile.occupiedByPlayer = true;
-        //BarkinzManager.GenerateNPC(GetRandomTile());
+        BarkinzManager.GenerateNPC(GetRandomTile());
     }
 
     public void GenerateDefaultTileMap()

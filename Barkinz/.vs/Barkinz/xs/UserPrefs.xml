@@ -1,12 +1,12 @@
 ﻿<Properties StartupConfiguration="{81567C94-B347-3980-9F23-E9AE3AD217F3}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BarkinzManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NpcUI.cs">
     <Files>
-      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="152" Column="46" />
-      <File FileName="Assets/Scripts/BarkinzManager.cs" Line="63" Column="28" />
-      <File FileName="Assets/Scripts/WorldTile.cs" />
-      <File FileName="Assets/Scripts/ActivePlayer.cs" Line="15" Column="51" />
-      <File FileName="Assets/Scripts/Bartender.cs" />
-      <File FileName="Assets/Scripts/HUD.cs" Line="50" Column="104" />
+      <File FileName="Assets/ScriptableObjects/BarkinzInfo.cs" Line="104" Column="38" />
+      <File FileName="Assets/Scripts/BarkinzManager.cs" Line="63" Column="81" />
+      <File FileName="Assets/Scripts/WorldTile.cs" Line="232" Column="39" />
+      <File FileName="Assets/Scripts/ActivePlayer.cs" />
+      <File FileName="Assets/Scripts/Bartender.cs" Line="214" Column="17" />
+      <File FileName="Assets/Scripts/HUD.cs" />
       <File FileName="Assets/Scripts/TriviaScript.cs" />
       <File FileName="Assets/StreamingAssets/TriviaData.json" />
       <File FileName="Assets/Scripts/Dart.cs" />
@@ -18,18 +18,19 @@
       <File FileName="Assets/StreamingAssets/DrinkData.json" />
       <File FileName="Assets/StreamingAssets/TriviaDialogue.json" />
       <File FileName="Assets/Scripts/DialogueSource.cs" />
-      <File FileName="Assets/Scripts/UserDataStorage.cs" />
+      <File FileName="Assets/Scripts/UserDataStorage.cs" Line="129" Column="6" />
       <File FileName="Assets/Scripts/LoginMenuBehavior.cs" />
-      <File FileName="Assets/Scripts/PlayerUI.cs" />
-      <File FileName="Assets/Scripts/CameraMovement.cs" Line="63" Column="82" />
-      <File FileName="Assets/Scripts/MinigameManager.cs" Line="207" Column="6" />
+      <File FileName="Assets/Scripts/PlayerUI.cs" Line="20" Column="55" />
+      <File FileName="Assets/Scripts/CameraMovement.cs" />
+      <File FileName="Assets/Scripts/MinigameManager.cs" />
       <File FileName="Assets/Scripts/FaderBehavior.cs" />
-      <File FileName="Assets/Scripts/NpcController.cs" Line="17" Column="12" />
+      <File FileName="Assets/Scripts/NpcController.cs" Line="51" Column="74" />
+      <File FileName="Assets/Scripts/NpcUI.cs" Line="24" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="dab062ad-fed9-461d-beb1-94aa3d067446" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="80ebcf1f-158e-41d8-aabc-e0f0ab069063" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/Vera/Desktop/BarkinzGame/Barkinz/Assets/Scripts/PurchasingBehavior.cs" relfile="Assets/Scripts/PurchasingBehavior.cs" line="182" column="1" />

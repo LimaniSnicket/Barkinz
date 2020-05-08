@@ -133,6 +133,11 @@ public class Bartender : MonoBehaviour, IGameMode
         drinkMenu = JsonUtility.FromJson<DrinkMenu>(json);
     }
 
+    public static Drink GetDrink(BarkinzInfo b)
+    {
+        return bartender.drinkMenu.GetDrinkFromCode(b);
+    }
+
 
     void OnDestroy()
     {
