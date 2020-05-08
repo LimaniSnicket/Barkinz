@@ -58,10 +58,14 @@ public class BarkinzManager : MonoBehaviour
 
     public static void GenerateNPC(Tile t)
     {
-        BarkinzInfo b = BarkinzCodeLookup.GetRandomBarkinz(new List<string>() {PrimaryBarkinz.BarkinzCode });
-        NpcController npc = Instantiate(barkinz.inactiveBarkinzPrefab).GetComponent<NpcController>();
-        npc.SetBarkinz(b, t);
-        npcBarkinz.Add(npc);
+        try
+        {
+            BarkinzInfo b = BarkinzCodeLookup.GetRandomBarkinz(new List<string> { PrimaryBarkinz.BarkinzCode });
+            NpcController npc = Instantiate(barkinz.inactiveBarkinzPrefab).GetComponent<NpcController>();
+            npc.SetBarkinz(b, t);
+            npcBarkinz.Add(npc);
+        }
+        catch (NullReferenceException n) { Debug.Log(n.Source); }
     }
 
     public static void AddToPlayedModes(ActiveGameFunction mode)
